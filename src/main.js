@@ -13,6 +13,7 @@ import { renderPortfolio } from './pages/portfolio.js';
 import { renderMessages } from './pages/messages.js';
 import { renderSettings } from './pages/settings.js';
 import { renderArchetypePage } from './pages/archetypePage.js';
+import { renderTraining } from './pages/training.js';
 import { renderNotFound } from './pages/notFound.js';
 import { createFooter } from './components/footer.js';
 
@@ -41,6 +42,8 @@ registerRoute('/messages', renderMessages);
 registerRoute('/messages/:id', renderMessages);
 registerRoute('/settings', renderSettings);
 registerRoute('/archetype/:key', renderArchetypePage);
+registerRoute('/training', renderTraining);
+registerRoute('/training/:exerciseId', (c, p) => renderTraining(c, { exerciseId: p.exerciseId }));
 
 // 404 handler
 setNotFoundHandler(renderNotFound);

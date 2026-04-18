@@ -12,7 +12,7 @@
     "preview": "npm run build && npm run start",
     "db:init": "psql dyg < server/db/schema.sql",
     "db:seed": "psql dyg < server/db/seed.sql",
-    "db:reset": "psql dyg < server/db/schema.sql && psql dyg < server/db/seed.sql"
+    "db:reset": "psql dyg < server/db/schema.sql && psql dyg < server/db/seed.sql && psql dyg < server/db/seed-training.sql"
   },
   "keywords": [],
   "author": "Scory — 4Dayvelopment",

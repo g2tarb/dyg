@@ -1,3 +1,7 @@
+DROP TABLE IF EXISTS training_submissions CASCADE;
+DROP TABLE IF EXISTS training_tips CASCADE;
+DROP TABLE IF EXISTS training_exercises CASCADE;
+DROP TABLE IF EXISTS training_tracks CASCADE;
 DROP TABLE IF EXISTS reports CASCADE;
 DROP TABLE IF EXISTS ban_history CASCADE;
 DROP TABLE IF EXISTS reputation CASCADE;
@@ -160,6 +164,55 @@ CREATE TABLE ban_history (
   banned_until TIMESTAMPTZ NOT NULL,
   created_at TIMESTAMPTZ DEFAULT NOW()
 );
+
+-- Training system
+CREATE TABLE training_tracks (
+  id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
+  name VARCHAR(100) NOT NULL,
+  description TEXT,
+  level SMALLINT NOT NULL,
+  sort_order SMALLINT DEFAULT 0,
+  created_at TIMESTAMPTZ DEFAULT NOW()
+);
+
+CREATE TABLE training_exercises (
+  id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
+  track_id UUID NOT NULL REFERENCES training_tracks(id) ON DELETE CASCADE,
+  title VARCHAR(100) NOT NULL,
+  description TEXT NOT NULL,
+  instructions TEXT NOT NULL,
+  expected_result TEXT,
+  level SMALLINT NOT NULL DEFAULT 1,
+  sort_order SMALLINT DEFAULT 0,
+  pillar_impact VARCHAR(20)[] DEFAULT '{}',
+  created_at TIMESTAMPTZ DEFAULT NOW()
+);
+
+CREATE TABLE training_tips (
+  id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
+  exercise_id UUID NOT NULL REFERENCES training_exercises(id) ON DELETE CASCADE,
+  sort_order SMALLINT NOT NULL,
+  content TEXT NOT NULL
+);
+
+CREATE TABLE training_submissions (
+  id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
+  exercise_id UUID NOT NULL REFERENCES training_exercises(id) ON DELETE CASCADE,
+  user_id UUID NOT NULL REFERENCES users(id) ON DELETE CASCADE,
+  repo_url TEXT,
+  gold_stars SMALLINT DEFAULT 0 CHECK (gold_stars >= 0 AND gold_stars <= 5),
+  gray_stars NUMERIC(2,1) DEFAULT 5.0 CHECK (gray_stars >= 0 AND gray_stars <= 5),
+  tips_used SMALLINT DEFAULT 0,
+  status VARCHAR(20) DEFAULT 'in_progress'
+    CHECK (status IN ('in_progress', 'submitted', 'reviewed')),
+  submitted_at TIMESTAMPTZ,
+  reviewed_at TIMESTAMPTZ,
+  created_at TIMESTAMPTZ DEFAULT NOW(),
+  UNIQUE(exercise_id, user_id)
+);
+
+CREATE INDEX idx_training_submissions_user ON training_submissions(user_id);
+CREATE INDEX idx_training_exercises_track ON training_exercises(track_id);
 
 -- Reports (moderation)
 CREATE TABLE reports (

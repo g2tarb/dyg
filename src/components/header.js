@@ -19,7 +19,8 @@ function createHeader() {
         <div class="header-links">
           <a href="#/about" class="header-link">${t('header.about')}</a>
           <a href="#/search" class="header-link">${t('header.explore')}</a>
-          <a href="#/projects" class="header-link">${t('header.projects')}</a>
+          <a href="#/training" class="header-link">${t('training.title')}</a>
+        <a href="#/projects" class="header-link">${t('header.projects')}</a>
           <a href="#/team" class="header-link header-team">
             <span class="team-icon">&#9776;</span>
             ${t('header.team')}

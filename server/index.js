@@ -21,6 +21,7 @@ import projectRoutes from './routes/projects.js';
 import messageRoutes from './routes/messages.js';
 import dataRoutes from './routes/data.js';
 import reputationRoutes from './routes/reputation.js';
+import trainingRoutes from './routes/training.js';
 // ban check is done at auth level, not IP level
 
 const __dirname = dirname(fileURLToPath(import.meta.url));
@@ -164,6 +165,7 @@ fastify.register(projectRoutes);
 fastify.register(messageRoutes);
 fastify.register(dataRoutes);
 fastify.register(reputationRoutes);
+fastify.register(trainingRoutes);
 
 // --- Sitemap ---
 fastify.get('/sitemap.xml', async (request, reply) => {
