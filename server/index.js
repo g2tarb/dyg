@@ -20,6 +20,8 @@ import authRoutes from './routes/auth.js';
 import projectRoutes from './routes/projects.js';
 import messageRoutes from './routes/messages.js';
 import dataRoutes from './routes/data.js';
+import reputationRoutes from './routes/reputation.js';
+import { isIPBanned } from './services/ban.js';
 
 const __dirname = dirname(fileURLToPath(import.meta.url));
 const isProd = env.NODE_ENV === 'production';
@@ -75,15 +77,28 @@ await fastify.register(rateLimit, {
   }
 });
 
-// IP ban check
+// IP ban check (rate limit + user ban)
 fastify.addHook('onRequest', async (request, reply) => {
-  const banExpiry = bannedIPs.get(request.ip);
+  const ip = request.ip;
+
+  // Rate limit IP ban
+  const banExpiry = bannedIPs.get(ip);
   if (banExpiry) {
     if (Date.now() < banExpiry) {
       return reply.code(403).send({ error: 'FORBIDDEN', message: 'Too many requests. Try again later.' });
     }
-    bannedIPs.delete(request.ip);
+    bannedIPs.delete(ip);
   }
+
+  // User ban IP check (skip for static files and health)
+  if (!request.url.startsWith('/api/') && !request.url.startsWith('/auth/')) return;
+  if (request.url === '/api/health') return;
+
+  try {
+    if (await isIPBanned(ip)) {
+      return reply.code(403).send({ error: 'BANNED', message: 'Account banned. Contact support.' });
+    }
+  } catch { /* DB error — don't block */ }
 });
 
 // --- Request ID in response ---
@@ -161,6 +176,7 @@ fastify.register(authRoutes);
 fastify.register(projectRoutes);
 fastify.register(messageRoutes);
 fastify.register(dataRoutes);
+fastify.register(reputationRoutes);
 
 // --- Sitemap ---
 fastify.get('/sitemap.xml', async (request, reply) => {

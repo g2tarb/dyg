@@ -1,3 +1,5 @@
+DROP TABLE IF EXISTS ban_history CASCADE;
+DROP TABLE IF EXISTS reputation CASCADE;
 DROP TABLE IF EXISTS code_samples CASCADE;
 DROP TABLE IF EXISTS messages CASCADE;
 DROP TABLE IF EXISTS conversation_participants CASCADE;
@@ -26,6 +28,11 @@ CREATE TABLE users (
   data_consent BOOLEAN DEFAULT FALSE,
   availability VARCHAR(20) DEFAULT 'available'
     CHECK (availability IN ('available', 'in_project', 'unavailable')),
+  abandon_count SMALLINT DEFAULT 0,
+  banned_until TIMESTAMPTZ,
+  ban_count SMALLINT DEFAULT 0,
+  banned_ip TEXT,
+  is_paid_reinscription BOOLEAN DEFAULT FALSE,
   created_at TIMESTAMPTZ DEFAULT NOW(),
   updated_at TIMESTAMPTZ DEFAULT NOW()
 );
@@ -128,6 +135,32 @@ CREATE TABLE peer_reviews (
   rating SMALLINT NOT NULL CHECK (rating >= 1 AND rating <= 5),
   created_at TIMESTAMPTZ DEFAULT NOW(),
   UNIQUE(project_id, reviewer_id, reviewee_id, pillar)
+);
+
+-- Reputation (post-project reviews)
+CREATE TABLE reputation (
+  id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
+  project_id UUID NOT NULL REFERENCES projects(id) ON DELETE CASCADE,
+  reviewer_id UUID NOT NULL REFERENCES users(id) ON DELETE CASCADE,
+  reviewee_id UUID NOT NULL REFERENCES users(id) ON DELETE CASCADE,
+  stars SMALLINT NOT NULL CHECK (stars >= 1 AND stars <= 5),
+  comment TEXT CHECK (char_length(comment) <= 500),
+  created_at TIMESTAMPTZ DEFAULT NOW(),
+  UNIQUE(project_id, reviewer_id, reviewee_id)
+);
+
+CREATE INDEX idx_reputation_reviewee ON reputation(reviewee_id);
+CREATE INDEX idx_reputation_project ON reputation(project_id);
+
+-- Ban history
+CREATE TABLE ban_history (
+  id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
+  user_id UUID NOT NULL REFERENCES users(id) ON DELETE CASCADE,
+  reason VARCHAR(50) NOT NULL,
+  ban_duration_months SMALLINT NOT NULL,
+  banned_until TIMESTAMPTZ NOT NULL,
+  ip_address TEXT,
+  created_at TIMESTAMPTZ DEFAULT NOW()
 );
 
 -- Audit logs

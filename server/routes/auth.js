@@ -56,6 +56,12 @@ async function authRoutes(fastify) {
     `, [ghUser.id, ghUser.login, email, ghUser.avatar_url, ghUser.name || ghUser.login, encrypt(token.access_token)]);
 
     const user = result.rows[0];
+
+    // Check if user is banned
+    if (user.banned_until && new Date(user.banned_until) > new Date()) {
+      return reply.redirect(`/#/banned?until=${encodeURIComponent(user.banned_until)}`);
+    }
+
     const jwt = fastify.jwt.sign({ id: user.id, github_login: user.github_login });
 
     reply.setCookie('token', jwt, {

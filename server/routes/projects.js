@@ -2,6 +2,7 @@ import pool from '../db/connection.js';
 import { closeProject } from '../services/closing.js';
 import { CreateProjectSchema, UpdateProjectSchema, SubmitReviewsSchema, REVIEW_PILLARS } from '../schemas/validation.js';
 import { UnauthorizedError, NotFoundError, ForbiddenError } from '../utils/errors.js';
+import { recordAbandon, isUserBanned } from '../services/ban.js';
 
 async function getProjectWithMembers(projectId) {
   const projResult = await pool.query('SELECT * FROM projects WHERE id = $1', [projectId]);
@@ -218,23 +219,54 @@ async function projectRoutes(fastify) {
     return full;
   });
 
-  // POST /api/projects/:id/leave — leave a project
+  // POST /api/projects/:id/leave — leave a project (abandoning an active project = strike)
   fastify.post('/api/projects/:id/leave', async (request, reply) => {
-    try { await request.jwtVerify(); } catch { return reply.code(401).send({ error: 'Not authenticated' }); }
+    try { await request.jwtVerify(); } catch { throw new UnauthorizedError(); }
 
     const { id } = request.params;
     const userId = request.user.id;
 
-    // Can't leave if you're the creator
-    const projCheck = await pool.query('SELECT creator_id FROM projects WHERE id = $1', [id]);
+    const projCheck = await pool.query('SELECT creator_id, status FROM projects WHERE id = $1', [id]);
     if (projCheck.rows.length === 0) return reply.code(404).send({ error: 'Project not found' });
     if (projCheck.rows[0].creator_id === userId) {
       return reply.code(400).send({ error: 'Creator cannot leave the project' });
     }
 
+    const projectStatus = projCheck.rows[0].status;
+
     await pool.query('DELETE FROM project_members WHERE project_id = $1 AND user_id = $2', [id, userId]);
 
+    // If project is in active phase (building or review), this is an ABANDON
+    let banResult = null;
+    if (projectStatus === 'building' || projectStatus === 'review') {
+      const ip = request.ip || request.headers['x-forwarded-for'] || 'unknown';
+      banResult = await recordAbandon(userId, id, ip);
+
+      // Audit
+      await pool.query(`
+        INSERT INTO audit_logs (user_id, action, target_type, target_id, details)
+        VALUES ($1, 'project_abandon', 'project', $2, $3)
+      `, [userId, id, JSON.stringify({ status: projectStatus, ban_result: banResult })]);
+    }
+
     const full = await getProjectWithMembers(id);
+
+    if (banResult?.banned) {
+      return {
+        ...full,
+        _ban: {
+          banned: true,
+          until: banResult.until,
+          months: banResult.months,
+          abandon_count: banResult.abandon_count
+        }
+      };
+    }
+
+    if (banResult?.warning) {
+      return { ...full, _warning: 'First abandon recorded. One more will result in a ban.' };
+    }
+
     return full;
   });
 
