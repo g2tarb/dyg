@@ -223,3 +223,81 @@ INSERT INTO developer_scores (developer_id, pillar, score) VALUES
 ('a7000000-0000-0000-0000-000000000002', 'versatility', 5),
 ('a7000000-0000-0000-0000-000000000002', 'creativity', 6),
 ('a7000000-0000-0000-0000-000000000002', 'autonomy', 5);
+
+-- ==========================================
+-- DEMO USERS (fake, for portfolio showcase)
+-- ==========================================
+
+INSERT INTO users (id, github_id, github_login, email, avatar_url, name, access_token) VALUES
+('b1000000-0000-0000-0000-000000000001', 900001, 'jin-lead', 'jin@demo.dyg', '/src/assets/portraits/jin.png', 'Jin Park', 'demo-token'),
+('b1000000-0000-0000-0000-000000000002', 900002, 'clara-polyglot', 'clara@demo.dyg', '/src/assets/portraits/clara.png', 'Clara Moreau', 'demo-token'),
+('b1000000-0000-0000-0000-000000000003', 900003, 'enzo-creates', 'enzo@demo.dyg', '/src/assets/portraits/enzo.png', 'Enzo Da Silva', 'demo-token'),
+('b1000000-0000-0000-0000-000000000004', 900004, 'theo-craft', 'theo@demo.dyg', '/src/assets/portraits/theo.png', 'Théo Mercier', 'demo-token');
+
+-- Link demo users to existing developer profiles
+UPDATE developers SET user_id = 'b1000000-0000-0000-0000-000000000001' WHERE id = 'a6000000-0000-0000-0000-000000000001';
+UPDATE developers SET user_id = 'b1000000-0000-0000-0000-000000000002' WHERE id = 'a5000000-0000-0000-0000-000000000002';
+UPDATE developers SET user_id = 'b1000000-0000-0000-0000-000000000003' WHERE id = 'a4000000-0000-0000-0000-000000000001';
+UPDATE developers SET user_id = 'b1000000-0000-0000-0000-000000000004' WHERE id = 'a3000000-0000-0000-0000-000000000001';
+
+-- ==========================================
+-- DEMO PROJECTS
+-- ==========================================
+
+INSERT INTO projects (id, name, description, repo_url, status, creator_id, max_members, started_at, ended_at) VALUES
+('c1000000-0000-0000-0000-000000000001',
+ 'Dungeon Crawler Roguelike',
+ 'Un roguelike en pixel art avec génération procédurale de donjons. 4 classes jouables, loot system, permadeath.',
+ 'https://github.com/dyg-demo/dungeon-crawler',
+ 'shipped',
+ 'b1000000-0000-0000-0000-000000000001', 4,
+ '2026-02-10', '2026-03-28'),
+('c1000000-0000-0000-0000-000000000002',
+ 'Multiplayer Card Game',
+ 'Jeu de cartes compétitif en ligne. Matchmaking ELO, deck builder, animations fluides.',
+ 'https://github.com/dyg-demo/card-arena',
+ 'building',
+ 'b1000000-0000-0000-0000-000000000003', 5,
+ '2026-04-01', NULL),
+('c1000000-0000-0000-0000-000000000003',
+ 'Narrative Engine',
+ 'Moteur de dialogues branching avec éditeur visuel. Export JSON, intégration Unity/Godot.',
+ 'https://github.com/dyg-demo/narrative-engine',
+ 'review',
+ 'b1000000-0000-0000-0000-000000000002', 3,
+ '2026-03-15', NULL),
+('c1000000-0000-0000-0000-000000000004',
+ 'Game Jam Toolkit',
+ 'Boîte à outils pour game jams : templates, asset pipeline, CI/CD, deploy one-click.',
+ NULL,
+ 'open',
+ 'b1000000-0000-0000-0000-000000000004', 5,
+ NULL, NULL);
+
+-- Project members
+INSERT INTO project_members (project_id, user_id, role) VALUES
+-- Dungeon Crawler (shipped)
+('c1000000-0000-0000-0000-000000000001', 'b1000000-0000-0000-0000-000000000001', 'lead'),
+('c1000000-0000-0000-0000-000000000001', 'b1000000-0000-0000-0000-000000000002', 'member'),
+('c1000000-0000-0000-0000-000000000001', 'b1000000-0000-0000-0000-000000000004', 'member'),
+-- Card Game (building)
+('c1000000-0000-0000-0000-000000000002', 'b1000000-0000-0000-0000-000000000003', 'lead'),
+('c1000000-0000-0000-0000-000000000002', 'b1000000-0000-0000-0000-000000000001', 'member'),
+-- Narrative Engine (review)
+('c1000000-0000-0000-0000-000000000003', 'b1000000-0000-0000-0000-000000000002', 'lead'),
+('c1000000-0000-0000-0000-000000000003', 'b1000000-0000-0000-0000-000000000003', 'member'),
+('c1000000-0000-0000-0000-000000000003', 'b1000000-0000-0000-0000-000000000004', 'member'),
+-- Game Jam Toolkit (open)
+('c1000000-0000-0000-0000-000000000004', 'b1000000-0000-0000-0000-000000000004', 'lead');
+
+-- Score snapshot for shipped project
+INSERT INTO score_snapshots (user_id, project_id, pillar_scores, archetype_before, archetype_after) VALUES
+('b1000000-0000-0000-0000-000000000001', 'c1000000-0000-0000-0000-000000000001',
+ '{"code":7,"velocity":9,"craft":6,"collaboration":10,"versatility":6,"creativity":5,"autonomy":6}',
+ 'commando', 'commando'),
+('b1000000-0000-0000-0000-000000000002', 'c1000000-0000-0000-0000-000000000001',
+ '{"code":8,"velocity":7,"craft":6,"collaboration":7,"versatility":10,"creativity":9,"autonomy":6}',
+ 'explorer', 'explorer'),
+('b1000000-0000-0000-0000-000000000004', 'c1000000-0000-0000-0000-000000000001',
+ '{"code":9,"velocity":4,"craft":10,"collaboration":5,"versatility":4,"creativity":8,"autonomy":6}',
+ 'artisan', 'artisan');

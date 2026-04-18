@@ -8,6 +8,8 @@
     "dev:server": "node --watch server/index.js",
     "dev:client": "vite",
     "build": "vite build",
+    "start": "NODE_ENV=production node server/index.js",
+    "preview": "npm run build && npm run start",
     "db:init": "psql dyg < server/db/schema.sql",
     "db:seed": "psql dyg < server/db/seed.sql",
     "db:reset": "psql dyg < server/db/schema.sql && psql dyg < server/db/seed.sql"
@@ -21,6 +23,7 @@
     "@fastify/jwt": "^10.0.0",
     "@fastify/oauth2": "^8.2.0",
     "@fastify/rate-limit": "^10.3.0",
+    "@fastify/static": "^9.1.1",
     "dotenv": "^17.4.2",
     "fastify": "^5.8.5",
     "pg": "^8.20.0",

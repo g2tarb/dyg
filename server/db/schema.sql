@@ -1,3 +1,4 @@
+DROP TABLE IF EXISTS peer_reviews CASCADE;
 DROP TABLE IF EXISTS score_snapshots CASCADE;
 DROP TABLE IF EXISTS contribution_events CASCADE;
 DROP TABLE IF EXISTS project_members CASCADE;

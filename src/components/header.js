@@ -29,9 +29,11 @@ function createHeader() {
       const safeName = escapeHTML(user.name || user.github_login);
       authContainer.innerHTML = `
         <div class="header-user">
-          <img class="header-user__avatar" src="${escapeHTML(user.avatar_url)}" alt="${safeName}"
-               onerror="this.style.display='none'">
-          <span class="header-user__name">${safeName}</span>
+          <a href="#/u/${escapeHTML(user.github_login)}" class="header-user__link">
+            <img class="header-user__avatar" src="${escapeHTML(user.avatar_url)}" alt="${safeName}"
+                 onerror="this.style.display='none'">
+            <span class="header-user__name">${safeName}</span>
+          </a>
           <button class="header-user__logout" id="btn-logout" title="Déconnexion">&times;</button>
         </div>
       `;
