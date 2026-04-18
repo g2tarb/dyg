@@ -1,0 +1,456 @@
+/* ==========================================
+   LANDING — ACTIVISION CINEMATIC
+   ========================================== */
+
+/* ===== HERO ===== */
+
+.landing-hero {
+  position: relative;
+  min-height: calc(100vh - 56px);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  overflow: hidden;
+  background: var(--color-bg);
+}
+
+/* Z-index stack:
+   0 = video
+   1 = dark overlay (vignette + color grade)
+   2 = Three.js D20
+   3 = text content
+   4 = bottom fade
+*/
+
+/* Video background */
+.landing-hero__video {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  z-index: 0;
+  opacity: 0.35;
+  filter: saturate(0.6) contrast(1.2) brightness(0.7);
+}
+
+/* Dark overlay — vignette + color grade */
+.landing-hero__overlay {
+  position: absolute;
+  inset: 0;
+  z-index: 1;
+  pointer-events: none;
+  background:
+    /* Vignette */
+    radial-gradient(ellipse at center, transparent 20%, var(--color-bg) 85%),
+    /* Orange top tint */
+    linear-gradient(to bottom, rgba(232, 98, 10, 0.06) 0%, transparent 40%),
+    /* Bottom solid fade */
+    linear-gradient(to top, var(--color-bg) 0%, transparent 30%);
+}
+
+/* Three.js canvas layer */
+.landing-hero__canvas {
+  position: absolute;
+  inset: 0;
+  z-index: 2;
+  width: 100%;
+  height: 100%;
+}
+
+/* Content layer */
+.landing-hero__content {
+  position: relative;
+  z-index: 3;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+  gap: var(--space-md);
+}
+
+/* Bottom edge — hard line */
+.landing-hero::after {
+  content: '';
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  height: 1px;
+  background: linear-gradient(90deg, transparent 10%, var(--color-primary) 50%, transparent 90%);
+  opacity: 0.2;
+  z-index: 4;
+}
+
+.landing-hero__title {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  animation: hero-slam 0.8s var(--ease-aggressive) both;
+}
+
+@keyframes hero-slam {
+  from { opacity: 0; transform: scale(1.3) translateY(-20px); filter: blur(8px); }
+  to { opacity: 1; transform: scale(1) translateY(0); filter: blur(0); }
+}
+
+.landing-hero__title-main {
+  font-family: var(--font-display);
+  font-size: clamp(6rem, 18vw, 12rem);
+  color: var(--color-primary);
+  line-height: 0.85;
+  letter-spacing: 0.08em;
+  text-shadow:
+    0 0 60px rgba(232, 98, 10, 0.4),
+    0 4px 0 rgba(0, 0, 0, 0.5);
+}
+
+.landing-hero__title-sub {
+  font-family: var(--font-display);
+  font-size: clamp(0.875rem, 2.5vw, 1.25rem);
+  color: var(--color-text-dim);
+  text-transform: uppercase;
+  letter-spacing: 0.4em;
+  margin-top: var(--space-xs);
+  animation: hero-fade-up 0.6s var(--ease-out) 0.3s both;
+}
+
+.landing-hero__tagline {
+  font-family: var(--font-display);
+  font-size: clamp(1.75rem, 5vw, 3rem);
+  color: var(--color-accent);
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+  animation: hero-fade-up 0.6s var(--ease-out) 0.5s both;
+}
+
+.landing-hero__pitch {
+  font-size: 0.9375rem;
+  color: var(--color-text-dim);
+  line-height: 1.7;
+  max-width: 440px;
+  animation: hero-fade-up 0.6s var(--ease-out) 0.7s both;
+}
+
+.landing-hero__pitch strong {
+  color: var(--color-text);
+  font-weight: 600;
+}
+
+.landing-hero__cta {
+  margin-top: var(--space-lg);
+  animation: hero-fade-up 0.6s var(--ease-out) 0.9s both;
+}
+
+@keyframes hero-fade-up {
+  from { opacity: 0; transform: translateY(20px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+/* ===== HOW IT WORKS — tactical steps ===== */
+
+.landing-how {
+  padding: var(--space-4xl) var(--space-lg);
+  position: relative;
+}
+
+.landing-how__header {
+  text-align: center;
+  margin-bottom: var(--space-3xl);
+}
+
+.landing-how__title {
+  font-size: clamp(2rem, 5vw, 3rem);
+  color: var(--color-text);
+}
+
+.landing-how__sub {
+  color: var(--color-primary);
+  font-family: var(--font-body);
+  font-size: 0.75rem;
+  font-weight: 600;
+  margin-top: var(--space-sm);
+  text-transform: uppercase;
+  letter-spacing: 0.2em;
+}
+
+.landing-how__steps {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: var(--space-xl);
+}
+
+.landing-step {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-md);
+  padding: var(--space-xl);
+  background: var(--color-surface);
+  border: 1px solid var(--color-border);
+  position: relative;
+  opacity: 0;
+  transform: translateY(30px);
+  transition: opacity 0.5s var(--ease-out), transform 0.5s var(--ease-aggressive);
+
+  /* Diagonal cut top-right corner — Activision signature */
+  clip-path: polygon(0 0, calc(100% - 20px) 0, 100% 20px, 100% 100%, 0 100%);
+}
+
+#step-2 { transition-delay: 150ms; }
+#step-3 { transition-delay: 300ms; }
+
+.landing-step--visible {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+/* Left accent bar */
+.landing-step::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 2px;
+  height: 100%;
+  background: linear-gradient(to bottom, var(--color-primary), transparent);
+}
+
+.landing-step__number {
+  font-family: var(--font-display);
+  font-size: 4rem;
+  color: var(--color-primary);
+  line-height: 1;
+  opacity: 0.15;
+  position: absolute;
+  top: var(--space-md);
+  right: var(--space-xl);
+}
+
+.landing-step--visible .landing-step__number {
+  animation: number-flash 0.4s var(--ease-out) 0.3s both;
+}
+
+@keyframes number-flash {
+  0% { opacity: 0; transform: scale(1.5); }
+  50% { opacity: 0.3; }
+  100% { opacity: 0.15; transform: scale(1); }
+}
+
+.landing-step__title {
+  font-size: 1.5rem;
+  color: var(--color-text);
+}
+
+.landing-step__desc {
+  font-size: 0.8125rem;
+  color: var(--color-text-dim);
+  line-height: 1.7;
+}
+
+/* ===== ARCHETYPE PARADE ===== */
+
+.landing-archetypes {
+  padding: var(--space-4xl) 0;
+  overflow: hidden;
+  position: relative;
+}
+
+.landing-archetypes__header {
+  text-align: center;
+  margin-bottom: var(--space-3xl);
+  padding: 0 var(--space-lg);
+}
+
+.landing-archetypes__title {
+  font-size: clamp(2rem, 5vw, 3rem);
+  color: var(--color-text);
+}
+
+.landing-archetypes__sub {
+  color: var(--color-text-dim);
+  font-size: 0.875rem;
+  margin-top: var(--space-sm);
+}
+
+.landing-archetypes__grid {
+  display: flex;
+  gap: var(--space-md);
+  justify-content: center;
+  flex-wrap: wrap;
+  padding: 0 var(--space-lg);
+}
+
+/* ===== Archetype mini card — Activision loadout card ===== */
+
+.archetype-mini {
+  width: 155px;
+  background: var(--color-surface);
+  border: 1px solid var(--color-border);
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;
+  cursor: default;
+  position: relative;
+
+  /* Diagonal cut — matches Activision card aesthetic */
+  clip-path: polygon(0 0, calc(100% - 14px) 0, 100% 14px, 100% 100%, 14px 100%, 0 calc(100% - 14px));
+
+  /* Scroll animation */
+  opacity: 0;
+  transform: translateY(60px) scale(0.85);
+  transition: opacity 0.5s var(--ease-out),
+              transform 0.5s var(--ease-aggressive),
+              box-shadow 0.3s ease;
+  transition-delay: var(--arch-delay, 0ms);
+}
+
+.archetype-mini--visible {
+  opacity: 1;
+  transform: translateY(0) scale(1);
+}
+
+.archetype-mini:hover {
+  transform: translateY(-8px) scale(1.03);
+  box-shadow:
+    0 12px 40px color-mix(in srgb, var(--arch-color) 25%, transparent),
+    inset 0 0 30px color-mix(in srgb, var(--arch-color) 8%, transparent);
+}
+
+/* Rank/class indicator — top bar */
+.archetype-mini::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 14px;
+  height: 2px;
+  background: var(--arch-color);
+  z-index: 2;
+  transition: box-shadow 0.3s ease;
+}
+
+.archetype-mini:hover::before {
+  box-shadow: 0 0 15px var(--arch-color);
+}
+
+/* Image zone */
+.archetype-mini__img-wrap {
+  position: relative;
+  width: 100%;
+  aspect-ratio: 3/4;
+  overflow: hidden;
+}
+
+.archetype-mini__img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  transition: transform 0.5s var(--ease-out), filter 0.5s ease;
+  filter: saturate(0.85) contrast(1.05);
+}
+
+.archetype-mini:hover .archetype-mini__img {
+  transform: scale(1.08);
+  filter: saturate(1.1) contrast(1.1);
+}
+
+/* Color glow overlay */
+.archetype-mini__glow {
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(
+    to top,
+    color-mix(in srgb, var(--arch-color) 70%, black) 0%,
+    transparent 60%
+  );
+  opacity: 0.15;
+  transition: opacity 0.3s ease;
+  pointer-events: none;
+}
+
+.archetype-mini:hover .archetype-mini__glow {
+  opacity: 0.45;
+}
+
+/* Info zone */
+.archetype-mini__info {
+  padding: var(--space-sm) var(--space-md) var(--space-md);
+  display: flex;
+  flex-direction: column;
+  gap: 3px;
+  border-top: 1px solid color-mix(in srgb, var(--arch-color) 30%, transparent);
+}
+
+.archetype-mini__name {
+  font-family: var(--font-display);
+  font-size: 1.125rem;
+  text-transform: uppercase;
+  color: var(--arch-color);
+  letter-spacing: 0.06em;
+}
+
+.archetype-mini__tagline {
+  font-size: 0.625rem;
+  color: var(--color-text-dim);
+  line-height: 1.4;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+}
+
+/* ===== BOTTOM CTA ===== */
+
+.landing-cta-bottom {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: var(--space-lg);
+  padding: var(--space-4xl) var(--space-lg);
+  text-align: center;
+  position: relative;
+}
+
+/* Horizontal rule */
+.landing-cta-bottom::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 60px;
+  height: 2px;
+  background: linear-gradient(90deg, transparent, var(--color-primary), transparent);
+}
+
+.landing-cta-bottom__title {
+  font-size: clamp(1.75rem, 5vw, 3rem);
+  color: var(--color-text);
+}
+
+.landing-cta-bottom__sub {
+  color: var(--color-text-dim);
+  font-size: 0.875rem;
+}
+
+/* ===== RESPONSIVE ===== */
+
+@media (max-width: 768px) {
+  .landing-how__steps {
+    grid-template-columns: 1fr;
+    gap: var(--space-lg);
+  }
+
+  .landing-step {
+    transition-delay: 0ms !important;
+    clip-path: none;
+  }
+
+  .landing-archetypes__grid {
+    gap: var(--space-sm);
+  }
+
+  .archetype-mini {
+    width: calc(50% - var(--space-sm));
+    transition-delay: 0ms !important;
+    clip-path: none;
+  }
+}

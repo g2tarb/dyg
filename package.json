@@ -1,0 +1,30 @@
+{
+  "name": "dyg",
+  "version": "1.0.0",
+  "description": "DYG — Do Your Game. Score devs by archetype, build your dream team.",
+  "type": "module",
+  "scripts": {
+    "dev": "concurrently \"npm run dev:server\" \"npm run dev:client\"",
+    "dev:server": "node --watch server/index.js",
+    "dev:client": "vite",
+    "build": "vite build",
+    "db:init": "psql dyg < server/db/schema.sql",
+    "db:seed": "psql dyg < server/db/seed.sql",
+    "db:reset": "psql dyg < server/db/schema.sql && psql dyg < server/db/seed.sql"
+  },
+  "keywords": [],
+  "author": "Scory — 4Dayvelopment",
+  "license": "ISC",
+  "dependencies": {
+    "@fastify/cors": "^11.2.0",
+    "@fastify/rate-limit": "^10.3.0",
+    "dotenv": "^17.4.2",
+    "fastify": "^5.8.5",
+    "pg": "^8.20.0",
+    "three": "^0.184.0"
+  },
+  "devDependencies": {
+    "concurrently": "^9.2.1",
+    "vite": "^8.0.8"
+  }
+}

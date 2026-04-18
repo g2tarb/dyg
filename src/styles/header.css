@@ -1,0 +1,148 @@
+/* ==========================================
+   Header — HUD top bar
+   ========================================== */
+
+.dyg-header {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  z-index: 100;
+  background: rgba(8, 10, 15, 0.92);
+  backdrop-filter: blur(20px);
+  -webkit-backdrop-filter: blur(20px);
+  border-bottom: 1px solid var(--color-border);
+}
+
+/* Bottom glow line */
+.dyg-header::after {
+  content: '';
+  position: absolute;
+  bottom: -1px;
+  left: 0;
+  right: 0;
+  height: 1px;
+  background: linear-gradient(90deg, transparent, var(--color-primary), transparent);
+  opacity: 0.3;
+}
+
+.header-nav {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  height: 56px;
+}
+
+.header-logo {
+  font-family: var(--font-display);
+  font-size: 1.875rem;
+  color: var(--color-primary);
+  text-decoration: none;
+  letter-spacing: 0.12em;
+  transition: text-shadow var(--duration-fast) ease;
+}
+
+.header-logo:hover {
+  text-shadow: 0 0 30px rgba(232, 98, 10, 0.6);
+}
+
+.header-links {
+  display: flex;
+  align-items: center;
+  gap: var(--space-xl);
+}
+
+.header-link {
+  font-family: var(--font-body);
+  font-size: 0.75rem;
+  font-weight: 600;
+  color: var(--color-text-dim);
+  text-decoration: none;
+  text-transform: uppercase;
+  letter-spacing: 0.12em;
+  position: relative;
+  transition: color var(--duration-fast) ease;
+}
+
+.header-link::after {
+  content: '';
+  position: absolute;
+  bottom: -6px;
+  left: 0;
+  width: 0;
+  height: 2px;
+  background: var(--color-primary);
+  transition: width var(--duration-md) var(--ease-aggressive);
+}
+
+.header-link:hover {
+  color: var(--color-text);
+}
+
+.header-link:hover::after {
+  width: 100%;
+}
+
+.header-link--dev {
+  color: var(--color-text-dim);
+  border: 1px solid rgba(232, 98, 10, 0.2);
+  padding: 6px var(--space-md);
+  border-radius: var(--radius-sm);
+  transition: all var(--duration-fast) ease;
+  position: relative;
+  overflow: hidden;
+}
+
+.header-link--dev::after { display: none; }
+
+.header-link--dev::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: var(--color-primary);
+  opacity: 0;
+  transition: opacity var(--duration-fast) ease;
+}
+
+.header-link--dev:hover {
+  color: #fff;
+  border-color: var(--color-primary);
+}
+
+.header-link--dev:hover::before {
+  opacity: 0.15;
+}
+
+.header-team {
+  display: flex;
+  align-items: center;
+  gap: var(--space-sm);
+}
+
+.team-icon { font-size: 1rem; }
+
+.team-badge {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-width: 18px;
+  height: 18px;
+  padding: 0 5px;
+  border-radius: var(--radius-sm);
+  background: var(--color-text-dim);
+  color: var(--color-bg);
+  font-size: 0.65rem;
+  font-weight: 700;
+  opacity: 0.3;
+  transition: all var(--duration-fast) var(--ease-spring);
+}
+
+.team-badge--active {
+  background: var(--color-primary);
+  opacity: 1;
+  box-shadow: 0 0 12px rgba(232, 98, 10, 0.5);
+}
+
+#page-content {
+  padding-top: 56px;
+}
