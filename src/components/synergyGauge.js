@@ -1,10 +1,12 @@
+import { t } from '../i18n/index.js';
+
 function createSynergyGauge(synergy = 0, diversityBonus = 0, total = 0) {
   const gauge = document.createElement('div');
   gauge.className = 'synergy-gauge';
 
   gauge.innerHTML = `
     <div class="synergy-gauge__header">
-      <span class="synergy-gauge__label">Synergie</span>
+      <span class="synergy-gauge__label">${t('team.synergy')}</span>
       <span class="synergy-gauge__total" id="synergy-total">${total}</span>
       <span class="synergy-gauge__percent">%</span>
     </div>
@@ -12,9 +14,9 @@ function createSynergyGauge(synergy = 0, diversityBonus = 0, total = 0) {
       <div class="synergy-gauge__fill" id="synergy-fill" style="width:0%;"></div>
     </div>
     <div class="synergy-gauge__details">
-      <span class="synergy-gauge__coverage">Couverture : <strong id="synergy-coverage">${synergy}</strong>%</span>
+      <span class="synergy-gauge__coverage">${t('team.coverage')} : <strong id="synergy-coverage">${synergy}</strong>%</span>
       <span class="synergy-gauge__bonus ${diversityBonus > 0 ? 'synergy-gauge__bonus--active' : ''}">
-        Bonus diversité : <strong id="synergy-bonus">+${diversityBonus}</strong>%
+        ${t('team.diversity_bonus')} : <strong id="synergy-bonus">+${diversityBonus}</strong>%
       </span>
     </div>
   `;

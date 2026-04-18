@@ -1,15 +1,8 @@
 import { isInTeam } from '../store.js';
 import { escapeHTML } from '../utils/sanitize.js';
+import { t } from '../i18n/index.js';
 
-const ARCHETYPE_NAMES = {
-  architect: 'Architecte',
-  shipper: 'Shipper',
-  artisan: 'Artisan',
-  creative: 'Créatif',
-  explorer: 'Explorateur',
-  commando: 'Commando',
-  mentor: 'Mentor'
-};
+const ARCHETYPE_NAMES = new Proxy({}, { get: (_, key) => t(`archetype.${key}`) });
 
 const ARCHETYPE_COLORS = {
   architect: '#3B82F6',

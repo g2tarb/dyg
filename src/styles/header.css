@@ -181,6 +181,16 @@
   letter-spacing: 0.05em;
 }
 
+.header-user__settings {
+  font-size: 0.875rem;
+  color: var(--color-text-dim);
+  text-decoration: none;
+  transition: color var(--duration-fast) ease;
+  line-height: 1;
+}
+
+.header-user__settings:hover { color: var(--color-primary); }
+
 .header-user__logout {
   background: none;
   border: none;
@@ -194,6 +204,26 @@
 
 .header-user__logout:hover {
   color: var(--color-error);
+}
+
+/* Language toggle */
+.header-lang {
+  background: none;
+  border: 1px solid var(--color-text-dim);
+  color: var(--color-text-dim);
+  font-size: 0.625rem;
+  font-weight: 700;
+  padding: 3px 8px;
+  cursor: pointer;
+  text-transform: uppercase;
+  letter-spacing: 0.1em;
+  transition: all var(--duration-fast) ease;
+  border-radius: var(--radius-sm);
+}
+
+.header-lang:hover {
+  border-color: var(--color-primary);
+  color: var(--color-primary);
 }
 
 #page-content {

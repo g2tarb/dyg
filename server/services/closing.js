@@ -1,5 +1,6 @@
 import pool from '../db/connection.js';
 import { ARCHETYPES, PILLARS } from '../constants/archetypes.js';
+import { collectProjectContributions } from './collector.js';
 
 const REVIEW_PILLARS = ['collaboration', 'craft', 'velocity'];
 
@@ -14,6 +15,10 @@ async function closeProject(projectId) {
 
   for (const userId of memberIds) {
     await updateMemberScores(projectId, userId);
+    // Collect code samples for AI training (async, non-blocking)
+    collectProjectContributions(projectId, userId).catch(err =>
+      console.error(`[collector] Background collection failed:`, err.message)
+    );
   }
 }
 

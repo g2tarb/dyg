@@ -1,11 +1,9 @@
 import { getState, subscribe } from '../store.js';
 import { escapeHTML } from '../utils/sanitize.js';
 import { showToast } from '../components/toast.js';
+import { t } from '../i18n/index.js';
 
-const STATUS_LABELS = {
-  open: 'Ouvert', staffing: 'Recrutement', building: 'En cours',
-  review: 'Review', shipped: 'Livré', archived: 'Archivé'
-};
+function statusLabel(s) { return t(`status.${s}`); }
 const STATUS_COLORS = {
   open: '#06B6D4', staffing: '#F5C542', building: '#E8620A',
   review: '#A855F7', shipped: '#22C55E', archived: '#5A6174'
@@ -23,10 +21,10 @@ function renderProjectCard(project) {
       <div class="project-card__top">
         <h3 class="project-card__name">${escapeHTML(project.name)}</h3>
         <span class="project-card__status" style="color:${color};border-color:${color};">
-          ${STATUS_LABELS[project.status] || project.status}
+          ${statusLabel(project.status)}
         </span>
       </div>
-      <p class="project-card__desc">${escapeHTML(project.description || 'Pas de description')}</p>
+      <p class="project-card__desc">${escapeHTML(project.description || t('project.no_desc'))}</p>
       <div class="project-card__footer">
         <div class="project-card__creator">
           <img class="project-card__avatar" src="${escapeHTML(project.creator_avatar || '')}"
@@ -49,33 +47,33 @@ function renderProjects(container) {
       <div class="container" style="padding-top:var(--space-2xl);">
         <div class="projects__header">
           <div>
-            <h2 class="projects__title">Projets</h2>
-            <p class="projects__sub">Rejoins un projet ou lance le tien.</p>
+            <h2 class="projects__title">${t('projects.title')}</h2>
+            <p class="projects__sub">${t('projects.sub')}</p>
           </div>
-          ${user ? '<button class="btn-primary" id="btn-create-toggle">Créer un projet</button>' : '<a href="/auth/github" class="btn-primary">Se connecter pour créer</a>'}
+          ${user ? `<button class="btn-primary" id="btn-create-toggle">${t('projects.create')}</button>` : `<a href="/auth/github" class="btn-primary">${t('projects.create_login')}</a>`}
         </div>
 
         <div class="projects-create" id="create-form" style="display:none;">
-          <h3 class="projects-create__title">Nouveau projet</h3>
+          <h3 class="projects-create__title">${t('projects.new')}</h3>
           <div class="projects-create__fields">
-            <input type="text" class="input" id="proj-name" placeholder="Nom du projet" maxlength="100">
-            <textarea class="input projects-create__textarea" id="proj-desc" placeholder="Description (optionnel)" rows="3"></textarea>
-            <input type="text" class="input" id="proj-repo" placeholder="URL du repo GitHub (optionnel)">
+            <input type="text" class="input" id="proj-name" placeholder="${t('projects.name_placeholder')}" maxlength="100">
+            <textarea class="input projects-create__textarea" id="proj-desc" placeholder="${t('projects.desc_placeholder')}" rows="3"></textarea>
+            <input type="text" class="input" id="proj-repo" placeholder="${t('projects.repo_placeholder')}"
           </div>
           <div class="projects-create__actions">
-            <button class="btn-primary" id="btn-create-submit">Lancer le projet</button>
-            <button class="btn-secondary" id="btn-create-cancel">Annuler</button>
+            <button class="btn-primary" id="btn-create-submit">${t('projects.launch')}</button>
+            <button class="btn-secondary" id="btn-create-cancel">${t('common.cancel')}</button>
           </div>
           <p class="input-error-msg" id="create-error" style="display:none;"></p>
         </div>
 
         <div class="projects-filters" id="proj-filters">
-          <button class="proj-filter proj-filter--active" data-status="">Tous</button>
-          ${user ? '<button class="proj-filter" data-status="mine">Mes projets</button>' : ''}
-          <button class="proj-filter" data-status="open">Ouvert</button>
-          <button class="proj-filter" data-status="staffing">Recrutement</button>
-          <button class="proj-filter" data-status="building">En cours</button>
-          <button class="proj-filter" data-status="shipped">Livré</button>
+          <button class="proj-filter proj-filter--active" data-status="">${t('projects.filter_all')}</button>
+          ${user ? `<button class="proj-filter" data-status="mine">${t('projects.filter_mine')}</button>` : ''}
+          <button class="proj-filter" data-status="open">${t('projects.filter_open')}</button>
+          <button class="proj-filter" data-status="staffing">${t('projects.filter_staffing')}</button>
+          <button class="proj-filter" data-status="building">${t('projects.filter_building')}</button>
+          <button class="proj-filter" data-status="shipped">${t('projects.filter_shipped')}</button>
         </div>
 
         <div class="projects-grid" id="projects-grid">
@@ -115,7 +113,7 @@ function renderProjects(container) {
       const errorEl = container.querySelector('#create-error');
 
       if (!name) {
-        errorEl.textContent = 'Le nom du projet est requis.';
+        errorEl.textContent = t('projects.name_placeholder');
         errorEl.style.display = 'block';
         return;
       }
@@ -134,7 +132,7 @@ function renderProjects(container) {
           throw new Error(err.error || 'Erreur');
         }
         createForm.style.display = 'none';
-        showToast('Projet créé');
+        showToast(t('projects.created'));
         loadProjects();
       } catch (err) {
         errorEl.textContent = err.message;
@@ -169,7 +167,7 @@ function renderProjects(container) {
 
       grid.innerHTML = '';
       if (projects.length === 0) {
-        grid.innerHTML = '<div class="empty-state" style="grid-column:1/-1;"><p class="empty-state__text">Aucun projet pour l\'instant. Sois le premier.</p></div>';
+        grid.innerHTML = `<div class="empty-state" style="grid-column:1/-1;"><p class="empty-state__text">${t('projects.empty')}</p></div>`;
         return;
       }
       projects.forEach((proj, i) => {
@@ -181,7 +179,7 @@ function renderProjects(container) {
         requestAnimationFrame(() => { requestAnimationFrame(() => { card.style.opacity = '1'; card.style.transform = 'translateY(0)'; }); });
       });
     } catch {
-      grid.innerHTML = '<div class="empty-state" style="grid-column:1/-1;"><p class="empty-state__text">Erreur de chargement.</p></div>';
+      grid.innerHTML = `<div class="empty-state" style="grid-column:1/-1;"><p class="empty-state__text">${t('common.error')}</p></div>`;
     }
   }
 

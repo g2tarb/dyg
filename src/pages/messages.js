@@ -1,6 +1,7 @@
 import { getState, subscribe } from '../store.js';
 import { escapeHTML } from '../utils/sanitize.js';
 import { showToast } from '../components/toast.js';
+import { t } from '../i18n/index.js';
 
 let pollInterval = null;
 
@@ -11,8 +12,8 @@ function renderMessages(container, params = {}) {
       <section class="messages">
         <div class="container" style="padding-top:var(--space-2xl);">
           <div class="empty-state">
-            <p class="empty-state__text">Connecte-toi pour accéder à tes messages.</p>
-            <a href="/auth/github" class="btn-primary" style="margin-top:var(--space-md);">Se connecter</a>
+            <p class="empty-state__text">${t('messages.login_required')}</p>
+            <a href="/auth/github" class="btn-primary" style="margin-top:var(--space-md);">${t('common.login')}</a>
           </div>
         </div>
       </section>`;
@@ -35,7 +36,7 @@ async function renderInbox(container) {
   container.innerHTML = `
     <section class="messages">
       <div class="container" style="padding-top:var(--space-2xl);">
-        <h2 class="msg__title">Messages</h2>
+        <h2 class="msg__title">${t('messages.title')}</h2>
         <div class="msg__list" id="msg-list">
           <div class="skeleton" style="height:60px;margin-bottom:var(--space-sm);"></div>
           <div class="skeleton" style="height:60px;margin-bottom:var(--space-sm);"></div>
@@ -54,8 +55,8 @@ async function renderInbox(container) {
     if (conversations.length === 0) {
       list.innerHTML = `
         <div class="empty-state">
-          <p class="empty-state__text">Aucun message. Contacte un dev depuis son profil.</p>
-          <a href="#/search" class="btn-secondary" style="margin-top:var(--space-md);">Explorer les devs</a>
+          <p class="empty-state__text">${t('messages.empty')}</p>
+          <a href="#/search" class="btn-secondary" style="margin-top:var(--space-md);">${t('common.explore_devs')}</a>
         </div>`;
       return;
     }
@@ -80,7 +81,7 @@ async function renderInbox(container) {
         </a>`;
     }).join('');
   } catch {
-    list.innerHTML = '<div class="empty-state"><p class="empty-state__text">Erreur de chargement.</p></div>';
+    list.innerHTML = `<div class="empty-state"><p class="empty-state__text">${t('common.error')}</p></div>`;
   }
 }
 
@@ -88,7 +89,7 @@ async function renderConversation(container, convId) {
   container.innerHTML = `
     <section class="messages">
       <div class="container" style="padding-top:var(--space-2xl);">
-        <a href="#/messages" class="profile-back">&larr; Retour aux messages</a>
+        <a href="#/messages" class="profile-back">&larr; ${t('messages.back')}</a>
         <div class="skeleton" style="height:400px;margin-top:var(--space-lg);"></div>
       </div>
     </section>
@@ -116,7 +117,7 @@ async function renderConversation(container, convId) {
   container.innerHTML = `
     <section class="messages">
       <div class="container" style="padding-top:var(--space-2xl);">
-        <a href="#/messages" class="profile-back">&larr; Retour aux messages</a>
+        <a href="#/messages" class="profile-back">&larr; ${t('messages.back')}</a>
 
         <div class="msg__chat-header">
           <img class="msg__chat-avatar" src="${escapeHTML(other.avatar_url || '')}" alt="" onerror="this.style.display='none'">
@@ -128,8 +129,8 @@ async function renderConversation(container, convId) {
         </div>
 
         <div class="msg__chat-input">
-          <input type="text" class="input" id="msg-input" placeholder="Ton message..." maxlength="2000" autocomplete="off">
-          <button class="btn-primary" id="btn-send">Envoyer</button>
+          <input type="text" class="input" id="msg-input" placeholder="${t('messages.placeholder')}" maxlength="2000" autocomplete="off">
+          <button class="btn-primary" id="btn-send">${t('common.send')}</button>
         </div>
       </div>
     </section>

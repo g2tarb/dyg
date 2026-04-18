@@ -1,12 +1,9 @@
-const PILLAR_LABELS = {
-  code: 'Code',
-  velocity: 'Vélocité',
-  craft: 'Craft',
-  collaboration: 'Collab',
-  versatility: 'Polyvalence',
-  creativity: 'Créativité',
-  autonomy: 'Autonomie'
-};
+import { t } from '../i18n/index.js';
+
+function getPillarLabel(key) { return t(`pillar.${key}`); }
+
+// Keep PILLAR_LABELS as getter for backward compat
+const PILLAR_LABELS = new Proxy({}, { get: (_, key) => getPillarLabel(key) });
 
 const PILLARS_ORDER = ['code', 'velocity', 'craft', 'collaboration', 'versatility', 'creativity', 'autonomy'];
 

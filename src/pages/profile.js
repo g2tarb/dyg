@@ -1,4 +1,5 @@
 import { createRadarChart, animateRadar, PILLAR_LABELS, PILLARS_ORDER } from '../components/radarChart.js';
+import { t } from '../i18n/index.js';
 import { createArchetypeCard } from '../components/archetypeCard.js';
 import { addToTeam, isInTeam, subscribe } from '../store.js';
 import { showToast } from '../components/toast.js';
@@ -81,7 +82,7 @@ function renderProfile(container, params = {}) {
               </div>
               <div class="profile-actions">
                 <button class="btn-primary ${inTeam ? 'btn-primary--disabled' : ''}" id="btn-add-team" ${inTeam ? 'disabled' : ''}>
-                  ${inTeam ? 'Ajouté &#10003;' : 'Ajouter à la team'}
+                  ${inTeam ? `${t('team.added_badge')} &#10003;` : t('team.add')}
                 </button>
                 <a href="#/search" class="btn-secondary">Voir d'autres devs</a>
               </div>
@@ -136,10 +137,10 @@ function renderProfile(container, params = {}) {
       if (added) {
         btn.disabled = true;
         btn.classList.add('btn-primary--disabled');
-        btn.innerHTML = 'Ajouté &#10003;';
-        showToast(`${dev.name} ajouté à la team`);
+        btn.innerHTML = `${t('team.added_badge')} &#10003;`;
+        showToast(t('team.added', { name: dev.name }));
       } else {
-        showToast('Team complète (5 max)', 'error');
+        showToast(t('team.full'), 'error');
       }
     });
 
@@ -148,7 +149,7 @@ function renderProfile(container, params = {}) {
       const nowInTeam = isInTeam(dev.id);
       btn.disabled = nowInTeam;
       btn.classList.toggle('btn-primary--disabled', nowInTeam);
-      btn.innerHTML = nowInTeam ? 'Ajouté &#10003;' : 'Ajouter à la team';
+      btn.innerHTML = nowInTeam ? `${t('team.added_badge')} &#10003;` : t('team.add');
     });
 
   }).catch(() => {

@@ -2,24 +2,19 @@ import { createRadarChart, animateRadar, PILLARS_ORDER, PILLAR_LABELS } from '..
 import { escapeHTML } from '../utils/sanitize.js';
 import { getState } from '../store.js';
 import { showToast } from '../components/toast.js';
+import { t } from '../i18n/index.js';
 
-const ARCHETYPE_NAMES = {
-  architect: 'Architecte', shipper: 'Shipper', artisan: 'Artisan',
-  creative: 'Créatif', explorer: 'Explorateur', commando: 'Commando', mentor: 'Mentor'
-};
+function archName(k) { return t(`archetype.${k}`); }
 const ARCHETYPE_COLORS = {
   architect: '#3B82F6', shipper: '#22C55E', artisan: '#F5C542',
   creative: '#A855F7', explorer: '#06B6D4', commando: '#EF4444', mentor: '#F97316'
 };
-const STATUS_LABELS = {
-  open: 'Ouvert', staffing: 'Recrutement', building: 'En cours',
-  review: 'Review', shipped: 'Livré', archived: 'Archivé'
-};
+function sl(s) { return t(`status.${s}`); }
 
 function renderPortfolio(container, params = {}) {
   const login = params.login;
   if (!login) {
-    container.innerHTML = '<p style="padding:var(--space-2xl);color:var(--color-text-dim);">Utilisateur non trouvé.</p>';
+    container.innerHTML = `<p style="padding:var(--space-2xl);color:var(--color-text-dim);">${t('notfound.text')}</p>`;
     return;
   }
 
@@ -44,7 +39,7 @@ async function loadPortfolio(container, login) {
     container.innerHTML = `
       <section class="portfolio">
         <div class="container" style="padding-top:var(--space-2xl);">
-          <div class="empty-state"><p class="empty-state__text">Profil non trouvé.</p></div>
+          <div class="empty-state"><p class="empty-state__text">${t('notfound.text')}</p></div>
         </div>
       </section>`;
     return;
@@ -53,7 +48,7 @@ async function loadPortfolio(container, login) {
   const { user, developer, projects, progression } = data;
   const arch = developer?.archetype;
   const archColor = ARCHETYPE_COLORS[arch] || '#E8620A';
-  const archName = ARCHETYPE_NAMES[arch] || arch || 'Inconnu';
+  const archLabel = archName(arch);
   const scores = developer?.scores || [];
   const shippedCount = projects.filter(p => p.status === 'shipped').length;
 
@@ -68,7 +63,7 @@ async function loadPortfolio(container, login) {
             <div>
               <h1 class="portfolio__name">${escapeHTML(user.name || user.github_login)}</h1>
               <span class="portfolio__login">@${escapeHTML(user.github_login)}</span>
-              ${developer ? `<span class="portfolio__archetype" style="color:${archColor};">${escapeHTML(archName)}</span>` : ''}
+              ${developer ? `<span class="portfolio__archetype" style="color:${archColor};">${escapeHTML(archLabel)}</span>` : ''}
             </div>
           </div>
           <div class="portfolio__actions" id="portfolio-actions"></div>
@@ -107,7 +102,7 @@ async function loadPortfolio(container, login) {
             </div>` : ''}
           </div>
         </div>
-        ` : '<p style="color:var(--color-text-dim);padding:var(--space-xl) 0;">Ce profil n\'a pas encore scanné son GitHub.</p>'}
+        ` : `<p style="color:var(--color-text-dim);padding:var(--space-xl) 0;">${t('portfolio.no_profile')}</p>`}
 
         <div class="portfolio__projects-section">
           <h2 class="portfolio__section-title">Projets</h2>
@@ -121,7 +116,7 @@ async function loadPortfolio(container, login) {
                 <div class="portfolio__project-body">
                   <div class="portfolio__project-top">
                     <h3 class="portfolio__project-name">${escapeHTML(p.name)}</h3>
-                    <span class="portfolio__project-status" style="color:${statusColor};">${STATUS_LABELS[p.status] || p.status}</span>
+                    <span class="portfolio__project-status" style="color:${statusColor};">${sl(p.status) || p.status}</span>
                   </div>
                   <p class="portfolio__project-desc">${escapeHTML(p.description || '')}</p>
                   <div class="portfolio__project-meta">
@@ -132,7 +127,7 @@ async function loadPortfolio(container, login) {
               </a>`;
             }).join('')}
           </div>
-          ` : '<p style="color:var(--color-text-dim);">Aucun projet pour l\'instant.</p>'}
+          ` : `<p style="color:var(--color-text-dim);">${t('portfolio.no_projects')}</p>`}
         </div>
 
         ${progression.length > 0 ? `
@@ -145,7 +140,7 @@ async function loadPortfolio(container, login) {
               <span class="portfolio__snap-project">${escapeHTML(s.project_name)}</span>
               ${s.archetype_before !== s.archetype_after ? `
               <span class="portfolio__snap-evolution">
-                ${ARCHETYPE_NAMES[s.archetype_before] || s.archetype_before} &rarr; ${ARCHETYPE_NAMES[s.archetype_after] || s.archetype_after}
+                ${archName(s.archetype_before)} &rarr; ${archName(s.archetype_after)}
               </span>` : ''}
             </div>`).join('')}
           </div>
@@ -179,7 +174,7 @@ async function loadPortfolio(container, login) {
       }
     });
   } else if (!currentUser) {
-    actionsEl.innerHTML = `<a href="/auth/github" class="btn-primary btn-primary--sm">Se connecter pour contacter</a>`;
+    actionsEl.innerHTML = `<a href="/auth/github" class="btn-primary btn-primary--sm">${t('portfolio.contact_login')}</a>`;
   }
 
   // Mount radar

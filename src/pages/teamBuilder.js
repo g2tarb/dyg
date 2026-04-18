@@ -4,6 +4,7 @@ import { createSynergyGauge, updateSynergyGauge } from '../components/synergyGau
 import { ARCHETYPE_NAMES } from '../components/devCard.js';
 import { showToast } from '../components/toast.js';
 import { escapeHTML } from '../utils/sanitize.js';
+import { t } from '../i18n/index.js';
 
 const MAX_SLOTS = 5;
 let unsubTeam = null;
@@ -57,7 +58,7 @@ function renderSlots(slotsContainer, team) {
       removeBtn.addEventListener('click', (e) => {
         e.stopPropagation();
         removeFromTeam(dev.id);
-        showToast(`${dev.name} retiré de la team`);
+        showToast(t('team.removed', { name: dev.name }));
       });
 
     } else {
@@ -65,7 +66,7 @@ function renderSlots(slotsContainer, team) {
       slot.dataset.index = i;
       slot.innerHTML = `
         <span class="team-slot__number">${i + 1}</span>
-        <span class="team-slot__empty-text">Slot libre</span>
+        <span class="team-slot__empty-text">${t('team.slot_free')}</span>
       `;
     }
 
@@ -104,11 +105,11 @@ function renderTeamBuilder(container) {
       <div class="container">
         <div class="team-layout">
           <div>
-            <h2 class="team-slots__title">Ta Team</h2>
+            <h2 class="team-slots__title">${t('team.title')}</h2>
             <div id="team-slots" class="team-slots"></div>
           </div>
           <div class="team-stats">
-            <h2 class="team-stats__title">Synergie</h2>
+            <h2 class="team-stats__title">${t('team.synergy')}</h2>
             <div id="team-radar-mount"></div>
             <div id="team-gauge-mount"></div>
           </div>
@@ -135,7 +136,7 @@ function renderTeamBuilder(container) {
       radarMount.innerHTML = `
         <div style="width:300px;height:300px;display:flex;align-items:center;justify-content:center;">
           <p style="color:var(--color-text-dim);font-size:0.875rem;text-align:center;">
-            Ajoute des devs pour voir<br>le radar d'équipe
+            ${t('team.empty_radar')}
           </p>
         </div>
       `;
@@ -149,8 +150,8 @@ function renderTeamBuilder(container) {
         cta.className = 'team-empty-cta';
         cta.style.cssText = 'text-align:center;padding:var(--space-lg) 0;';
         cta.innerHTML = `
-          <p style="color:var(--color-text-dim);margin-bottom:var(--space-md);">Ton équipe est vide. Explore les devs et compose ta team.</p>
-          <a href="#/search" class="btn-primary">Explorer les devs</a>
+          <p style="color:var(--color-text-dim);margin-bottom:var(--space-md);">${t('team.empty')}</p>
+          <a href="#/search" class="btn-primary">${t('common.explore_devs')}</a>
         `;
         slotsContainer.appendChild(cta);
       }

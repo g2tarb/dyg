@@ -1,6 +1,7 @@
 // Three.js loaded dynamically to reduce initial bundle
 let initHeroD20 = null;
 import { escapeHTML } from '../utils/sanitize.js';
+import { t } from '../i18n/index.js';
 
 let cleanupD20 = null;
 
@@ -31,38 +32,38 @@ function renderLanding(container) {
           <span class="landing-hero__title-main">DYG</span>
           <span class="landing-hero__title-sub">Do Your Game</span>
         </h1>
-        <p class="landing-hero__tagline">Progresse. Connecte. Prouve.</p>
+        <p class="landing-hero__tagline">${t('landing.tagline')}</p>
         <p class="landing-hero__pitch">
-          Tu veux entrer en 42, Epitech, ou prouver que tu sais coder ?<br>
-          <strong>Trouve ton équipe. Construis des vrais projets. Forge ton portfolio.</strong>
+          ${t('landing.pitch')}<br>
+          <strong>${t('landing.pitch_bold')}</strong>
         </p>
         <div class="landing-hero__actions" style="display:flex;gap:var(--space-lg);align-items:center;flex-wrap:wrap;justify-content:center;">
-          <a href="#/search" class="btn-primary btn-primary--lg landing-hero__cta">Trouve tes devs</a>
-          <a href="#/about" class="btn-secondary landing-hero__cta" style="animation:hero-fade-up 0.6s var(--ease-out) 1.1s both;">Découvrir DYG</a>
+          <a href="#/search" class="btn-primary btn-primary--lg landing-hero__cta">${t('landing.cta_find')}</a>
+          <a href="#/about" class="btn-secondary landing-hero__cta" style="animation:hero-fade-up 0.6s var(--ease-out) 1.1s both;">${t('landing.cta_discover')}</a>
         </div>
       </div>
     </section>
 
     <section class="landing-how container">
       <div class="landing-how__header">
-        <h2 class="landing-how__title">3 pôles. 1 objectif.</h2>
-        <p class="landing-how__sub">Deviens inarrêtable.</p>
+        <h2 class="landing-how__title">${t('landing.how_title')}</h2>
+        <p class="landing-how__sub">${t('landing.how_sub')}</p>
       </div>
       <div class="landing-how__steps">
         <div class="landing-step" id="step-1">
           <span class="landing-step__number">01</span>
-          <h3 class="landing-step__title">Trouver</h3>
-          <p class="landing-step__desc">Scanne ton GitHub. Découvre ton archétype. Explore les devs qui complètent tes forces.</p>
+          <h3 class="landing-step__title">${t('landing.step1_title')}</h3>
+          <p class="landing-step__desc">${t('landing.step1_desc')}</p>
         </div>
         <div class="landing-step" id="step-2">
           <span class="landing-step__number">02</span>
-          <h3 class="landing-step__title">Connecter</h3>
-          <p class="landing-step__desc">Forme une équipe complémentaire. La synergie se calcule en temps réel.</p>
+          <h3 class="landing-step__title">${t('landing.step2_title')}</h3>
+          <p class="landing-step__desc">${t('landing.step2_desc')}</p>
         </div>
         <div class="landing-step" id="step-3">
           <span class="landing-step__number">03</span>
-          <h3 class="landing-step__title">Construire</h3>
-          <p class="landing-step__desc">Lancez un vrai projet ensemble. Chaque livraison nourrit ton portfolio.</p>
+          <h3 class="landing-step__title">${t('landing.step3_title')}</h3>
+          <p class="landing-step__desc">${t('landing.step3_desc')}</p>
         </div>
       </div>
     </section>
@@ -70,8 +71,8 @@ function renderLanding(container) {
     <section class="landing-archetypes">
       <div class="container">
         <div class="landing-archetypes__header">
-          <h2 class="landing-archetypes__title">7 archétypes. 7 façons de coder.</h2>
-          <p class="landing-archetypes__sub">Chaque dev est unique. On le prouve.</p>
+          <h2 class="landing-archetypes__title">${t('landing.archetypes_title')}</h2>
+          <p class="landing-archetypes__sub">${t('landing.archetypes_sub')}</p>
         </div>
         <div class="landing-archetypes__grid" id="archetype-grid">
           ${ALL_ARCHETYPES.map((a, i) => `
@@ -91,9 +92,9 @@ function renderLanding(container) {
     </section>
 
     <section class="landing-cta-bottom container">
-      <h2 class="landing-cta-bottom__title">Ton portfolio commence ici.</h2>
-      <p class="landing-cta-bottom__sub">Scanne ton GitHub. Trouve ton archétype. Commence à construire.</p>
-      <a href="#/onboarding" class="btn-primary btn-primary--lg">Scanner mon GitHub</a>
+      <h2 class="landing-cta-bottom__title">${t('landing.cta_bottom_title')}</h2>
+      <p class="landing-cta-bottom__sub">${t('landing.cta_bottom_sub')}</p>
+      <a href="#/onboarding" class="btn-primary btn-primary--lg">${t('common.scan_github')}</a>
     </section>
   `;
 

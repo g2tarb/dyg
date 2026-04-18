@@ -4,14 +4,18 @@ import { ARCHETYPE_DATA } from '../components/archetypeCard.js';
 import { escapeHTML } from '../utils/sanitize.js';
 import { getState, checkAuth } from '../store.js';
 
-const SCAN_STEPS = [
-  'Connexion à GitHub...',
-  'Analyse des repos...',
-  'Détection des langages...',
-  'Calcul des scores...',
-  'Génération du profil IA...',
-  'Détermination de l\'archétype...'
-];
+import { t } from '../i18n/index.js';
+
+function getScanSteps() {
+  return [
+    t('onboarding.scanning'),
+    t('onboarding.scanning'),
+    t('onboarding.scanning'),
+    t('onboarding.scanning'),
+    t('onboarding.scanning'),
+    t('onboarding.scanning')
+  ];
+}
 
 function renderOnboarding(container) {
   container.innerHTML = `
@@ -20,20 +24,20 @@ function renderOnboarding(container) {
         <div class="onboarding-layout">
 
           <div class="onboarding-left">
-            <h2 class="onboarding-title">Découvre ton archétype</h2>
-            <p class="onboarding-subtitle">DYG analyse ton activité GitHub et te profile en archétype de dev.</p>
+            <h2 class="onboarding-title">${t('onboarding.title')}</h2>
+            <p class="onboarding-subtitle">${t('onboarding.sub')}</p>
 
             <div class="onboarding-auth-cta" id="auth-cta" style="display:none;margin-bottom:var(--space-xl);">
               <a href="/auth/github" class="btn-primary" style="gap:var(--space-sm);">
-                Connecter GitHub
+                ${t('onboarding.connect_github')}
               </a>
-              <p style="color:var(--color-text-dim);font-size:0.75rem;margin-top:var(--space-sm);">Connecte-toi pour sauvegarder ton profil DYG</p>
+              <p style="color:var(--color-text-dim);font-size:0.75rem;margin-top:var(--space-sm);">${t('onboarding.connect_sub')}</p>
             </div>
 
             <div class="onboarding-input-group" id="input-group">
               <div class="onboarding-input-row">
-                <input type="text" class="input onboarding-input" id="github-input" placeholder="ton-pseudo-github" autocomplete="off" spellcheck="false">
-                <button class="btn-primary" id="btn-scan">Scanner</button>
+                <input type="text" class="input onboarding-input" id="github-input" placeholder="${t('onboarding.placeholder')}" autocomplete="off" spellcheck="false">
+                <button class="btn-primary" id="btn-scan">${t('onboarding.scan')}</button>
               </div>
               <p class="input-error-msg" id="error-msg" style="display:none;"></p>
             </div>
@@ -109,16 +113,16 @@ function renderOnboarding(container) {
   }
 
   async function simulateScan(onProgress) {
-    for (let i = 0; i < SCAN_STEPS.length; i++) {
+    for (let i = 0; i < getScanSteps().length; i++) {
       await new Promise(r => setTimeout(r, 400 + Math.random() * 300));
-      onProgress(i, SCAN_STEPS[i]);
+      onProgress(i, getScanSteps()[i]);
     }
   }
 
   async function startScan() {
     const username = input.value.trim();
     if (!username) {
-      showError('Entre un pseudo GitHub.');
+      showError(t('onboarding.error'));
       return;
     }
 
@@ -141,7 +145,7 @@ function renderOnboarding(container) {
 
     // Animate scan steps
     await simulateScan((step, label) => {
-      const progress = ((step + 1) / SCAN_STEPS.length) * 100;
+      const progress = ((step + 1) / getScanSteps().length) * 100;
       scanBar.style.width = progress + '%';
       scanStep.textContent = label;
     });
@@ -166,7 +170,7 @@ function renderOnboarding(container) {
 
     // Complete progress
     scanBar.style.width = '100%';
-    scanStep.textContent = 'Analyse terminée.';
+    scanStep.textContent = t('onboarding.done');
 
     // If authenticated, save profile to server
     const currentUser = getState('user');

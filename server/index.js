@@ -6,37 +6,46 @@ import jwt from '@fastify/jwt';
 import oauth2 from '@fastify/oauth2';
 import helmet from '@fastify/helmet';
 import fastifyStatic from '@fastify/static';
-import dotenv from 'dotenv';
-import crypto from 'crypto';
 import { fileURLToPath } from 'url';
 import { dirname, join } from 'path';
+import { randomUUID } from 'crypto';
+import { z } from 'zod';
+import env from './config/env.js';
+import { DygError } from './utils/errors.js';
+import pool from './db/connection.js';
 import developerRoutes from './routes/developers.js';
 import teamRoutes from './routes/teams.js';
 import onboardingRoutes from './routes/onboarding.js';
 import authRoutes from './routes/auth.js';
 import projectRoutes from './routes/projects.js';
 import messageRoutes from './routes/messages.js';
-
-dotenv.config();
+import dataRoutes from './routes/data.js';
 
 const __dirname = dirname(fileURLToPath(import.meta.url));
-const isProd = process.env.NODE_ENV === 'production';
+const isProd = env.NODE_ENV === 'production';
 
-// --- Startup validation ---
-const jwtSecret = process.env.JWT_SECRET;
-if (!jwtSecret || jwtSecret.length < 32 || jwtSecret === 'dyg-change-this-secret-in-production') {
-  if (isProd) {
-    console.error('FATAL: JWT_SECRET must be at least 32 characters in production.');
-    console.error('Generate one with: node -e "console.log(require(\'crypto\').randomBytes(64).toString(\'hex\'))"');
-    process.exit(1);
-  } else {
-    console.warn('WARNING: Using weak JWT secret. Set JWT_SECRET (32+ chars) in .env for production.');
-  }
-}
+// --- Fastify with structured Pino logging ---
+const fastify = Fastify({
+  logger: {
+    level: isProd ? 'info' : 'debug',
+    transport: !isProd ? { target: 'pino-pretty', options: { colorize: true } } : undefined,
+    redact: {
+      paths: [
+        'req.headers.authorization',
+        'req.headers.cookie',
+        'body.password',
+        'body.token',
+        'body.access_token',
+        'body.scores'
+      ],
+      censor: '[REDACTED]'
+    }
+  },
+  genReqId: (req) => req.headers['x-request-id'] || randomUUID(),
+  bodyLimit: 1048576 // 1MB
+});
 
-const fastify = Fastify({ logger: true });
-
-// Security headers
+// --- Security headers ---
 await fastify.register(helmet, {
   contentSecurityPolicy: isProd ? {
     directives: {
@@ -47,69 +56,153 @@ await fastify.register(helmet, {
       connectSrc: ["'self'"],
       fontSrc: ["'self'", 'https://fonts.gstatic.com'],
       frameSrc: ["'none'"],
-      objectSrc: ["'none'"]
+      objectSrc: ["'none'"],
+      baseUri: ["'self'"],
+      formAction: ["'self'"]
     }
   } : false,
   crossOriginEmbedderPolicy: false,
   frameguard: { action: 'deny' },
-  hsts: isProd ? { maxAge: 31536000, includeSubDomains: true } : false,
-  referrerPolicy: { policy: 'strict-origin-when-cross-origin' }
+  hsts: isProd ? { maxAge: 31536000, includeSubDomains: true, preload: true } : false,
+  referrerPolicy: { policy: 'strict-origin-when-cross-origin' },
+  hidePoweredBy: true
 });
+
+// --- CORS ---
+const PROD_ORIGINS = Object.freeze(['https://dyg.gg', 'https://dyg.dev']);
 
 await fastify.register(cors, {
   origin: isProd
-    ? ['https://dyg.gg', 'https://dyg.dev']
+    ? (origin, cb) => {
+        if (!origin || PROD_ORIGINS.includes(origin)) return cb(null, true);
+        return cb(new Error(`Origin not allowed: ${origin}`), false);
+      }
     : true,
-  credentials: true
+  credentials: true,
+  methods: ['GET', 'POST', 'PATCH', 'DELETE', 'OPTIONS']
 });
-await fastify.register(rateLimit, { max: 100, timeWindow: '1 minute' });
 
-// Auth plugins
+// --- Rate limiting with IP ban (in-memory) ---
+const bannedIPs = new Map();
+
+await fastify.register(rateLimit, {
+  max: 100,
+  timeWindow: '1 minute',
+  allowList: ['127.0.0.1'],
+  onExceeded: (request) => {
+    bannedIPs.set(request.ip, Date.now() + 15 * 60 * 1000);
+    request.log.warn({ ip: request.ip }, 'IP banned for 15 minutes (rate limit exceeded)');
+  }
+});
+
+// IP ban check
+fastify.addHook('onRequest', async (request, reply) => {
+  const banExpiry = bannedIPs.get(request.ip);
+  if (banExpiry) {
+    if (Date.now() < banExpiry) {
+      return reply.code(403).send({ error: 'FORBIDDEN', message: 'Trop de requêtes. Réessayez plus tard.' });
+    }
+    bannedIPs.delete(request.ip);
+  }
+});
+
+// --- Request ID in response ---
+fastify.addHook('onSend', async (request, reply) => {
+  reply.header('X-Request-Id', request.id);
+});
+
+// --- Auth plugins ---
 await fastify.register(cookie);
 await fastify.register(jwt, {
-  secret: jwtSecret || 'dyg-dev-secret-do-not-use-in-prod-' + crypto.randomBytes(16).toString('hex'),
-  cookie: { cookieName: 'token', signed: false }
+  secret: env.JWT_SECRET,
+  cookie: { cookieName: 'token', signed: false },
+  sign: { expiresIn: '15m' }
 });
 
-// GitHub OAuth
-if (process.env.GH_CLIENT_ID && process.env.GH_CLIENT_ID !== 'your_github_client_id') {
+// --- GitHub OAuth ---
+if (env.GH_CLIENT_ID && env.GH_CLIENT_ID !== 'your_github_client_id') {
   await fastify.register(oauth2, {
     name: 'githubOAuth2',
     scope: ['read:user', 'user:email'],
     credentials: {
       client: {
-        id: process.env.GH_CLIENT_ID,
-        secret: process.env.GH_CLIENT_SECRET
+        id: env.GH_CLIENT_ID,
+        secret: env.GH_CLIENT_SECRET
       },
       auth: oauth2.GITHUB_CONFIGURATION
     },
     startRedirectPath: '/auth/github',
-    callbackUri: (process.env.BASE_URL || 'http://localhost:5173') + '/auth/github/callback'
+    callbackUri: env.BASE_URL + '/auth/github/callback'
   });
 }
 
-// API routes
+// --- Centralized error handler (Flaynn-grade) ---
+fastify.setErrorHandler((error, request, reply) => {
+  // Rate limit
+  if (error.statusCode === 429) {
+    return reply.code(429).send({
+      error: 'TOO_MANY_REQUESTS',
+      message: 'Limite de requêtes dépassée.'
+    });
+  }
+
+  // Zod validation
+  if (error instanceof z.ZodError) {
+    return reply.code(422).send({
+      error: 'VALIDATION_FAILED',
+      message: 'Données invalides',
+      details: error.flatten().fieldErrors
+    });
+  }
+
+  // Business errors
+  if (error instanceof DygError) {
+    request.log.warn({ err: error }, `DygError: ${error.code}`);
+    return reply.code(error.statusCode).send({
+      error: error.code,
+      message: error.message,
+      ...(error.details ? { details: error.details } : {})
+    });
+  }
+
+  // Unhandled
+  request.log.error({ err: error }, 'Unhandled error');
+  return reply.code(500).send({
+    error: 'INTERNAL_SERVER_ERROR',
+    reference: request.id
+  });
+});
+
+// --- Routes ---
 fastify.register(developerRoutes);
 fastify.register(teamRoutes);
 fastify.register(onboardingRoutes);
 fastify.register(authRoutes);
 fastify.register(projectRoutes);
 fastify.register(messageRoutes);
+fastify.register(dataRoutes);
 
-// Centralized error handler — generic messages in prod
-fastify.setErrorHandler((error, request, reply) => {
-  fastify.log.error(error);
-  const statusCode = error.statusCode || 500;
-  const message = isProd && statusCode >= 500
-    ? 'Internal server error'
-    : error.message || 'Internal server error';
-  reply.code(statusCode).send({ error: message });
+// --- Health check ---
+fastify.get('/api/health', async () => {
+  try {
+    await pool.query('SELECT 1');
+    return { status: 'ok', db: 'connected' };
+  } catch {
+    return { status: 'degraded', db: 'disconnected' };
+  }
 });
 
-// Health check
-fastify.get('/api/health', async () => ({ status: 'ok' }));
+// --- Token garbage collection (hourly) ---
+const gcInterval = setInterval(() => {
+  // Clean expired banned IPs
+  const now = Date.now();
+  for (const [ip, expiry] of bannedIPs) {
+    if (now > expiry) bannedIPs.delete(ip);
+  }
+}, 60 * 60 * 1000);
+gcInterval.unref();
 
-// Production: serve built frontend
+// --- Production: serve built frontend ---
 if (isProd) {
   await fastify.register(fastifyStatic, {
     root: join(__dirname, '..', 'dist'),
@@ -118,17 +211,16 @@ if (isProd) {
 
   fastify.setNotFoundHandler((request, reply) => {
     if (request.url.startsWith('/api/') || request.url.startsWith('/auth/')) {
-      return reply.code(404).send({ error: 'Not found' });
+      return reply.code(404).send({ error: 'NOT_FOUND' });
     }
     return reply.sendFile('index.html');
   });
 }
 
-const PORT = process.env.PORT || 3001;
-
+// --- Start ---
 try {
-  await fastify.listen({ port: PORT, host: '0.0.0.0' });
-  console.log(`DYG API running on port ${PORT}${isProd ? ' (production)' : ''}`);
+  await fastify.listen({ port: env.PORT, host: '0.0.0.0' });
+  fastify.log.info(`DYG API running on port ${env.PORT}${isProd ? ' (production)' : ''}`);
 } catch (err) {
   fastify.log.error(err);
   process.exit(1);

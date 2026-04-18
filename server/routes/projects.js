@@ -1,8 +1,7 @@
 import pool from '../db/connection.js';
 import { closeProject } from '../services/closing.js';
-
-const UUID_RE = /^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$/i;
-const REVIEW_PILLARS = ['collaboration', 'craft', 'velocity'];
+import { CreateProjectSchema, UpdateProjectSchema, SubmitReviewsSchema, REVIEW_PILLARS } from '../schemas/validation.js';
+import { UnauthorizedError, NotFoundError, ForbiddenError } from '../utils/errors.js';
 
 async function getProjectWithMembers(projectId) {
   const projResult = await pool.query('SELECT * FROM projects WHERE id = $1', [projectId]);
@@ -25,25 +24,15 @@ async function getProjectWithMembers(projectId) {
 async function projectRoutes(fastify) {
   // POST /api/projects — create a project (requires auth)
   fastify.post('/api/projects', async (request, reply) => {
-    try { await request.jwtVerify(); } catch { return reply.code(401).send({ error: 'Not authenticated' }); }
+    try { await request.jwtVerify(); } catch { throw new UnauthorizedError(); }
 
-    const { name, description, repo_url, max_members } = request.body;
+    const parsed = CreateProjectSchema.parse(request.body);
     const creatorId = request.user.id;
-
-    if (!name || name.trim().length === 0) {
-      return reply.code(400).send({ error: 'Project name is required' });
-    }
-    if (name.trim().length > 100) {
-      return reply.code(400).send({ error: 'Project name must be 100 chars or less' });
-    }
-    if (description && description.length > 1000) {
-      return reply.code(400).send({ error: 'Description must be 1000 chars or less' });
-    }
 
     const result = await pool.query(`
       INSERT INTO projects (name, description, repo_url, creator_id, max_members)
       VALUES ($1, $2, $3, $4, $5) RETURNING *
-    `, [name.trim(), description || null, repo_url || null, creatorId, max_members || 5]);
+    `, [parsed.name, parsed.description, parsed.repo_url, creatorId, parsed.max_members]);
 
     const project = result.rows[0];
 
@@ -237,15 +226,12 @@ async function projectRoutes(fastify) {
   fastify.post('/api/projects/:id/reviews', {
     config: { rateLimit: { max: 10, timeWindow: '1 minute' } }
   }, async (request, reply) => {
-    try { await request.jwtVerify(); } catch { return reply.code(401).send({ error: 'Not authenticated' }); }
+    try { await request.jwtVerify(); } catch { throw new UnauthorizedError(); }
 
     const { id } = request.params;
     const reviewerId = request.user.id;
-    const { reviews } = request.body; // [{ user_id, collaboration: 1-5, craft: 1-5, velocity: 1-5 }]
-
-    if (!Array.isArray(reviews) || reviews.length === 0) {
-      return reply.code(400).send({ error: 'reviews array is required' });
-    }
+    const parsed = SubmitReviewsSchema.parse(request.body);
+    const { reviews } = parsed;
 
     // Verify project exists and is in review status
     const projCheck = await pool.query('SELECT status FROM projects WHERE id = $1', [id]);
@@ -272,23 +258,17 @@ async function projectRoutes(fastify) {
     for (const review of reviews) {
       if (review.user_id === reviewerId) continue; // Can't review yourself
 
-      // Verify reviewee is a project member
       if (!memberIds.has(review.user_id)) {
-        return reply.code(400).send({ error: `User ${review.user_id} is not a project member` });
+        throw new ForbiddenError(`User ${review.user_id} is not a project member`);
       }
 
       for (const pillar of REVIEW_PILLARS) {
-        const rating = parseInt(review[pillar]);
-        if (!Number.isInteger(rating) || rating < 1 || rating > 5) {
-          return reply.code(400).send({ error: `Rating must be 1-5 for ${pillar}` });
-        }
-
         await pool.query(`
           INSERT INTO peer_reviews (project_id, reviewer_id, reviewee_id, pillar, rating)
           VALUES ($1, $2, $3, $4, $5)
           ON CONFLICT (project_id, reviewer_id, reviewee_id, pillar)
           DO UPDATE SET rating = $5, created_at = NOW()
-        `, [id, reviewerId, review.user_id, pillar, rating]);
+        `, [id, reviewerId, review.user_id, pillar, review[pillar]]);
       }
     }
 

@@ -1,3 +1,4 @@
+DROP TABLE IF EXISTS code_samples CASCADE;
 DROP TABLE IF EXISTS messages CASCADE;
 DROP TABLE IF EXISTS conversation_participants CASCADE;
 DROP TABLE IF EXISTS conversations CASCADE;
@@ -22,6 +23,7 @@ CREATE TABLE users (
   avatar_url TEXT,
   name VARCHAR(100),
   access_token TEXT NOT NULL,
+  data_consent BOOLEAN DEFAULT FALSE,
   created_at TIMESTAMPTZ DEFAULT NOW(),
   updated_at TIMESTAMPTZ DEFAULT NOW()
 );
@@ -131,6 +133,27 @@ CREATE TABLE audit_logs (
   details JSONB DEFAULT '{}',
   created_at TIMESTAMPTZ DEFAULT NOW()
 );
+
+-- AI training data pipeline
+CREATE TABLE code_samples (
+  id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
+  user_id UUID NOT NULL REFERENCES users(id) ON DELETE CASCADE,
+  project_id UUID REFERENCES projects(id) ON DELETE SET NULL,
+  archetype VARCHAR(20) NOT NULL
+    CHECK (archetype IN ('architect', 'shipper', 'artisan', 'creative', 'explorer', 'commando', 'mentor')),
+  sample_type VARCHAR(30) NOT NULL
+    CHECK (sample_type IN ('commit_diff', 'commit_message', 'pr_description', 'code_review', 'file_structure')),
+  content TEXT NOT NULL,
+  metadata JSONB DEFAULT '{}',
+  language VARCHAR(50),
+  anonymized BOOLEAN DEFAULT FALSE,
+  created_at TIMESTAMPTZ DEFAULT NOW()
+);
+
+CREATE INDEX idx_code_samples_archetype ON code_samples(archetype);
+CREATE INDEX idx_code_samples_type ON code_samples(sample_type);
+CREATE INDEX idx_code_samples_user ON code_samples(user_id);
+CREATE INDEX idx_code_samples_lang ON code_samples(language);
 
 -- Messagerie
 CREATE TABLE conversations (

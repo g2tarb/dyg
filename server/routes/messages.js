@@ -1,20 +1,20 @@
 import pool from '../db/connection.js';
+import { SendMessageSchema, ReplyMessageSchema } from '../schemas/validation.js';
+import { UnauthorizedError, ForbiddenError, NotFoundError } from '../utils/errors.js';
 
 async function messageRoutes(fastify) {
   // POST /api/messages/send — send a DM (find or create conversation)
   fastify.post('/api/messages/send', {
     config: { rateLimit: { max: 15, timeWindow: '1 minute' } }
   }, async (request, reply) => {
-    try { await request.jwtVerify(); } catch { return reply.code(401).send({ error: 'Not authenticated' }); }
+    try { await request.jwtVerify(); } catch { throw new UnauthorizedError(); }
 
     const senderId = request.user.id;
-    const { to, body } = request.body;
+    const parsed = SendMessageSchema.parse(request.body);
+    const { to, body } = parsed;
 
-    if (!to || !body || body.trim().length === 0) {
-      return reply.code(400).send({ error: 'to and body are required' });
-    }
     if (to === senderId) {
-      return reply.code(400).send({ error: 'Cannot message yourself' });
+      return reply.code(400).send({ error: 'VALIDATION_FAILED', message: 'Impossible de s\'envoyer un message' });
     }
 
     // Check recipient exists
@@ -47,7 +47,7 @@ async function messageRoutes(fastify) {
     // Insert message
     const msgResult = await pool.query(
       'INSERT INTO messages (conversation_id, sender_id, body) VALUES ($1, $2, $3) RETURNING *',
-      [convId, senderId, body.trim().slice(0, 2000)]
+      [convId, senderId, body]
     );
 
     // Update sender's last_read_at

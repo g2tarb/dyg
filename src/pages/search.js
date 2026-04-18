@@ -1,4 +1,5 @@
 import { createDevCard } from '../components/devCard.js';
+import { t } from '../i18n/index.js';
 import { createFilters } from '../components/filters.js';
 import { subscribe, getState, setState } from '../store.js';
 
@@ -59,10 +60,10 @@ function renderSearch(container) {
   container.innerHTML = `
     <section class="search">
       <div class="container" style="padding-top:var(--space-2xl);">
-        <h2 style="font-size:2.5rem;color:var(--color-text);margin-bottom:var(--space-sm);">Trouve le bon dev</h2>
-        <p style="color:var(--color-text-dim);margin-bottom:var(--space-lg);">Filtre. Compare. Compose.</p>
+        <h2 style="font-size:2.5rem;color:var(--color-text);margin-bottom:var(--space-sm);">${t('search.title')}</h2>
+        <p style="color:var(--color-text-dim);margin-bottom:var(--space-lg);">${t('search.sub')}</p>
         <div class="search-bar" style="margin-bottom:var(--space-lg);">
-          <input type="text" class="input" id="search-input" placeholder="Rechercher par nom ou pseudo..." style="max-width:400px;" autocomplete="off">
+          <input type="text" class="input" id="search-input" placeholder="${t('search.placeholder')}" style="max-width:400px;" autocomplete="off">
         </div>
         <div id="filters-mount"></div>
         <div class="dev-grid" id="dev-grid"></div>
@@ -117,7 +118,7 @@ function renderSearch(container) {
       if (!append) {
         grid.innerHTML = `
           <div class="empty-state" style="grid-column:1/-1;">
-            <p class="empty-state__text">Erreur de chargement. Réessaie.</p>
+            <p class="empty-state__text">${t('common.error')}</p>
           </div>
         `;
       }
