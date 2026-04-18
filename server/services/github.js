@@ -21,7 +21,13 @@ function hashUsername(str) {
   return Math.abs(hash);
 }
 
+const GITHUB_USERNAME_RE = /^[a-z0-9]([a-z0-9-]{0,37}[a-z0-9])?$/i;
+
 async function fetchGitHubProfile(username) {
+  if (!username || !GITHUB_USERNAME_RE.test(username)) {
+    throw new Error('Invalid GitHub username');
+  }
+
   const [userRes, reposRes] = await Promise.all([
     fetch(`${GITHUB_API}/users/${username}`, { headers }),
     fetch(`${GITHUB_API}/users/${username}/repos?per_page=100&sort=updated`, { headers })

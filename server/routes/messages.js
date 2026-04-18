@@ -2,7 +2,9 @@ import pool from '../db/connection.js';
 
 async function messageRoutes(fastify) {
   // POST /api/messages/send — send a DM (find or create conversation)
-  fastify.post('/api/messages/send', async (request, reply) => {
+  fastify.post('/api/messages/send', {
+    config: { rateLimit: { max: 15, timeWindow: '1 minute' } }
+  }, async (request, reply) => {
     try { await request.jwtVerify(); } catch { return reply.code(401).send({ error: 'Not authenticated' }); }
 
     const senderId = request.user.id;
@@ -154,7 +156,9 @@ async function messageRoutes(fastify) {
   });
 
   // POST /api/messages/:conversationId — send message to existing conversation
-  fastify.post('/api/messages/:conversationId', async (request, reply) => {
+  fastify.post('/api/messages/:conversationId', {
+    config: { rateLimit: { max: 20, timeWindow: '1 minute' } }
+  }, async (request, reply) => {
     try { await request.jwtVerify(); } catch { return reply.code(401).send({ error: 'Not authenticated' }); }
 
     const { conversationId } = request.params;

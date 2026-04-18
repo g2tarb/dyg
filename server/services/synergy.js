@@ -21,7 +21,7 @@ function calculateSynergy(members) {
   const total = Math.min(100, Math.round(coverage + diversityBonus));
 
   return {
-    synergy: Math.round(coverage),
+    synergy: Math.min(100, Math.round(coverage)),
     diversityBonus,
     total
   };

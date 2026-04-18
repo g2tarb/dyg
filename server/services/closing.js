@@ -61,8 +61,8 @@ async function updateMemberScores(projectId, userId) {
       const clamped = Math.max(-3, Math.min(3, delta));
       newScores[pillar] = Math.max(1, Math.min(10, current + clamped));
     } else {
-      // Participation bonus: +1 for completing a project (non-reviewed pillars)
-      newScores[pillar] = Math.min(10, current + 1);
+      // Non-reviewed pillars: no change (avoids inflation)
+      newScores[pillar] = current;
     }
   }
 

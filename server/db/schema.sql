@@ -28,11 +28,12 @@ CREATE TABLE users (
 -- Developer profiles (seed devs have user_id NULL, real users have it set)
 CREATE TABLE developers (
   id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
-  user_id UUID REFERENCES users(id) ON DELETE SET NULL,
+  user_id UUID UNIQUE REFERENCES users(id) ON DELETE SET NULL,
   name VARCHAR(100) NOT NULL,
   avatar_url TEXT,
   bio TEXT,
-  archetype VARCHAR(20) NOT NULL,
+  archetype VARCHAR(20) NOT NULL
+    CHECK (archetype IN ('architect', 'shipper', 'artisan', 'creative', 'explorer', 'commando', 'mentor')),
   price_range VARCHAR(20) NOT NULL DEFAULT 'medium',
   github_username VARCHAR(100),
   languages JSONB DEFAULT '[]',
@@ -42,7 +43,8 @@ CREATE TABLE developers (
 CREATE TABLE developer_scores (
   id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
   developer_id UUID NOT NULL REFERENCES developers(id) ON DELETE CASCADE,
-  pillar VARCHAR(20) NOT NULL,
+  pillar VARCHAR(20) NOT NULL
+    CHECK (pillar IN ('code', 'velocity', 'craft', 'collaboration', 'versatility', 'creativity', 'autonomy')),
   score SMALLINT NOT NULL CHECK (score >= 1 AND score <= 10),
   UNIQUE(developer_id, pillar)
 );

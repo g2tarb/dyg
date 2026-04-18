@@ -1,4 +1,5 @@
 import pool from '../db/connection.js';
+import { ARCHETYPES, PILLARS } from '../constants/archetypes.js';
 
 async function authRoutes(fastify) {
   // OAuth callback — GitHub redirects here after user approves
@@ -63,7 +64,7 @@ async function authRoutes(fastify) {
       path: '/',
       httpOnly: true,
       secure: process.env.NODE_ENV === 'production',
-      sameSite: 'lax',
+      sameSite: 'strict',
       maxAge: 60 * 60 * 24 * 30 // 30 days
     });
 
@@ -123,6 +124,26 @@ async function authRoutes(fastify) {
 
     if (!archetype || !scores || !Array.isArray(scores)) {
       return reply.code(400).send({ error: 'Missing required fields' });
+    }
+
+    // Validate archetype
+    if (!ARCHETYPES[archetype]) {
+      return reply.code(400).send({ error: 'Invalid archetype' });
+    }
+
+    // Validate scores: must have exactly 7 valid pillars with scores 1-10
+    if (scores.length !== PILLARS.length) {
+      return reply.code(400).send({ error: 'Exactly 7 pillar scores required' });
+    }
+    for (const s of scores) {
+      if (!PILLARS.includes(s.pillar)) {
+        return reply.code(400).send({ error: `Invalid pillar: ${s.pillar}` });
+      }
+      const score = parseInt(s.score);
+      if (!Number.isInteger(score) || score < 1 || score > 10) {
+        return reply.code(400).send({ error: `Score must be 1-10 for ${s.pillar}` });
+      }
+      s.score = score; // Ensure integer
     }
 
     // Get the user's github_login
