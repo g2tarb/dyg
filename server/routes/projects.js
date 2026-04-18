@@ -53,7 +53,7 @@ async function projectRoutes(fastify) {
 
   // GET /api/projects — list projects
   fastify.get('/api/projects', async (request, reply) => {
-    const { status, limit = 20, offset = 0 } = request.query;
+    const { status, mine, limit = 20, offset = 0 } = request.query;
 
     let query = `
       SELECT p.*, u.github_login AS creator_login, u.avatar_url AS creator_avatar,
@@ -62,10 +62,25 @@ async function projectRoutes(fastify) {
       JOIN users u ON u.id = p.creator_id
     `;
     const params = [];
+    const conditions = [];
+
+    if (mine === 'true') {
+      try {
+        await request.jwtVerify();
+        params.push(request.user.id);
+        conditions.push(`EXISTS (SELECT 1 FROM project_members pm2 WHERE pm2.project_id = p.id AND pm2.user_id = $${params.length})`);
+      } catch {
+        return [];
+      }
+    }
 
     if (status) {
       params.push(status);
-      query += ` WHERE p.status = $${params.length}`;
+      conditions.push(`p.status = $${params.length}`);
+    }
+
+    if (conditions.length > 0) {
+      query += ' WHERE ' + conditions.join(' AND ');
     }
 
     query += ' ORDER BY p.created_at DESC';

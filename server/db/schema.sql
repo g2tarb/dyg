@@ -1,3 +1,6 @@
+DROP TABLE IF EXISTS messages CASCADE;
+DROP TABLE IF EXISTS conversation_participants CASCADE;
+DROP TABLE IF EXISTS conversations CASCADE;
 DROP TABLE IF EXISTS peer_reviews CASCADE;
 DROP TABLE IF EXISTS score_snapshots CASCADE;
 DROP TABLE IF EXISTS contribution_events CASCADE;
@@ -115,6 +118,27 @@ CREATE TABLE peer_reviews (
   UNIQUE(project_id, reviewer_id, reviewee_id, pillar)
 );
 
+-- Messagerie
+CREATE TABLE conversations (
+  id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
+  created_at TIMESTAMPTZ DEFAULT NOW()
+);
+
+CREATE TABLE conversation_participants (
+  conversation_id UUID NOT NULL REFERENCES conversations(id) ON DELETE CASCADE,
+  user_id UUID NOT NULL REFERENCES users(id) ON DELETE CASCADE,
+  last_read_at TIMESTAMPTZ DEFAULT NOW(),
+  PRIMARY KEY(conversation_id, user_id)
+);
+
+CREATE TABLE messages (
+  id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
+  conversation_id UUID NOT NULL REFERENCES conversations(id) ON DELETE CASCADE,
+  sender_id UUID NOT NULL REFERENCES users(id) ON DELETE CASCADE,
+  body TEXT NOT NULL CHECK (char_length(body) > 0 AND char_length(body) <= 2000),
+  created_at TIMESTAMPTZ DEFAULT NOW()
+);
+
 -- Indexes
 CREATE INDEX idx_users_github_login ON users(github_login);
 CREATE INDEX idx_developers_user_id ON developers(user_id);
@@ -131,3 +155,5 @@ CREATE INDEX idx_contribution_events_user ON contribution_events(user_id);
 CREATE INDEX idx_score_snapshots_user ON score_snapshots(user_id);
 CREATE INDEX idx_peer_reviews_project ON peer_reviews(project_id);
 CREATE INDEX idx_peer_reviews_reviewee ON peer_reviews(reviewee_id);
+CREATE INDEX idx_messages_conversation ON messages(conversation_id, created_at DESC);
+CREATE INDEX idx_conv_participants_user ON conversation_participants(user_id);

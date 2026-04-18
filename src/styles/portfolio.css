@@ -44,6 +44,8 @@
   letter-spacing: 0.08em;
 }
 
+.portfolio__actions { margin-top: var(--space-md); }
+
 .portfolio__stats { display: flex; gap: var(--space-2xl); }
 
 .portfolio__stat { text-align: center; }

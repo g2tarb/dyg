@@ -1,5 +1,7 @@
 import { createRadarChart, animateRadar, PILLARS_ORDER, PILLAR_LABELS } from '../components/radarChart.js';
 import { escapeHTML } from '../utils/sanitize.js';
+import { getState } from '../store.js';
+import { showToast } from '../components/toast.js';
 
 const ARCHETYPE_NAMES = {
   architect: 'Architecte', shipper: 'Shipper', artisan: 'Artisan',
@@ -69,6 +71,7 @@ async function loadPortfolio(container, login) {
               ${developer ? `<span class="portfolio__archetype" style="color:${archColor};">${escapeHTML(archName)}</span>` : ''}
             </div>
           </div>
+          <div class="portfolio__actions" id="portfolio-actions"></div>
           <div class="portfolio__stats">
             <div class="portfolio__stat">
               <span class="portfolio__stat-value">${projects.length}</span>
@@ -151,6 +154,33 @@ async function loadPortfolio(container, login) {
       </div>
     </section>
   `;
+
+  // Contact button
+  const actionsEl = container.querySelector('#portfolio-actions');
+  const currentUser = getState('user');
+  if (currentUser && currentUser.id !== user.id) {
+    actionsEl.innerHTML = `<button class="btn-primary btn-primary--sm" id="btn-contact">Contacter</button>`;
+    actionsEl.querySelector('#btn-contact').addEventListener('click', async () => {
+      const btn = actionsEl.querySelector('#btn-contact');
+      btn.disabled = true;
+      try {
+        const res = await fetch('/api/messages/send', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ to: user.id, body: 'Salut ! Je t\u2019ai trouvé sur DYG.' })
+        });
+        if (!res.ok) throw new Error();
+        const data = await res.json();
+        showToast('Message envoyé');
+        window.location.hash = `#/messages/${data.conversation_id}`;
+      } catch {
+        showToast('Erreur d\u2019envoi', 'error');
+        btn.disabled = false;
+      }
+    });
+  } else if (!currentUser) {
+    actionsEl.innerHTML = `<a href="/auth/github" class="btn-primary btn-primary--sm">Se connecter pour contacter</a>`;
+  }
 
   // Mount radar
   if (developer && scores.length > 0) {

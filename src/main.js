@@ -10,6 +10,7 @@ import { renderAbout } from './pages/about.js';
 import { renderProjects } from './pages/projects.js';
 import { renderProjectDetail } from './pages/projectDetail.js';
 import { renderPortfolio } from './pages/portfolio.js';
+import { renderMessages } from './pages/messages.js';
 
 const app = document.getElementById('app');
 
@@ -32,6 +33,8 @@ registerRoute('/about', renderAbout);
 registerRoute('/projects', renderProjects);
 registerRoute('/projects/:id', renderProjectDetail);
 registerRoute('/u/:login', renderPortfolio);
+registerRoute('/messages', renderMessages);
+registerRoute('/messages/:id', renderMessages);
 
 // Start router
 initRouter();

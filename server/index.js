@@ -13,6 +13,7 @@ import teamRoutes from './routes/teams.js';
 import onboardingRoutes from './routes/onboarding.js';
 import authRoutes from './routes/auth.js';
 import projectRoutes from './routes/projects.js';
+import messageRoutes from './routes/messages.js';
 
 dotenv.config();
 
@@ -59,6 +60,7 @@ fastify.register(teamRoutes);
 fastify.register(onboardingRoutes);
 fastify.register(authRoutes);
 fastify.register(projectRoutes);
+fastify.register(messageRoutes);
 
 // Health check
 fastify.get('/api/health', async () => ({ status: 'ok' }));

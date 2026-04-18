@@ -71,6 +71,7 @@ function renderProjects(container) {
 
         <div class="projects-filters" id="proj-filters">
           <button class="proj-filter proj-filter--active" data-status="">Tous</button>
+          ${user ? '<button class="proj-filter" data-status="mine">Mes projets</button>' : ''}
           <button class="proj-filter" data-status="open">Ouvert</button>
           <button class="proj-filter" data-status="staffing">Recrutement</button>
           <button class="proj-filter" data-status="building">En cours</button>
@@ -157,8 +158,13 @@ function renderProjects(container) {
   async function loadProjects() {
     grid.innerHTML = '<div class="skeleton skeleton-card"></div><div class="skeleton skeleton-card"></div><div class="skeleton skeleton-card"></div>';
     try {
-      const params = currentStatus ? `?status=${currentStatus}` : '';
-      const res = await fetch(`/api/projects${params}`);
+      let url = '/api/projects';
+      if (currentStatus === 'mine') {
+        url = '/api/projects?mine=true';
+      } else if (currentStatus) {
+        url = `/api/projects?status=${currentStatus}`;
+      }
+      const res = await fetch(url);
       const projects = await res.json();
 
       grid.innerHTML = '';
