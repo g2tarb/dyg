@@ -20,7 +20,7 @@ export default {
   'header.messages': 'Messages',
 
   // Landing
-  'landing.tagline': 'Progress. Connect. Prove.',
+  'landing.tagline': 'Progress. Join. Prove.',
   'landing.pitch': 'Want to get into a top school or prove you can code?',
   'landing.pitch_bold': 'Find your team. Build real projects. Forge your portfolio.',
   'landing.cta_find': 'Find your devs',
@@ -208,9 +208,15 @@ export default {
   'availability.filter_available': 'Available',
   'availability.filter_in_project': 'In project',
 
+  // Moderation
+  'report.button': 'Report',
+  'report.placeholder': 'Describe the issue (200 chars max)',
+  'report.sent': 'Report submitted',
+  'report.error': 'Failed to report',
+
   // Data consent
   'consent.title': 'Contribute to AI agents',
-  'consent.desc': 'Allow DYG to collect your code patterns (anonymized) to train 7 archetype-specialized AI agents.',
+  'consent.desc': 'Allow DYG to collect your code diffs, commit messages, and PR descriptions (anonymized) to train AI agents. You can delete your data at any time.',
   'consent.enable': 'Enable contribution',
   'consent.disable': 'Disable',
   'consent.enabled': 'Contribution active',

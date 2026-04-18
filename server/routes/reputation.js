@@ -88,4 +88,31 @@ async function reputationRoutes(fastify) {
   });
 }
 
+  // POST /api/report — signal content (moderation)
+  fastify.post('/api/report', {
+    config: { rateLimit: { max: 5, timeWindow: '1 minute' } }
+  }, async (request, reply) => {
+    try { await request.jwtVerify(); } catch { throw new UnauthorizedError(); }
+
+    const { target_type, target_id, reason } = request.body;
+
+    if (!target_type || !target_id || !reason) {
+      return reply.code(400).send({ error: 'VALIDATION_FAILED', message: 'target_type, target_id, and reason required' });
+    }
+    if (!['user', 'message', 'comment', 'project'].includes(target_type)) {
+      return reply.code(400).send({ error: 'VALIDATION_FAILED', message: 'Invalid target_type' });
+    }
+    if (reason.length > 200) {
+      return reply.code(400).send({ error: 'VALIDATION_FAILED', message: 'Reason max 200 chars' });
+    }
+
+    await pool.query(
+      'INSERT INTO reports (reporter_id, target_type, target_id, reason) VALUES ($1, $2, $3, $4)',
+      [request.user.id, target_type, target_id, reason]
+    );
+
+    return { ok: true };
+  });
+}
+
 export default reputationRoutes;

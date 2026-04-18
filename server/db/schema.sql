@@ -1,3 +1,4 @@
+DROP TABLE IF EXISTS reports CASCADE;
 DROP TABLE IF EXISTS ban_history CASCADE;
 DROP TABLE IF EXISTS reputation CASCADE;
 DROP TABLE IF EXISTS code_samples CASCADE;
@@ -159,6 +160,19 @@ CREATE TABLE ban_history (
   banned_until TIMESTAMPTZ NOT NULL,
   created_at TIMESTAMPTZ DEFAULT NOW()
 );
+
+-- Reports (moderation)
+CREATE TABLE reports (
+  id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
+  reporter_id UUID NOT NULL REFERENCES users(id) ON DELETE CASCADE,
+  target_type VARCHAR(20) NOT NULL CHECK (target_type IN ('user', 'message', 'comment', 'project')),
+  target_id UUID NOT NULL,
+  reason VARCHAR(200) NOT NULL,
+  status VARCHAR(20) DEFAULT 'pending' CHECK (status IN ('pending', 'reviewed', 'dismissed')),
+  created_at TIMESTAMPTZ DEFAULT NOW()
+);
+
+CREATE INDEX idx_reports_status ON reports(status);
 
 -- Audit logs
 CREATE TABLE audit_logs (

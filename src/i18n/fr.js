@@ -20,7 +20,7 @@ export default {
   'header.messages': 'Messages',
 
   // Landing
-  'landing.tagline': 'Progresse. Connecte. Prouve.',
+  'landing.tagline': 'Progresse. Rejoins. Prouve.',
   'landing.pitch': 'Tu veux entrer en 42, Epitech, ou prouver que tu sais coder ?',
   'landing.pitch_bold': 'Trouve ton équipe. Construis des vrais projets. Forge ton portfolio.',
   'landing.cta_find': 'Trouve tes devs',
@@ -208,9 +208,15 @@ export default {
   'availability.filter_available': 'Disponibles',
   'availability.filter_in_project': 'En projet',
 
+  // Moderation
+  'report.button': 'Signaler',
+  'report.placeholder': 'Décris le problème (200 chars max)',
+  'report.sent': 'Signalement envoyé',
+  'report.error': 'Erreur lors du signalement',
+
   // Data consent
   'consent.title': 'Contribuer aux agents IA',
-  'consent.desc': 'Autorise DYG à collecter tes patterns de code (anonymisés) pour entraîner les 7 agents IA spécialisés par archétype.',
+  'consent.desc': 'Autorise DYG à collecter tes diffs de code, messages de commit et descriptions de PR (anonymisés) pour entraîner des agents IA. Tu peux supprimer tes données à tout moment.',
   'consent.enable': 'Activer la contribution',
   'consent.disable': 'Désactiver',
   'consent.enabled': 'Contribution active',
