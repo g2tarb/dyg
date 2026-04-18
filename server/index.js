@@ -56,18 +56,8 @@ await fastify.register(helmet, {
 });
 
 // --- CORS ---
-const PROD_ORIGINS = new Set(['https://dyg.gg', 'https://dyg.dev']);
-if (process.env.CORS_ORIGIN) {
-  process.env.CORS_ORIGIN.split(',').map(s => s.trim()).filter(Boolean).forEach(o => PROD_ORIGINS.add(o));
-}
-
 await fastify.register(cors, {
-  origin: isProd
-    ? (origin, cb) => {
-        if (!origin || PROD_ORIGINS.has(origin)) return cb(null, true);
-        return cb(new Error(`Origin not allowed: ${origin}`), false);
-      }
-    : true,
+  origin: true,
   credentials: true,
   methods: ['GET', 'POST', 'PATCH', 'DELETE', 'OPTIONS']
 });
@@ -217,16 +207,30 @@ gcInterval.unref();
 
 // --- Production: serve built frontend ---
 if (isProd) {
+  const { existsSync, readdirSync } = await import('fs');
+  const distPath = join(__dirname, '..', 'dist');
+
+  fastify.log.info(`Static root: ${distPath} (exists: ${existsSync(distPath)})`);
+  if (existsSync(distPath)) {
+    try {
+      fastify.log.info(`dist contents: ${readdirSync(distPath).join(', ')}`);
+      const assetsPath = join(distPath, 'assets');
+      if (existsSync(assetsPath)) {
+        fastify.log.info(`assets contents: ${readdirSync(assetsPath).join(', ')}`);
+      }
+    } catch (e) { fastify.log.error(`dist read error: ${e.message}`); }
+  }
+
   await fastify.register(fastifyStatic, {
-    root: join(__dirname, '..', 'dist'),
-    prefix: '/'
+    root: distPath,
+    prefix: '/',
+    decorateReply: true
   });
 
   fastify.setNotFoundHandler((request, reply) => {
     if (request.url.startsWith('/api/') || request.url.startsWith('/auth/')) {
       return reply.code(404).send({ error: 'NOT_FOUND' });
     }
-    // SPA fallback — serve index.html for all non-API, non-file routes
     return reply.sendFile('index.html');
   });
 }
