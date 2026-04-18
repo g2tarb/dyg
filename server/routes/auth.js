@@ -1,5 +1,6 @@
 import pool from '../db/connection.js';
 import { ARCHETYPES, PILLARS } from '../constants/archetypes.js';
+import { determineArchetype } from '../services/scoring.js';
 import { encrypt } from '../utils/crypto.js';
 import { SaveProfileSchema } from '../schemas/validation.js';
 import { UnauthorizedError } from '../utils/errors.js';
@@ -139,18 +140,21 @@ async function authRoutes(fastify) {
     const existing = await pool.query('SELECT id FROM developers WHERE user_id = $1', [userId]);
     let devId;
 
+    // Recalculate archetype with dual detection
+    const { primary, secondary } = determineArchetype(parsed.scores);
+
     if (existing.rows.length > 0) {
       devId = existing.rows[0].id;
       await pool.query(`
         UPDATE developers SET name = $1, avatar_url = $2, bio = $3, archetype = $4,
-               languages = $5, github_username = $6 WHERE id = $7
-      `, [parsed.name, parsed.avatar_url, parsed.bio, parsed.archetype, JSON.stringify(parsed.languages), githubUsername, devId]);
+               secondary_archetype = $5, languages = $6, github_username = $7 WHERE id = $8
+      `, [parsed.name, parsed.avatar_url, parsed.bio, primary, secondary, JSON.stringify(parsed.languages), githubUsername, devId]);
       await pool.query('DELETE FROM developer_scores WHERE developer_id = $1', [devId]);
     } else {
       const devResult = await pool.query(`
-        INSERT INTO developers (user_id, name, avatar_url, bio, archetype, github_username, languages)
-        VALUES ($1, $2, $3, $4, $5, $6, $7) RETURNING id
-      `, [userId, parsed.name, parsed.avatar_url, parsed.bio, parsed.archetype, githubUsername, JSON.stringify(parsed.languages)]);
+        INSERT INTO developers (user_id, name, avatar_url, bio, archetype, secondary_archetype, github_username, languages)
+        VALUES ($1, $2, $3, $4, $5, $6, $7, $8) RETURNING id
+      `, [userId, parsed.name, parsed.avatar_url, parsed.bio, primary, secondary, githubUsername, JSON.stringify(parsed.languages)]);
       devId = devResult.rows[0].id;
     }
 

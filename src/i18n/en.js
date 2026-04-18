@@ -193,6 +193,11 @@ export default {
   'archetype_change': 'Your archetype evolved: {from} \u2192 {to}',
 
   // About page
+  // Dual archetype
+  'archetype.dual': 'Dual archetype',
+  'archetype.dual_badge': '{primary} / {secondary}',
+  'archetype.dual_rare': 'Rare profile',
+
   // Availability
   'availability.available': 'Available',
   'availability.in_project': 'In project',

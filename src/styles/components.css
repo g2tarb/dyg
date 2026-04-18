@@ -434,6 +434,38 @@
   border-radius: var(--radius-sm);
 }
 
+/* Dual archetype badge */
+.badge--dual {
+  background: linear-gradient(135deg, var(--dual-color-1) 0%, var(--dual-color-2) 100%);
+  color: #fff;
+  font-weight: 700;
+  position: relative;
+  clip-path: polygon(6px 0, 100% 0, calc(100% - 6px) 100%, 0 100%);
+}
+
+.badge--dual::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(135deg, var(--dual-color-1), var(--dual-color-2));
+  opacity: 0.3;
+  animation: dual-pulse 2s ease-in-out infinite;
+  pointer-events: none;
+}
+
+@keyframes dual-pulse {
+  0%, 100% { opacity: 0.3; }
+  50% { opacity: 0.6; }
+}
+
+.dual-rare-tag {
+  font-size: 0.5rem;
+  color: var(--color-accent);
+  text-transform: uppercase;
+  letter-spacing: 0.15em;
+  font-weight: 700;
+}
+
 .dev-card__avail {
   font-size: 0.5625rem;
   font-weight: 600;

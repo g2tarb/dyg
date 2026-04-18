@@ -12,8 +12,8 @@ async function onboardingRoutes(fastify) {
 
     try {
       const profile = await fetchGitHubProfile(parsed.github_username);
-      const archetypeKey = determineArchetype(profile.scores);
-      const archetype = ARCHETYPES[archetypeKey];
+      const { primary, secondary } = determineArchetype(profile.scores);
+      const archetype = ARCHETYPES[primary];
       const bio = await generateBio(profile, archetype.name);
 
       return {
@@ -21,7 +21,8 @@ async function onboardingRoutes(fastify) {
         name: profile.name,
         avatar_url: profile.avatar_url,
         languages: profile.languages,
-        archetype: archetypeKey,
+        archetype: primary,
+        secondary_archetype: secondary,
         archetype_name: archetype.name,
         archetype_description: archetype.description,
         archetype_color: archetype.color,

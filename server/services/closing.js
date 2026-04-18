@@ -1,5 +1,6 @@
 import pool from '../db/connection.js';
 import { ARCHETYPES, PILLARS } from '../constants/archetypes.js';
+import { determineArchetype } from './scoring.js';
 import { collectProjectContributions } from './collector.js';
 
 const REVIEW_PILLARS = ['collaboration', 'craft', 'velocity'];
@@ -79,23 +80,12 @@ async function updateMemberScores(projectId, userId) {
     `, [devId, pillar, newScores[pillar]]);
   }
 
-  // Recalculate archetype
+  // Recalculate archetype (primary + secondary)
   const scores = PILLARS.map(p => ({ pillar: p, score: newScores[p] }));
-  let bestMatch = 'architect';
-  let bestScore = -1;
-  for (const [key, archetype] of Object.entries(ARCHETYPES)) {
-    const dominantSum = archetype.dominants.reduce((sum, p) => {
-      const s = scores.find(sc => sc.pillar === p);
-      return sum + (s ? s.score : 0);
-    }, 0);
-    if (dominantSum > bestScore) {
-      bestScore = dominantSum;
-      bestMatch = key;
-    }
-  }
+  const { primary: bestMatch, secondary } = determineArchetype(scores);
 
   // Update archetype
-  await pool.query('UPDATE developers SET archetype = $1 WHERE id = $2', [bestMatch, devId]);
+  await pool.query('UPDATE developers SET archetype = $1, secondary_archetype = $2 WHERE id = $3', [bestMatch, secondary, devId]);
 
   // Create score snapshot
   const pillarScoresJson = {};
