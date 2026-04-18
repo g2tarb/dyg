@@ -47,20 +47,7 @@ const fastify = Fastify({
 
 // --- Security headers ---
 await fastify.register(helmet, {
-  contentSecurityPolicy: isProd ? {
-    directives: {
-      defaultSrc: ["'self'"],
-      scriptSrc: ["'self'"],
-      styleSrc: ["'self'", 'https://fonts.googleapis.com', "'unsafe-inline'"],
-      imgSrc: ["'self'", 'https:', 'data:'],
-      connectSrc: ["'self'"],
-      fontSrc: ["'self'", 'https://fonts.gstatic.com'],
-      frameSrc: ["'none'"],
-      objectSrc: ["'none'"],
-      baseUri: ["'self'"],
-      formAction: ["'self'"]
-    }
-  } : false,
+  contentSecurityPolicy: false,
   crossOriginEmbedderPolicy: false,
   frameguard: { action: 'deny' },
   hsts: isProd ? { maxAge: 31536000, includeSubDomains: true, preload: true } : false,
