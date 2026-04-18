@@ -105,6 +105,22 @@ async function authRoutes(fastify) {
     return { ok: true };
   });
 
+  // DELETE /api/auth/account — GDPR right to be forgotten
+  fastify.delete('/api/auth/account', async (request, reply) => {
+    try { await request.jwtVerify(); } catch { throw new UnauthorizedError(); }
+
+    const userId = request.user.id;
+
+    // Cascade delete: developers, scores, project_members, messages, code_samples, audit_logs, etc.
+    // Foreign keys with ON DELETE CASCADE handle most of it
+    await pool.query('DELETE FROM developers WHERE user_id = $1', [userId]);
+    await pool.query('DELETE FROM users WHERE id = $1', [userId]);
+
+    reply.clearCookie('token', { path: '/' });
+
+    return { ok: true, deleted: true };
+  });
+
   // POST /api/onboarding/save-profile
   fastify.post('/api/onboarding/save-profile', async (request, reply) => {
     try {

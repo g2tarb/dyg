@@ -12,6 +12,7 @@ import { renderProjectDetail } from './pages/projectDetail.js';
 import { renderPortfolio } from './pages/portfolio.js';
 import { renderMessages } from './pages/messages.js';
 import { renderSettings } from './pages/settings.js';
+import { renderArchetypePage } from './pages/archetypePage.js';
 import { renderNotFound } from './pages/notFound.js';
 import { createFooter } from './components/footer.js';
 
@@ -39,6 +40,7 @@ registerRoute('/u/:login', renderPortfolio);
 registerRoute('/messages', renderMessages);
 registerRoute('/messages/:id', renderMessages);
 registerRoute('/settings', renderSettings);
+registerRoute('/archetype/:key', renderArchetypePage);
 
 // 404 handler
 setNotFoundHandler(renderNotFound);

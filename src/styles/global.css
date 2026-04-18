@@ -259,6 +259,80 @@ img {
 .settings__consent-count { font-size: 0.75rem; color: var(--color-accent); }
 .settings__actions { display: flex; gap: var(--space-md); }
 
+/* ==========================================
+   Archetype page
+   ========================================== */
+
+.archpage { min-height: calc(100vh - 56px); padding-bottom: var(--space-4xl); }
+
+.archpage__hero {
+  display: flex;
+  align-items: center;
+  gap: var(--space-2xl);
+  margin-bottom: var(--space-3xl);
+  padding-bottom: var(--space-2xl);
+  border-bottom: 1px solid var(--color-border);
+}
+
+.archpage__portrait {
+  width: 180px;
+  height: 240px;
+  overflow: hidden;
+  flex-shrink: 0;
+  clip-path: polygon(0 0, calc(100% - 16px) 0, 100% 16px, 100% 100%, 16px 100%, 0 calc(100% - 16px));
+}
+
+.archpage__img { width: 100%; height: 100%; object-fit: cover; }
+
+.archpage__label {
+  font-size: 0.6875rem;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.3em;
+}
+
+.archpage__name {
+  font-size: clamp(2.5rem, 6vw, 4rem);
+  margin: var(--space-sm) 0 var(--space-md);
+}
+
+.archpage__dominants {
+  display: flex;
+  gap: var(--space-sm);
+  font-size: 0.875rem;
+  color: var(--color-text-dim);
+}
+
+.archpage__dominant {
+  padding: 4px var(--space-md);
+  border: 1px solid color-mix(in srgb, var(--arch-color) 40%, transparent);
+  background: color-mix(in srgb, var(--arch-color) 8%, transparent);
+  color: var(--arch-color);
+  font-size: 0.6875rem;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.1em;
+}
+
+.archpage__devs-title {
+  font-size: 1.5rem;
+  color: var(--color-text);
+  margin-bottom: var(--space-xl);
+}
+
+.archpage__cta {
+  display: flex;
+  gap: var(--space-lg);
+  align-items: center;
+  justify-content: center;
+  padding-top: var(--space-3xl);
+}
+
+@media (max-width: 768px) {
+  .archpage__hero { flex-direction: column; align-items: flex-start; }
+  .archpage__portrait { width: 120px; height: 160px; }
+}
+
 .not-found { min-height: calc(100vh - 56px); }
 
 .not-found__code {

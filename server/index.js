@@ -185,6 +185,29 @@ fastify.register(projectRoutes);
 fastify.register(messageRoutes);
 fastify.register(dataRoutes);
 
+// --- Sitemap ---
+fastify.get('/sitemap.xml', async (request, reply) => {
+  const base = env.BASE_URL;
+  const staticPages = ['', '/about', '/search', '/projects', '/onboarding'];
+  const usersResult = await pool.query(
+    "SELECT u.github_login, u.updated_at FROM users u JOIN developers d ON d.user_id = u.id"
+  );
+
+  let xml = '<?xml version="1.0" encoding="UTF-8"?>\n<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">\n';
+
+  for (const page of staticPages) {
+    xml += `  <url><loc>${base}/#${page || '/'}</loc><priority>${page === '' ? '1.0' : '0.7'}</priority></url>\n`;
+  }
+  for (const user of usersResult.rows) {
+    const lastmod = user.updated_at ? new Date(user.updated_at).toISOString().split('T')[0] : '';
+    xml += `  <url><loc>${base}/#/u/${user.github_login}</loc>${lastmod ? `<lastmod>${lastmod}</lastmod>` : ''}<priority>0.6</priority></url>\n`;
+  }
+
+  xml += '</urlset>';
+  reply.header('Content-Type', 'application/xml');
+  return xml;
+});
+
 // --- Health check ---
 fastify.get('/api/health', async () => {
   try {

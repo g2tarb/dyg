@@ -19,7 +19,7 @@ const PRICE_LABELS = { low: '$', medium: '$$', high: '$$$' };
 function renderProfile(container, params = {}) {
   const devId = params.id;
   if (!devId) {
-    container.innerHTML = '<p style="padding:var(--space-2xl);color:var(--color-text-dim);">Dev non trouvé.</p>';
+    container.innerHTML = `<p style="padding:var(--space-2xl);color:var(--color-text-dim);">${t('profile.not_found')}</p>`;
     return;
   }
 
@@ -27,7 +27,7 @@ function renderProfile(container, params = {}) {
   container.innerHTML = `
     <section class="profile">
       <div class="container" style="padding-top:var(--space-2xl);">
-        <a href="#/search" class="profile-back">&larr; Retour</a>
+        <a href="#/search" class="profile-back">&larr; ${t('common.back')}</a>
         <div class="profile-layout">
           <div class="profile-left">
             <div class="skeleton skeleton-circle" style="width:120px;height:120px;"></div>
@@ -52,7 +52,7 @@ function renderProfile(container, params = {}) {
     container.innerHTML = `
       <section class="profile">
         <div class="container" style="padding-top:var(--space-2xl);">
-          <a href="#/search" class="profile-back">&larr; Retour à la recherche</a>
+          <a href="#/search" class="profile-back">&larr; ${t('profile.back_search')}</a>
           <div class="profile-layout">
             <div class="profile-left">
               <div class="profile-header">
@@ -72,19 +72,19 @@ function renderProfile(container, params = {}) {
             <div class="profile-right">
               <div id="archetype-card-mount"></div>
               <div>
-                <h3 style="font-size:1.25rem;color:var(--color-text);margin-bottom:var(--space-sm);">Langages & Technos</h3>
+                <h3 style="font-size:1.25rem;color:var(--color-text);margin-bottom:var(--space-sm);">${t('profile.langs_title')}</h3>
                 <div class="profile-langs">
                   ${(dev.languages || []).map(l => `<span class="profile-lang">${escapeHTML(l)}</span>`).join('')}
                 </div>
               </div>
               <div class="profile-price">
-                Budget : <span class="profile-price__value">${PRICE_LABELS[dev.price_range] || dev.price_range}</span>
+                ${t('profile.budget')} : <span class="profile-price__value">${PRICE_LABELS[dev.price_range] || dev.price_range}</span>
               </div>
               <div class="profile-actions">
                 <button class="btn-primary ${inTeam ? 'btn-primary--disabled' : ''}" id="btn-add-team" ${inTeam ? 'disabled' : ''}>
                   ${inTeam ? `${t('team.added_badge')} &#10003;` : t('team.add')}
                 </button>
-                <a href="#/search" class="btn-secondary">Voir d'autres devs</a>
+                <a href="#/search" class="btn-secondary">${t('profile.see_others')}</a>
               </div>
             </div>
           </div>
@@ -156,9 +156,9 @@ function renderProfile(container, params = {}) {
     container.innerHTML = `
       <section class="profile">
         <div class="container" style="padding-top:var(--space-2xl);">
-          <a href="#/search" class="profile-back">&larr; Retour</a>
+          <a href="#/search" class="profile-back">&larr; ${t('common.back')}</a>
           <div class="empty-state">
-            <p class="empty-state__text">Développeur non trouvé.</p>
+            <p class="empty-state__text">${t('profile.not_found_long')}</p>
           </div>
         </div>
       </section>
