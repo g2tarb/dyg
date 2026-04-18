@@ -46,6 +46,7 @@ function createDevCard(dev) {
         class="avatar avatar--md dev-card__avatar avatar--${escapeHTML(dev.archetype)}"
         src="${escapeHTML(dev.avatar_url)}"
         alt="${safeName}"
+        loading="lazy"
         onerror="this.src='data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 80 80%22><rect fill=%22%23131B2E%22 width=%2280%22 height=%2280%22/><text x=%2240%22 y=%2248%22 text-anchor=%22middle%22 fill=%22%23CBD5E1%22 font-size=%2224%22>${safeInitial}</text></svg>'"
       >
       <div class="dev-card__identity">

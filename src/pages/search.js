@@ -6,6 +6,7 @@ let unsubTeam = null;
 
 async function fetchDevelopers(filters = {}, offset = 0) {
   const params = new URLSearchParams();
+  if (filters.search) params.set('search', filters.search);
   if (filters.archetype) params.set('archetype', filters.archetype);
   if (filters.price) params.set('price', filters.price);
   if (filters.pillar) params.set('pillar', filters.pillar);
@@ -59,7 +60,10 @@ function renderSearch(container) {
     <section class="search">
       <div class="container" style="padding-top:var(--space-2xl);">
         <h2 style="font-size:2.5rem;color:var(--color-text);margin-bottom:var(--space-sm);">Trouve le bon dev</h2>
-        <p style="color:var(--color-text-dim);margin-bottom:var(--space-lg);">Filtre. Compare. Recrute.</p>
+        <p style="color:var(--color-text-dim);margin-bottom:var(--space-lg);">Filtre. Compare. Compose.</p>
+        <div class="search-bar" style="margin-bottom:var(--space-lg);">
+          <input type="text" class="input" id="search-input" placeholder="Rechercher par nom ou pseudo..." style="max-width:400px;" autocomplete="off">
+        </div>
         <div id="filters-mount"></div>
         <div class="dev-grid" id="dev-grid"></div>
       </div>
@@ -148,6 +152,17 @@ function renderSearch(container) {
     if (devs.length > 0) renderGrid(grid, devs);
   });
 
+  // Search by name
+  const searchInput = container.querySelector('#search-input');
+  let searchTimeout = null;
+  searchInput.addEventListener('input', () => {
+    clearTimeout(searchTimeout);
+    searchTimeout = setTimeout(() => {
+      currentFilters.search = searchInput.value.trim() || undefined;
+      loadDevs(currentFilters);
+    }, 300);
+  });
+
   // Initial load
   loadDevs();
 
@@ -155,6 +170,7 @@ function renderSearch(container) {
   return () => {
     if (unsubTeam) unsubTeam();
     unsubTeam = null;
+    clearTimeout(searchTimeout);
   };
 }
 

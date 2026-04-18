@@ -1,4 +1,5 @@
-import { initHeroD20 } from '../three/heroD20.js';
+// Three.js loaded dynamically to reduce initial bundle
+let initHeroD20 = null;
 import { escapeHTML } from '../utils/sanitize.js';
 
 let cleanupD20 = null;
@@ -103,10 +104,14 @@ function renderLanding(container) {
   });
 
   // Three.js D20 — on top of video + overlay
-  requestAnimationFrame(() => {
+  requestAnimationFrame(async () => {
     const canvas = container.querySelector('#hero-canvas');
     if (canvas && canvas.clientWidth > 0) {
       try {
+        if (!initHeroD20) {
+          const module = await import('../three/heroD20.js');
+          initHeroD20 = module.initHeroD20;
+        }
         cleanupD20 = initHeroD20(canvas);
       } catch (e) {
         // WebGL not available — render CSS fallback

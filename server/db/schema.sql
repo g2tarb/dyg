@@ -1,6 +1,7 @@
 DROP TABLE IF EXISTS messages CASCADE;
 DROP TABLE IF EXISTS conversation_participants CASCADE;
 DROP TABLE IF EXISTS conversations CASCADE;
+DROP TABLE IF EXISTS audit_logs CASCADE;
 DROP TABLE IF EXISTS peer_reviews CASCADE;
 DROP TABLE IF EXISTS score_snapshots CASCADE;
 DROP TABLE IF EXISTS contribution_events CASCADE;
@@ -118,6 +119,17 @@ CREATE TABLE peer_reviews (
   rating SMALLINT NOT NULL CHECK (rating >= 1 AND rating <= 5),
   created_at TIMESTAMPTZ DEFAULT NOW(),
   UNIQUE(project_id, reviewer_id, reviewee_id, pillar)
+);
+
+-- Audit logs
+CREATE TABLE audit_logs (
+  id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
+  user_id UUID REFERENCES users(id) ON DELETE SET NULL,
+  action VARCHAR(50) NOT NULL,
+  target_type VARCHAR(30),
+  target_id UUID,
+  details JSONB DEFAULT '{}',
+  created_at TIMESTAMPTZ DEFAULT NOW()
 );
 
 -- Messagerie

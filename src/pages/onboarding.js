@@ -275,7 +275,13 @@ function renderOnboarding(container) {
   const authCta = container.querySelector('#auth-cta');
 
   if (user) {
-    // User is logged in — pre-fill with their GitHub login and auto-scan
+    // If user already has a profile, redirect to their portfolio
+    const existingDev = getState('developer');
+    if (existingDev) {
+      window.location.hash = `#/u/${user.github_login}`;
+      return;
+    }
+    // User is logged in but no profile — pre-fill and auto-scan
     input.value = user.github_login;
     authCta.style.display = 'none';
     requestAnimationFrame(() => startScan());

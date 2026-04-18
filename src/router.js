@@ -60,9 +60,19 @@ function handleRoute() {
         }
       }
     }
-    // 404 fallback — redirect to landing
-    navigate('/');
+    // 404 fallback
+    if (notFoundHandler) {
+      currentCleanup = notFoundHandler(content);
+    } else {
+      navigate('/');
+    }
   }
+}
+
+let notFoundHandler = null;
+
+function setNotFoundHandler(handler) {
+  notFoundHandler = handler;
 }
 
 function initRouter() {
@@ -71,4 +81,4 @@ function initRouter() {
   handleRoute();
 }
 
-export { registerRoute, navigate, getParam, initRouter };
+export { registerRoute, navigate, getParam, initRouter, setNotFoundHandler };

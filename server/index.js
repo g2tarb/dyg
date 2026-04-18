@@ -96,6 +96,16 @@ fastify.register(authRoutes);
 fastify.register(projectRoutes);
 fastify.register(messageRoutes);
 
+// Centralized error handler — generic messages in prod
+fastify.setErrorHandler((error, request, reply) => {
+  fastify.log.error(error);
+  const statusCode = error.statusCode || 500;
+  const message = isProd && statusCode >= 500
+    ? 'Internal server error'
+    : error.message || 'Internal server error';
+  reply.code(statusCode).send({ error: message });
+});
+
 // Health check
 fastify.get('/api/health', async () => ({ status: 'ok' }));
 

@@ -1,5 +1,6 @@
 import pool from '../db/connection.js';
 import { ARCHETYPES, PILLARS } from '../constants/archetypes.js';
+import { encrypt } from '../utils/crypto.js';
 
 async function authRoutes(fastify) {
   // OAuth callback — GitHub redirects here after user approves
@@ -53,7 +54,7 @@ async function authRoutes(fastify) {
         access_token = $6,
         updated_at = NOW()
       RETURNING *
-    `, [ghUser.id, ghUser.login, email, ghUser.avatar_url, ghUser.name || ghUser.login, token.access_token]);
+    `, [ghUser.id, ghUser.login, email, ghUser.avatar_url, ghUser.name || ghUser.login, encrypt(token.access_token)]);
 
     const user = result.rows[0];
 

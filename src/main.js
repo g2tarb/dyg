@@ -1,5 +1,5 @@
 import { loadTeamFromServer, checkAuth } from './store.js';
-import { registerRoute, initRouter } from './router.js';
+import { registerRoute, initRouter, setNotFoundHandler } from './router.js';
 import { createHeader } from './components/header.js';
 import { renderLanding } from './pages/landing.js';
 import { renderSearch } from './pages/search.js';
@@ -11,6 +11,8 @@ import { renderProjects } from './pages/projects.js';
 import { renderProjectDetail } from './pages/projectDetail.js';
 import { renderPortfolio } from './pages/portfolio.js';
 import { renderMessages } from './pages/messages.js';
+import { renderNotFound } from './pages/notFound.js';
+import { createFooter } from './components/footer.js';
 
 const app = document.getElementById('app');
 
@@ -35,6 +37,13 @@ registerRoute('/projects/:id', renderProjectDetail);
 registerRoute('/u/:login', renderPortfolio);
 registerRoute('/messages', renderMessages);
 registerRoute('/messages/:id', renderMessages);
+
+// 404 handler
+setNotFoundHandler(renderNotFound);
+
+// Mount footer
+const footer = createFooter();
+app.appendChild(footer);
 
 // Start router
 initRouter();

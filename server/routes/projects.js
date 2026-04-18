@@ -33,6 +33,12 @@ async function projectRoutes(fastify) {
     if (!name || name.trim().length === 0) {
       return reply.code(400).send({ error: 'Project name is required' });
     }
+    if (name.trim().length > 100) {
+      return reply.code(400).send({ error: 'Project name must be 100 chars or less' });
+    }
+    if (description && description.length > 1000) {
+      return reply.code(400).send({ error: 'Description must be 1000 chars or less' });
+    }
 
     const result = await pool.query(`
       INSERT INTO projects (name, description, repo_url, creator_id, max_members)

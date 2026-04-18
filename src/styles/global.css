@@ -165,3 +165,69 @@ img {
   bottom: 0; right: 0;
   border-width: 0 1px 1px 0;
 }
+
+/* ==========================================
+   Footer
+   ========================================== */
+
+.dyg-footer {
+  border-top: 1px solid var(--color-border);
+  padding: var(--space-2xl) 0;
+  margin-top: var(--space-4xl);
+}
+
+.footer-inner {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--space-lg);
+  flex-wrap: wrap;
+}
+
+.footer-brand {
+  font-family: var(--font-display);
+  font-size: 1.25rem;
+  color: var(--color-primary);
+  letter-spacing: 0.1em;
+}
+
+.footer-copy {
+  font-size: 0.6875rem;
+  color: var(--color-text-dim);
+}
+
+.footer-links {
+  display: flex;
+  gap: var(--space-lg);
+}
+
+.footer-links a {
+  font-size: 0.6875rem;
+  color: var(--color-text-dim);
+  text-decoration: none;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  transition: color var(--duration-fast) ease;
+}
+
+.footer-links a:hover { color: var(--color-text); }
+
+/* ==========================================
+   404
+   ========================================== */
+
+.not-found { min-height: calc(100vh - 56px); }
+
+.not-found__code {
+  font-family: var(--font-display);
+  font-size: clamp(6rem, 20vw, 12rem);
+  color: var(--color-primary);
+  opacity: 0.15;
+  line-height: 1;
+}
+
+.not-found__text {
+  font-size: 1.125rem;
+  color: var(--color-text-dim);
+  margin-top: var(--space-md);
+}

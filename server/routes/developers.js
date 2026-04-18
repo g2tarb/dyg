@@ -27,6 +27,14 @@ async function developerRoutes(fastify) {
     const params = [];
     let paramIndex = 1;
 
+    // Search by name/username
+    const search = typeof request.query.search === 'string' ? request.query.search.trim().slice(0, 50) : null;
+    if (search && search.length > 0) {
+      conditions.push(`(d.name ILIKE $${paramIndex} OR d.github_username ILIKE $${paramIndex})`);
+      params.push(`%${search}%`);
+      paramIndex++;
+    }
+
     if (archetype) {
       conditions.push(`d.archetype = $${paramIndex++}`);
       params.push(archetype);

@@ -102,6 +102,16 @@ async function updateMemberScores(projectId, userId) {
     ON CONFLICT (user_id, project_id) DO UPDATE SET
       pillar_scores = $3, archetype_before = $4, archetype_after = $5, computed_at = NOW()
   `, [userId, projectId, JSON.stringify(pillarScoresJson), archetypeBefore, bestMatch]);
+
+  // Audit log
+  await pool.query(`
+    INSERT INTO audit_logs (user_id, action, target_type, target_id, details)
+    VALUES ($1, 'score_update', 'project', $2, $3)
+  `, [userId, projectId, JSON.stringify({
+    archetype_before: archetypeBefore,
+    archetype_after: bestMatch,
+    pillar_scores: pillarScoresJson
+  })]);
 }
 
 export { closeProject };

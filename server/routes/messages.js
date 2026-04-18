@@ -124,15 +124,22 @@ async function messageRoutes(fastify) {
     );
     if (partCheck.rows.length === 0) return reply.code(403).send({ error: 'Not a participant' });
 
-    // Get messages
+    // Get messages (paginated, last 50)
+    const limit = Math.min(parseInt(request.query.limit) || 50, 100);
+    const offset = Math.max(parseInt(request.query.offset) || 0, 0);
+
     const messagesResult = await pool.query(`
       SELECT m.id, m.body, m.created_at, m.sender_id,
              u.github_login AS sender_login, u.avatar_url AS sender_avatar, u.name AS sender_name
       FROM messages m
       JOIN users u ON u.id = m.sender_id
       WHERE m.conversation_id = $1
-      ORDER BY m.created_at ASC
-    `, [conversationId]);
+      ORDER BY m.created_at DESC
+      LIMIT $2 OFFSET $3
+    `, [conversationId, limit, offset]);
+
+    // Reverse for display (oldest first)
+    messagesResult.rows.reverse();
 
     // Get other participant info
     const otherResult = await pool.query(`
