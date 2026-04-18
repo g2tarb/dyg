@@ -226,6 +226,7 @@ if (isProd) {
     if (request.url.startsWith('/api/') || request.url.startsWith('/auth/')) {
       return reply.code(404).send({ error: 'NOT_FOUND' });
     }
+    // SPA fallback — serve index.html for all non-API, non-file routes
     return reply.sendFile('index.html');
   });
 }
