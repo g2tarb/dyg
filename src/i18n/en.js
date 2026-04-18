@@ -147,6 +147,12 @@ export default {
   'onboarding.placeholder': 'your-github-username',
   'onboarding.scan': 'Scan',
   'onboarding.scanning': 'Analyzing...',
+  'onboarding.step1': 'Connecting to GitHub...',
+  'onboarding.step2': 'Analyzing repos...',
+  'onboarding.step3': 'Detecting languages...',
+  'onboarding.step4': 'Calculating scores...',
+  'onboarding.step5': 'Generating AI profile...',
+  'onboarding.step6': 'Determining archetype...',
   'onboarding.done': 'Analysis complete.',
   'onboarding.bio_title': 'AI-generated bio',
   'onboarding.langs_title': 'Detected languages',
@@ -187,6 +193,13 @@ export default {
   'archetype_change': 'Your archetype evolved: {from} \u2192 {to}',
 
   // About page
+  // Availability
+  'availability.available': 'Available',
+  'availability.in_project': 'In project',
+  'availability.filter_all': 'All',
+  'availability.filter_available': 'Available',
+  'availability.filter_in_project': 'In project',
+
   // Data consent
   'consent.title': 'Contribute to AI agents',
   'consent.desc': 'Allow DYG to collect your code patterns (anonymized) to train 7 archetype-specialized AI agents.',

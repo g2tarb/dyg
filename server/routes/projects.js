@@ -109,6 +109,22 @@ async function projectRoutes(fastify) {
     const { name, description, repo_url, status } = request.body;
     const current = projCheck.rows[0];
 
+    // Validate status transitions (no skipping)
+    if (status && status !== current.status) {
+      const VALID_TRANSITIONS = {
+        open: ['staffing', 'building'],
+        staffing: ['building'],
+        building: ['review'],
+        review: ['shipped'],
+        shipped: ['archived'],
+        archived: []
+      };
+      const allowed = VALID_TRANSITIONS[current.status] || [];
+      if (!allowed.includes(status)) {
+        return reply.code(400).send({ error: `Cannot transition from ${current.status} to ${status}` });
+      }
+    }
+
     const updates = {
       name: name || current.name,
       description: description !== undefined ? description : current.description,

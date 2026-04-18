@@ -8,6 +8,7 @@ let unsubTeam = null;
 async function fetchDevelopers(filters = {}, offset = 0) {
   const params = new URLSearchParams();
   if (filters.search) params.set('search', filters.search);
+  if (filters.availability) params.set('availability', filters.availability);
   if (filters.archetype) params.set('archetype', filters.archetype);
   if (filters.price) params.set('price', filters.price);
   if (filters.pillar) params.set('pillar', filters.pillar);
@@ -64,6 +65,11 @@ function renderSearch(container) {
         <p style="color:var(--color-text-dim);margin-bottom:var(--space-lg);">${t('search.sub')}</p>
         <div class="search-bar" style="margin-bottom:var(--space-lg);">
           <input type="text" class="input" id="search-input" placeholder="${t('search.placeholder')}" style="max-width:400px;" autocomplete="off">
+          <div class="search-avail-filters" style="display:flex;gap:var(--space-sm);margin-top:var(--space-sm);">
+            <button class="proj-filter proj-filter--active" data-avail="">${t('availability.filter_all')}</button>
+            <button class="proj-filter" data-avail="available">${t('availability.filter_available')}</button>
+            <button class="proj-filter" data-avail="in_project">${t('availability.filter_in_project')}</button>
+          </div>
         </div>
         <div id="filters-mount"></div>
         <div class="dev-grid" id="dev-grid"></div>
@@ -151,6 +157,17 @@ function renderSearch(container) {
   unsubTeam = subscribe('team', () => {
     const devs = getState('developers');
     if (devs.length > 0) renderGrid(grid, devs);
+  });
+
+  // Availability filter
+  const availFilters = container.querySelector('.search-avail-filters');
+  availFilters.addEventListener('click', (e) => {
+    const btn = e.target.closest('.proj-filter');
+    if (!btn) return;
+    availFilters.querySelectorAll('.proj-filter').forEach(b => b.classList.remove('proj-filter--active'));
+    btn.classList.add('proj-filter--active');
+    currentFilters.availability = btn.dataset.avail || undefined;
+    loadDevs(currentFilters);
   });
 
   // Search by name

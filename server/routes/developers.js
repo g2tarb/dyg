@@ -1,7 +1,6 @@
 import pool from '../db/connection.js';
-import { PILLARS } from '../constants/archetypes.js';
+import { VALID_ARCHETYPES, VALID_PILLARS } from '../constants/shared.js';
 
-const VALID_ARCHETYPES = ['architect', 'shipper', 'artisan', 'creative', 'explorer', 'commando', 'mentor'];
 const VALID_PRICES = ['low', 'medium', 'high'];
 
 async function developerRoutes(fastify) {
@@ -12,13 +11,20 @@ async function developerRoutes(fastify) {
     const offset = Math.max(parseInt(request.query.offset) || 0, 0);
     const archetype = VALID_ARCHETYPES.includes(request.query.archetype) ? request.query.archetype : null;
     const price = VALID_PRICES.includes(request.query.price) ? request.query.price : null;
-    const pillar = PILLARS.includes(request.query.pillar) ? request.query.pillar : null;
+    const pillar = VALID_PILLARS.includes(request.query.pillar) ? request.query.pillar : null;
     const min = Math.min(Math.max(parseInt(request.query.min) || 1, 1), 10);
+
+    const availability = request.query.availability;
 
     let query = `
       SELECT d.*,
         json_agg(json_build_object('pillar', ds.pillar, 'score', ds.score)) AS scores,
-        ROUND(AVG(ds.score), 1) AS avg_score
+        ROUND(AVG(ds.score), 1) AS avg_score,
+        CASE WHEN EXISTS (
+          SELECT 1 FROM project_members pm
+          JOIN projects p ON p.id = pm.project_id
+          WHERE pm.user_id = d.user_id AND p.status IN ('building', 'review')
+        ) THEN 'in_project' ELSE 'available' END AS availability
       FROM developers d
       JOIN developer_scores ds ON ds.developer_id = d.id
     `;
@@ -50,6 +56,14 @@ async function developerRoutes(fastify) {
     }
 
     query += ' GROUP BY d.id';
+
+    // Filter by availability (after GROUP BY since it's computed)
+    if (availability === 'available' || availability === 'in_project') {
+      const havingClause = availability === 'available'
+        ? `NOT EXISTS (SELECT 1 FROM project_members pm JOIN projects p ON p.id = pm.project_id WHERE pm.user_id = d.user_id AND p.status IN ('building', 'review'))`
+        : `EXISTS (SELECT 1 FROM project_members pm JOIN projects p ON p.id = pm.project_id WHERE pm.user_id = d.user_id AND p.status IN ('building', 'review'))`;
+      query += ` HAVING ${havingClause}`;
+    }
 
     // Filter by minimum score on a specific pillar (after aggregation)
     if (pillar && min) {

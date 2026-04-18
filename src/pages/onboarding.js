@@ -8,12 +8,12 @@ import { t } from '../i18n/index.js';
 
 function getScanSteps() {
   return [
-    t('onboarding.scanning'),
-    t('onboarding.scanning'),
-    t('onboarding.scanning'),
-    t('onboarding.scanning'),
-    t('onboarding.scanning'),
-    t('onboarding.scanning')
+    t('onboarding.step1'),
+    t('onboarding.step2'),
+    t('onboarding.step3'),
+    t('onboarding.step4'),
+    t('onboarding.step5'),
+    t('onboarding.step6')
   ];
 }
 

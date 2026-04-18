@@ -69,12 +69,15 @@ await fastify.register(helmet, {
 });
 
 // --- CORS ---
-const PROD_ORIGINS = Object.freeze(['https://dyg.gg', 'https://dyg.dev']);
+const PROD_ORIGINS = new Set(['https://dyg.gg', 'https://dyg.dev']);
+if (process.env.CORS_ORIGIN) {
+  process.env.CORS_ORIGIN.split(',').map(s => s.trim()).filter(Boolean).forEach(o => PROD_ORIGINS.add(o));
+}
 
 await fastify.register(cors, {
   origin: isProd
     ? (origin, cb) => {
-        if (!origin || PROD_ORIGINS.includes(origin)) return cb(null, true);
+        if (!origin || PROD_ORIGINS.has(origin)) return cb(null, true);
         return cb(new Error(`Origin not allowed: ${origin}`), false);
       }
     : true,
@@ -91,7 +94,7 @@ await fastify.register(rateLimit, {
   allowList: ['127.0.0.1'],
   onExceeded: (request) => {
     bannedIPs.set(request.ip, Date.now() + 15 * 60 * 1000);
-    request.log.warn({ ip: request.ip }, 'IP banned for 15 minutes (rate limit exceeded)');
+    request.log.warn({ ip: request.ip }, 'IP banned for 15 minutes');
   }
 });
 
@@ -100,7 +103,7 @@ fastify.addHook('onRequest', async (request, reply) => {
   const banExpiry = bannedIPs.get(request.ip);
   if (banExpiry) {
     if (Date.now() < banExpiry) {
-      return reply.code(403).send({ error: 'FORBIDDEN', message: 'Trop de requêtes. Réessayez plus tard.' });
+      return reply.code(403).send({ error: 'FORBIDDEN', message: 'Too many requests. Try again later.' });
     }
     bannedIPs.delete(request.ip);
   }
@@ -142,7 +145,7 @@ fastify.setErrorHandler((error, request, reply) => {
   if (error.statusCode === 429) {
     return reply.code(429).send({
       error: 'TOO_MANY_REQUESTS',
-      message: 'Limite de requêtes dépassée.'
+      message: 'Rate limit exceeded.'
     });
   }
 

@@ -7,7 +7,10 @@ let locale = localStorage.getItem('dyg_lang') || (navigator.language.startsWith(
 export function t(key, params = {}) {
   const dict = TRANSLATIONS[locale] || TRANSLATIONS.en;
   let text = dict[key];
-  if (text === undefined) return key;
+  if (text === undefined) {
+    if (location.hostname === 'localhost') console.warn(`[i18n] Missing key: ${key}`);
+    return key;
+  }
   for (const [k, v] of Object.entries(params)) {
     text = text.replaceAll(`{${k}}`, v);
   }

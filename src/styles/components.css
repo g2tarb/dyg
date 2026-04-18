@@ -434,6 +434,25 @@
   border-radius: var(--radius-sm);
 }
 
+.dev-card__avail {
+  font-size: 0.5625rem;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  padding: 1px 6px;
+  border-radius: var(--radius-sm);
+}
+
+.dev-card__avail--available {
+  color: var(--color-success);
+  background: rgba(34, 197, 94, 0.1);
+}
+
+.dev-card__avail--in_project {
+  color: var(--color-warning);
+  background: rgba(234, 179, 8, 0.1);
+}
+
 .dev-card__added {
   position: absolute;
   top: var(--space-sm);

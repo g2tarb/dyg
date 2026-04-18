@@ -147,6 +147,12 @@ export default {
   'onboarding.placeholder': 'ton-pseudo-github',
   'onboarding.scan': 'Scanner',
   'onboarding.scanning': 'Analyse en cours...',
+  'onboarding.step1': 'Connexion à GitHub...',
+  'onboarding.step2': 'Analyse des repos...',
+  'onboarding.step3': 'Détection des langages...',
+  'onboarding.step4': 'Calcul des scores...',
+  'onboarding.step5': 'Génération du profil IA...',
+  'onboarding.step6': 'Détermination de l\'archétype...',
   'onboarding.done': 'Analyse terminée.',
   'onboarding.bio_title': 'Bio générée par IA',
   'onboarding.langs_title': 'Langages détectés',
@@ -187,6 +193,13 @@ export default {
   'archetype_change': 'Ton archétype a évolué : {from} \u2192 {to}',
 
   // About page
+  // Availability
+  'availability.available': 'Disponible',
+  'availability.in_project': 'En projet',
+  'availability.filter_all': 'Tous',
+  'availability.filter_available': 'Disponibles',
+  'availability.filter_in_project': 'En projet',
+
   // Data consent
   'consent.title': 'Contribuer aux agents IA',
   'consent.desc': 'Autorise DYG à collecter tes patterns de code (anonymisés) pour entraîner les 7 agents IA spécialisés par archétype.',

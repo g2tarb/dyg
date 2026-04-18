@@ -33,9 +33,19 @@ function handleRoute() {
     currentCleanup = null;
   }
 
+  function safeRun(handler, content, params) {
+    try {
+      return handler(content, params);
+    } catch (err) {
+      console.error('[router] Page render error:', err);
+      content.innerHTML = `<div class="empty-state" style="padding:var(--space-4xl) var(--space-lg);"><p class="empty-state__text">Something went wrong.</p><a href="#/" class="btn-primary" style="margin-top:var(--space-md);">Home</a></div>`;
+      return null;
+    }
+  }
+
   const handler = routes[path];
   if (handler) {
-    currentCleanup = handler(content);
+    currentCleanup = safeRun(handler, content);
   } else {
     // Try matching dynamic routes like /profile/:id
     for (const [pattern, routeHandler] of Object.entries(routes)) {
@@ -54,7 +64,7 @@ function handleRoute() {
             }
           }
           if (match) {
-            currentCleanup = routeHandler(content, params);
+            currentCleanup = safeRun(routeHandler, content, params);
             return;
           }
         }

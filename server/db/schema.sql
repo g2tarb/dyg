@@ -24,6 +24,8 @@ CREATE TABLE users (
   name VARCHAR(100),
   access_token TEXT NOT NULL,
   data_consent BOOLEAN DEFAULT FALSE,
+  availability VARCHAR(20) DEFAULT 'available'
+    CHECK (availability IN ('available', 'in_project', 'unavailable')),
   created_at TIMESTAMPTZ DEFAULT NOW(),
   updated_at TIMESTAMPTZ DEFAULT NOW()
 );

@@ -45,6 +45,7 @@ function createDevCard(dev) {
       <div class="dev-card__identity">
         <span class="dev-card__name">${safeName}</span>
         <span class="badge badge--${escapeHTML(dev.archetype)}">${ARCHETYPE_NAMES[dev.archetype] || escapeHTML(dev.archetype)}</span>
+        ${dev.availability ? `<span class="dev-card__avail dev-card__avail--${dev.availability}">${t('availability.' + dev.availability)}</span>` : ''}
       </div>
     </div>
     <p class="dev-card__bio">${safeBio}</p>

@@ -1,11 +1,5 @@
 import { z } from 'zod';
-
-// --- Shared ---
-
-const VALID_PILLARS = ['code', 'velocity', 'craft', 'collaboration', 'versatility', 'creativity', 'autonomy'];
-const VALID_ARCHETYPES = ['architect', 'shipper', 'artisan', 'creative', 'explorer', 'commando', 'mentor'];
-const VALID_STATUSES = ['open', 'staffing', 'building', 'review', 'shipped', 'archived'];
-const REVIEW_PILLARS = ['collaboration', 'craft', 'velocity'];
+import { VALID_PILLARS, VALID_ARCHETYPES, VALID_STATUSES, REVIEW_PILLARS } from '../constants/shared.js';
 
 const pillar = z.enum(VALID_PILLARS);
 const archetype = z.enum(VALID_ARCHETYPES);
