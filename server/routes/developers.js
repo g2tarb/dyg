@@ -17,7 +17,7 @@ async function developerRoutes(fastify) {
     const availability = request.query.availability;
 
     let query = `
-      SELECT d.*,
+      SELECT d.*, d.secondary_archetype, d.tertiary_archetype, d.tagline,
         json_agg(json_build_object('pillar', ds.pillar, 'score', ds.score)) AS scores,
         ROUND(AVG(ds.score), 1) AS avg_score,
         CASE WHEN EXISTS (

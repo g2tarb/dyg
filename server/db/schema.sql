@@ -41,6 +41,9 @@ CREATE TABLE developers (
     CHECK (archetype IN ('architect', 'shipper', 'artisan', 'creative', 'explorer', 'commando', 'mentor')),
   secondary_archetype VARCHAR(20)
     CHECK (secondary_archetype IS NULL OR secondary_archetype IN ('architect', 'shipper', 'artisan', 'creative', 'explorer', 'commando', 'mentor')),
+  tertiary_archetype VARCHAR(20)
+    CHECK (tertiary_archetype IS NULL OR tertiary_archetype IN ('architect', 'shipper', 'artisan', 'creative', 'explorer', 'commando', 'mentor')),
+  tagline VARCHAR(100),
   price_range VARCHAR(20) NOT NULL DEFAULT 'medium',
   github_username VARCHAR(100),
   languages JSONB DEFAULT '[]',

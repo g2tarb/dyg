@@ -82,10 +82,10 @@ async function updateMemberScores(projectId, userId) {
 
   // Recalculate archetype (primary + secondary)
   const scores = PILLARS.map(p => ({ pillar: p, score: newScores[p] }));
-  const { primary: bestMatch, secondary } = determineArchetype(scores);
+  const { primary: bestMatch, secondary, tertiary } = determineArchetype(scores);
 
   // Update archetype
-  await pool.query('UPDATE developers SET archetype = $1, secondary_archetype = $2 WHERE id = $3', [bestMatch, secondary, devId]);
+  await pool.query('UPDATE developers SET archetype = $1, secondary_archetype = $2, tertiary_archetype = $3 WHERE id = $4', [bestMatch, secondary, tertiary, devId]);
 
   // Create score snapshot
   const pillarScoresJson = {};

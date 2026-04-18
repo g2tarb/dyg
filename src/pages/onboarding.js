@@ -236,6 +236,8 @@ function renderOnboarding(container) {
         </div>
         <div class="card-revealed__info">
           <span class="card-revealed__archetype" style="color:${escapeHTML(archData.color)};">${escapeHTML(archData.name)}</span>
+          ${data.secondary_archetype ? `<span class="card-revealed__secondary">${t(`archetype.${data.secondary_archetype}`)}${data.tertiary_archetype ? ` / ${t(`archetype.${data.tertiary_archetype}`)}` : ''}</span>` : ''}
+          ${data.tertiary_archetype ? `<span class="dual-rare-tag" style="margin-top:4px;">${t('archetype.triple_rare')}</span>` : data.secondary_archetype ? `<span class="dual-rare-tag" style="margin-top:4px;">${t('archetype.dual_rare')}</span>` : ''}
           <span class="card-revealed__name">${escapeHTML(data.name || data.username)}</span>
         </div>
       </div>

@@ -45,6 +45,8 @@ function createDevCard(dev) {
       <div class="dev-card__identity">
         <span class="dev-card__name">${safeName}</span>
         <span class="badge badge--${escapeHTML(dev.archetype)}">${ARCHETYPE_NAMES[dev.archetype] || escapeHTML(dev.archetype)}</span>
+        ${dev.secondary_archetype ? `<span class="badge badge--${escapeHTML(dev.secondary_archetype)}" style="opacity:0.7;">${ARCHETYPE_NAMES[dev.secondary_archetype]}</span>` : ''}
+        ${dev.tertiary_archetype ? `<span class="dual-rare-tag">${t('archetype.triple_rare')}</span>` : dev.secondary_archetype ? `<span class="dual-rare-tag">${t('archetype.dual_rare')}</span>` : ''}
         ${dev.availability ? `<span class="dev-card__avail dev-card__avail--${dev.availability}">${t('availability.' + dev.availability)}</span>` : ''}
       </div>
     </div>

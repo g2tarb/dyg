@@ -195,8 +195,11 @@ export default {
   // About page
   // Dual archetype
   'archetype.dual': 'Dual archetype',
-  'archetype.dual_badge': '{primary} / {secondary}',
+  'archetype.triple': 'Triple archetype',
   'archetype.dual_rare': 'Rare profile',
+  'archetype.triple_rare': 'Legendary profile',
+  'profile.tagline_placeholder': 'Your tagline (e.g. "Build fast, ship faster")',
+  'profile.tagline_saved': 'Tagline saved',
 
   // Availability
   'availability.available': 'Available',

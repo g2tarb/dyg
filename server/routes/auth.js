@@ -106,6 +106,27 @@ async function authRoutes(fastify) {
     return { ok: true };
   });
 
+  // PATCH /api/profile — customize profile (tagline)
+  fastify.patch('/api/profile', async (request, reply) => {
+    try { await request.jwtVerify(); } catch { throw new UnauthorizedError(); }
+
+    const { tagline } = request.body;
+    if (tagline !== undefined && (typeof tagline !== 'string' || tagline.length > 100)) {
+      return reply.code(400).send({ error: 'VALIDATION_FAILED', message: 'Tagline must be 100 chars or less' });
+    }
+
+    const result = await pool.query(
+      'UPDATE developers SET tagline = $1 WHERE user_id = $2 RETURNING id, tagline',
+      [tagline || null, request.user.id]
+    );
+
+    if (result.rows.length === 0) {
+      return reply.code(404).send({ error: 'NOT_FOUND', message: 'Profile not found. Scan your GitHub first.' });
+    }
+
+    return { ok: true, tagline: result.rows[0].tagline };
+  });
+
   // DELETE /api/auth/account — GDPR right to be forgotten
   fastify.delete('/api/auth/account', async (request, reply) => {
     try { await request.jwtVerify(); } catch { throw new UnauthorizedError(); }
@@ -140,21 +161,21 @@ async function authRoutes(fastify) {
     const existing = await pool.query('SELECT id FROM developers WHERE user_id = $1', [userId]);
     let devId;
 
-    // Recalculate archetype with dual detection
-    const { primary, secondary } = determineArchetype(parsed.scores);
+    // Recalculate archetype with dual/triple detection
+    const { primary, secondary, tertiary } = determineArchetype(parsed.scores);
 
     if (existing.rows.length > 0) {
       devId = existing.rows[0].id;
       await pool.query(`
         UPDATE developers SET name = $1, avatar_url = $2, bio = $3, archetype = $4,
-               secondary_archetype = $5, languages = $6, github_username = $7 WHERE id = $8
-      `, [parsed.name, parsed.avatar_url, parsed.bio, primary, secondary, JSON.stringify(parsed.languages), githubUsername, devId]);
+               secondary_archetype = $5, tertiary_archetype = $6, languages = $7, github_username = $8 WHERE id = $9
+      `, [parsed.name, parsed.avatar_url, parsed.bio, primary, secondary, tertiary, JSON.stringify(parsed.languages), githubUsername, devId]);
       await pool.query('DELETE FROM developer_scores WHERE developer_id = $1', [devId]);
     } else {
       const devResult = await pool.query(`
-        INSERT INTO developers (user_id, name, avatar_url, bio, archetype, secondary_archetype, github_username, languages)
-        VALUES ($1, $2, $3, $4, $5, $6, $7, $8) RETURNING id
-      `, [userId, parsed.name, parsed.avatar_url, parsed.bio, primary, secondary, githubUsername, JSON.stringify(parsed.languages)]);
+        INSERT INTO developers (user_id, name, avatar_url, bio, archetype, secondary_archetype, tertiary_archetype, github_username, languages)
+        VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9) RETURNING id
+      `, [userId, parsed.name, parsed.avatar_url, parsed.bio, primary, secondary, tertiary, githubUsername, JSON.stringify(parsed.languages)]);
       devId = devResult.rows[0].id;
     }
 
