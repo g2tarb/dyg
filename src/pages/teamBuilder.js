@@ -1,5 +1,5 @@
 import { getState, subscribe, removeFromTeam, setState } from '../store.js';
-import { createTeamRadar, PILLARS_ORDER, PILLAR_LABELS } from '../components/radarChart.js';
+import { createTeamRadar } from '../components/radarChart.js';
 import { createSynergyGauge, updateSynergyGauge } from '../components/synergyGauge.js';
 import { ARCHETYPE_NAMES } from '../components/devCard.js';
 import { showToast } from '../components/toast.js';
@@ -7,25 +7,7 @@ import { escapeHTML } from '../utils/sanitize.js';
 
 const MAX_SLOTS = 5;
 let unsubTeam = null;
-
-function calculateLocalSynergy(members) {
-  if (members.length === 0) return { synergy: 0, diversityBonus: 0, total: 0 };
-
-  const pillarMaxes = PILLARS_ORDER.map(pillar => {
-    const scores = members.map(m => {
-      const s = (m.scores || []).find(sc => sc.pillar === pillar);
-      return s ? s.score : 0;
-    });
-    return Math.max(0, ...scores);
-  });
-
-  const coverage = pillarMaxes.reduce((sum, v) => sum + v, 0) / (PILLARS_ORDER.length * 10) * 100;
-  const uniqueArchetypes = new Set(members.map(m => m.archetype));
-  const diversityBonus = Math.max(0, (uniqueArchetypes.size - 1) * 5);
-  const total = Math.min(100, Math.round(coverage + diversityBonus));
-
-  return { synergy: Math.round(coverage), diversityBonus, total };
-}
+let unsubSynergy = null;
 
 function renderSlots(slotsContainer, team) {
   slotsContainer.innerHTML = '';
@@ -141,12 +123,8 @@ function renderTeamBuilder(container) {
 
   let currentGauge = null;
 
-  function updateAll(team) {
-    // Slots
+  function updateTeamUI(team) {
     renderSlots(slotsContainer, team);
-
-    // Synergy
-    const { synergy, diversityBonus, total } = calculateLocalSynergy(team);
 
     // Radar
     radarMount.innerHTML = '';
@@ -161,15 +139,6 @@ function renderTeamBuilder(container) {
           </p>
         </div>
       `;
-    }
-
-    // Gauge
-    if (!currentGauge) {
-      currentGauge = createSynergyGauge(synergy, diversityBonus, total);
-      gaugeMount.innerHTML = '';
-      gaugeMount.appendChild(currentGauge);
-    } else {
-      updateSynergyGauge(currentGauge, synergy, diversityBonus, total);
     }
 
     // Empty state CTA
@@ -188,15 +157,29 @@ function renderTeamBuilder(container) {
     }
   }
 
-  // Initial render
-  updateAll(getState('team'));
+  function updateGauge({ coverage, diversityBonus, total }) {
+    if (!currentGauge) {
+      currentGauge = createSynergyGauge(coverage, diversityBonus, total);
+      gaugeMount.innerHTML = '';
+      gaugeMount.appendChild(currentGauge);
+    } else {
+      updateSynergyGauge(currentGauge, coverage, diversityBonus, total);
+    }
+  }
 
-  // Subscribe to team changes
-  unsubTeam = subscribe('team', updateAll);
+  // Initial render
+  updateTeamUI(getState('team'));
+  updateGauge(getState('synergy'));
+
+  // Subscribe to changes
+  unsubTeam = subscribe('team', updateTeamUI);
+  unsubSynergy = subscribe('synergy', updateGauge);
 
   return () => {
     if (unsubTeam) unsubTeam();
+    if (unsubSynergy) unsubSynergy();
     unsubTeam = null;
+    unsubSynergy = null;
     currentGauge = null;
   };
 }

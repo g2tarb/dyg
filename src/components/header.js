@@ -8,6 +8,7 @@ function createHeader() {
     <nav class="header-nav container">
       <a href="#/" class="header-logo">DYG</a>
       <div class="header-links">
+        <a href="#/about" class="header-link">Qui sommes-nous</a>
         <a href="#/search" class="header-link">Explorer</a>
         <a href="#/onboarding" class="header-link header-link--dev">Je suis dev</a>
         <a href="#/team" class="header-link header-team">

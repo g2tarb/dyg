@@ -12,6 +12,15 @@ if (process.env.GITHUB_PAT && process.env.GITHUB_PAT !== 'your_github_personal_a
   headers['Authorization'] = `Bearer ${process.env.GITHUB_PAT}`;
 }
 
+function hashUsername(str) {
+  let hash = 0;
+  for (let i = 0; i < str.length; i++) {
+    hash = ((hash << 5) - hash) + str.charCodeAt(i);
+    hash |= 0;
+  }
+  return Math.abs(hash);
+}
+
 async function fetchGitHubProfile(username) {
   const [userRes, reposRes] = await Promise.all([
     fetch(`${GITHUB_API}/users/${username}`, { headers }),
@@ -53,9 +62,10 @@ async function fetchGitHubProfile(username) {
   const originalRepos = repos.filter(r => !r.fork).length;
   const autonomy = Math.min(10, Math.round(originalRepos / 4 + (hasReadmes > 5 ? 2 : 0)));
 
-  // Craft & Creativity: randomized in credible range (not measurable from GitHub)
-  const craft = Math.floor(Math.random() * 4) + 5;
-  const creativity = Math.floor(Math.random() * 4) + 4;
+  // Craft & Creativity: deterministic from username (not measurable from GitHub)
+  const h = hashUsername(username);
+  const craft = (h % 4) + 5;
+  const creativity = ((h >>> 8) % 4) + 4;
 
   return {
     username: user.login,

@@ -35,7 +35,10 @@ function renderLanding(container) {
           Les plateformes te demandent de croire un CV.<br>
           <strong>DYG scanne, score et profile.</strong>
         </p>
-        <a href="#/search" class="btn-primary btn-primary--lg landing-hero__cta">Trouve tes devs</a>
+        <div class="landing-hero__actions" style="display:flex;gap:var(--space-lg);align-items:center;flex-wrap:wrap;justify-content:center;">
+          <a href="#/search" class="btn-primary btn-primary--lg landing-hero__cta">Trouve tes devs</a>
+          <a href="#/about" class="btn-secondary landing-hero__cta" style="animation:hero-fade-up 0.6s var(--ease-out) 1.1s both;">Découvrir DYG</a>
+        </div>
       </div>
     </section>
 
