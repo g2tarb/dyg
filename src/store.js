@@ -2,6 +2,8 @@ const state = {
   team: [],
   teamId: localStorage.getItem('dyg_team_id') || null,
   synergy: { coverage: 0, diversityBonus: 0, total: 0 },
+  user: null,        // { id, github_login, avatar_url, name }
+  developer: null,   // { id, archetype, scores, ... } — linked dev profile
   developers: [],
   filters: {
     pillar: null,
@@ -130,7 +132,34 @@ async function loadTeamFromServer() {
   }
 }
 
-// Expose to window for console testing
-window.Store = { getState, setState, subscribe, addToTeam, removeFromTeam, isInTeam, loadTeamFromServer };
+// --- Auth ---
 
-export { getState, setState, subscribe, addToTeam, removeFromTeam, isInTeam, loadTeamFromServer };
+async function checkAuth() {
+  try {
+    const res = await fetch('/api/auth/me');
+    if (!res.ok) {
+      setState('user', null);
+      setState('developer', null);
+      return null;
+    }
+    const data = await res.json();
+    setState('user', data.user);
+    setState('developer', data.developer);
+    return data;
+  } catch {
+    setState('user', null);
+    setState('developer', null);
+    return null;
+  }
+}
+
+async function logout() {
+  try { await fetch('/api/auth/logout', { method: 'POST' }); } catch { /* ignore */ }
+  setState('user', null);
+  setState('developer', null);
+}
+
+// Expose to window for console testing
+window.Store = { getState, setState, subscribe, addToTeam, removeFromTeam, isInTeam, loadTeamFromServer, checkAuth, logout };
+
+export { getState, setState, subscribe, addToTeam, removeFromTeam, isInTeam, loadTeamFromServer, checkAuth, logout };

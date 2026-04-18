@@ -16,7 +16,10 @@
   "author": "Scory — 4Dayvelopment",
   "license": "ISC",
   "dependencies": {
+    "@fastify/cookie": "^11.0.2",
     "@fastify/cors": "^11.2.0",
+    "@fastify/jwt": "^10.0.0",
+    "@fastify/oauth2": "^8.2.0",
     "@fastify/rate-limit": "^10.3.0",
     "dotenv": "^17.4.2",
     "fastify": "^5.8.5",

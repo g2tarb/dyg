@@ -30,10 +30,10 @@ function renderLanding(container) {
           <span class="landing-hero__title-main">DYG</span>
           <span class="landing-hero__title-sub">Do Your Game</span>
         </h1>
-        <p class="landing-hero__tagline">Ton jeu. La bonne équipe.</p>
+        <p class="landing-hero__tagline">Progresse. Connecte. Prouve.</p>
         <p class="landing-hero__pitch">
-          Les plateformes te demandent de croire un CV.<br>
-          <strong>DYG scanne, score et profile.</strong>
+          Tu veux entrer en 42, Epitech, ou prouver que tu sais coder ?<br>
+          <strong>Trouve ton équipe. Construis des vrais projets. Forge ton portfolio.</strong>
         </p>
         <div class="landing-hero__actions" style="display:flex;gap:var(--space-lg);align-items:center;flex-wrap:wrap;justify-content:center;">
           <a href="#/search" class="btn-primary btn-primary--lg landing-hero__cta">Trouve tes devs</a>
@@ -44,24 +44,24 @@ function renderLanding(container) {
 
     <section class="landing-how container">
       <div class="landing-how__header">
-        <h2 class="landing-how__title">Comment ça marche</h2>
-        <p class="landing-how__sub">3 étapes. Zéro bullshit.</p>
+        <h2 class="landing-how__title">3 pôles. 1 objectif.</h2>
+        <p class="landing-how__sub">Deviens inarrêtable.</p>
       </div>
       <div class="landing-how__steps">
         <div class="landing-step" id="step-1">
           <span class="landing-step__number">01</span>
-          <h3 class="landing-step__title">On scanne</h3>
-          <p class="landing-step__desc">GitHub, repos, commits, langages. Pas de déclaratif. Des données.</p>
+          <h3 class="landing-step__title">Trouver</h3>
+          <p class="landing-step__desc">Scanne ton GitHub. Découvre ton archétype. Explore les devs qui complètent tes forces.</p>
         </div>
         <div class="landing-step" id="step-2">
           <span class="landing-step__number">02</span>
-          <h3 class="landing-step__title">On profile</h3>
-          <p class="landing-step__desc">7 piliers, un radar, un archétype. Tu sais exactement qui est en face.</p>
+          <h3 class="landing-step__title">Connecter</h3>
+          <p class="landing-step__desc">Forme une équipe complémentaire. La synergie se calcule en temps réel.</p>
         </div>
         <div class="landing-step" id="step-3">
           <span class="landing-step__number">03</span>
-          <h3 class="landing-step__title">Tu composes</h3>
-          <p class="landing-step__desc">Drag & drop ta dream team. La synergie se calcule en temps réel.</p>
+          <h3 class="landing-step__title">Construire</h3>
+          <p class="landing-step__desc">Lancez un vrai projet ensemble. Chaque livraison nourrit ton portfolio.</p>
         </div>
       </div>
     </section>
@@ -90,9 +90,9 @@ function renderLanding(container) {
     </section>
 
     <section class="landing-cta-bottom container">
-      <h2 class="landing-cta-bottom__title">Stop les CVs. Start le scoring.</h2>
-      <p class="landing-cta-bottom__sub">14 devs profilés t'attendent. Compose ta première team.</p>
-      <a href="#/search" class="btn-primary btn-primary--lg">Explorer les devs</a>
+      <h2 class="landing-cta-bottom__title">Ton portfolio commence ici.</h2>
+      <p class="landing-cta-bottom__sub">Scanne ton GitHub. Trouve ton archétype. Commence à construire.</p>
+      <a href="#/onboarding" class="btn-primary btn-primary--lg">Scanner mon GitHub</a>
     </section>
   `;
 

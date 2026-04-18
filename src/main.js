@@ -1,4 +1,4 @@
-import { loadTeamFromServer } from './store.js';
+import { loadTeamFromServer, checkAuth } from './store.js';
 import { registerRoute, initRouter } from './router.js';
 import { createHeader } from './components/header.js';
 import { renderLanding } from './pages/landing.js';
@@ -30,5 +30,6 @@ registerRoute('/about', renderAbout);
 // Start router
 initRouter();
 
-// Restore saved team from server
+// Restore state from server
+checkAuth();
 loadTeamFromServer();

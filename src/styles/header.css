@@ -143,6 +143,49 @@
   box-shadow: 0 0 12px rgba(232, 98, 10, 0.5);
 }
 
+/* Auth — user logged in */
+
+.header-auth {
+  display: flex;
+  align-items: center;
+}
+
+.header-user {
+  display: flex;
+  align-items: center;
+  gap: var(--space-sm);
+}
+
+.header-user__avatar {
+  width: 26px;
+  height: 26px;
+  border-radius: var(--radius-full);
+  border: 1px solid var(--color-primary);
+}
+
+.header-user__name {
+  font-size: 0.75rem;
+  font-weight: 600;
+  color: var(--color-text);
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+}
+
+.header-user__logout {
+  background: none;
+  border: none;
+  color: var(--color-text-dim);
+  font-size: 1.125rem;
+  cursor: pointer;
+  padding: 0 4px;
+  line-height: 1;
+  transition: color var(--duration-fast) ease;
+}
+
+.header-user__logout:hover {
+  color: var(--color-error);
+}
+
 #page-content {
   padding-top: 56px;
 }

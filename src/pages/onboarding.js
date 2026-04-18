@@ -2,6 +2,7 @@ import { PILLAR_LABELS, PILLARS_ORDER } from '../components/radarChart.js';
 import { createRadarChart, animateRadar } from '../components/radarChart.js';
 import { ARCHETYPE_DATA } from '../components/archetypeCard.js';
 import { escapeHTML } from '../utils/sanitize.js';
+import { getState, checkAuth } from '../store.js';
 
 const SCAN_STEPS = [
   'Connexion à GitHub...',
@@ -20,7 +21,14 @@ function renderOnboarding(container) {
 
           <div class="onboarding-left">
             <h2 class="onboarding-title">Découvre ton archétype</h2>
-            <p class="onboarding-subtitle">Entre ton pseudo GitHub. DYG analyse ton activité et te profile en archétype de dev.</p>
+            <p class="onboarding-subtitle">DYG analyse ton activité GitHub et te profile en archétype de dev.</p>
+
+            <div class="onboarding-auth-cta" id="auth-cta" style="display:none;margin-bottom:var(--space-xl);">
+              <a href="/auth/github" class="btn-primary" style="gap:var(--space-sm);">
+                Connecter GitHub
+              </a>
+              <p style="color:var(--color-text-dim);font-size:0.75rem;margin-top:var(--space-sm);">Connecte-toi pour sauvegarder ton profil DYG</p>
+            </div>
 
             <div class="onboarding-input-group" id="input-group">
               <div class="onboarding-input-row">
@@ -160,6 +168,26 @@ function renderOnboarding(container) {
     scanBar.style.width = '100%';
     scanStep.textContent = 'Analyse terminée.';
 
+    // If authenticated, save profile to server
+    const currentUser = getState('user');
+    if (currentUser && data.username.toLowerCase() === currentUser.github_login.toLowerCase()) {
+      try {
+        await fetch('/api/onboarding/save-profile', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({
+            name: data.name,
+            avatar_url: data.avatar_url,
+            bio: data.bio,
+            archetype: data.archetype,
+            languages: data.languages,
+            scores: data.scores
+          })
+        });
+        await checkAuth(); // Refresh developer profile in store
+      } catch { /* save is best-effort */ }
+    }
+
     // Reveal scores one by one
     for (const pillar of PILLARS_ORDER) {
       const sc = data.scores.find(s => s.pillar === pillar);
@@ -242,8 +270,20 @@ function renderOnboarding(container) {
     if (e.key === 'Enter') startScan();
   });
 
-  // Focus input on mount
-  requestAnimationFrame(() => input.focus());
+  // Auth-aware behavior
+  const user = getState('user');
+  const authCta = container.querySelector('#auth-cta');
+
+  if (user) {
+    // User is logged in — pre-fill with their GitHub login and auto-scan
+    input.value = user.github_login;
+    authCta.style.display = 'none';
+    requestAnimationFrame(() => startScan());
+  } else {
+    // Show OAuth CTA, let user scan any username manually
+    authCta.style.display = 'block';
+    requestAnimationFrame(() => input.focus());
+  }
 }
 
 export { renderOnboarding };
