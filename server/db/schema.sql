@@ -31,8 +31,6 @@ CREATE TABLE users (
   abandon_count SMALLINT DEFAULT 0,
   banned_until TIMESTAMPTZ,
   ban_count SMALLINT DEFAULT 0,
-  banned_ip TEXT,
-  is_paid_reinscription BOOLEAN DEFAULT FALSE,
   created_at TIMESTAMPTZ DEFAULT NOW(),
   updated_at TIMESTAMPTZ DEFAULT NOW()
 );
@@ -159,7 +157,6 @@ CREATE TABLE ban_history (
   reason VARCHAR(50) NOT NULL,
   ban_duration_months SMALLINT NOT NULL,
   banned_until TIMESTAMPTZ NOT NULL,
-  ip_address TEXT,
   created_at TIMESTAMPTZ DEFAULT NOW()
 );
 

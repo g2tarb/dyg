@@ -239,8 +239,7 @@ async function projectRoutes(fastify) {
     // If project is in active phase (building or review), this is an ABANDON
     let banResult = null;
     if (projectStatus === 'building' || projectStatus === 'review') {
-      const ip = request.ip || request.headers['x-forwarded-for'] || 'unknown';
-      banResult = await recordAbandon(userId, id, ip);
+      banResult = await recordAbandon(userId, id);
 
       // Audit
       await pool.query(`

@@ -21,7 +21,7 @@ import projectRoutes from './routes/projects.js';
 import messageRoutes from './routes/messages.js';
 import dataRoutes from './routes/data.js';
 import reputationRoutes from './routes/reputation.js';
-import { isIPBanned } from './services/ban.js';
+// ban check is done at auth level, not IP level
 
 const __dirname = dirname(fileURLToPath(import.meta.url));
 const isProd = env.NODE_ENV === 'production';
@@ -77,28 +77,15 @@ await fastify.register(rateLimit, {
   }
 });
 
-// IP ban check (rate limit + user ban)
+// Rate limit IP ban check
 fastify.addHook('onRequest', async (request, reply) => {
-  const ip = request.ip;
-
-  // Rate limit IP ban
-  const banExpiry = bannedIPs.get(ip);
+  const banExpiry = bannedIPs.get(request.ip);
   if (banExpiry) {
     if (Date.now() < banExpiry) {
       return reply.code(403).send({ error: 'FORBIDDEN', message: 'Too many requests. Try again later.' });
     }
-    bannedIPs.delete(ip);
+    bannedIPs.delete(request.ip);
   }
-
-  // User ban IP check (skip for static files and health)
-  if (!request.url.startsWith('/api/') && !request.url.startsWith('/auth/')) return;
-  if (request.url === '/api/health') return;
-
-  try {
-    if (await isIPBanned(ip)) {
-      return reply.code(403).send({ error: 'BANNED', message: 'Account banned. Contact support.' });
-    }
-  } catch { /* DB error — don't block */ }
 });
 
 // --- Request ID in response ---
