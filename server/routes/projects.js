@@ -1,6 +1,8 @@
 import pool from '../db/connection.js';
+import { closeProject } from '../services/closing.js';
 
 const UUID_RE = /^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$/i;
+const REVIEW_PILLARS = ['collaboration', 'craft', 'velocity'];
 
 async function getProjectWithMembers(projectId) {
   const projResult = await pool.query('SELECT * FROM projects WHERE id = $1', [projectId]);
@@ -115,6 +117,16 @@ async function projectRoutes(fastify) {
              started_at = $5, ended_at = $6 WHERE id = $7
     `, [updates.name, updates.description, updates.repo_url, updates.status, startedAt, endedAt, id]);
 
+    // Closing ritual: calculate scores when project ships
+    if (status === 'shipped' && current.status !== 'shipped') {
+      try {
+        await closeProject(id);
+        fastify.log.info(`Closing ritual completed for project ${id}`);
+      } catch (err) {
+        fastify.log.error(`Closing ritual failed for project ${id}:`, err);
+      }
+    }
+
     const project = await getProjectWithMembers(id);
     return project;
   });
@@ -171,6 +183,78 @@ async function projectRoutes(fastify) {
 
     const full = await getProjectWithMembers(id);
     return full;
+  });
+
+  // POST /api/projects/:id/reviews — submit peer reviews (batch)
+  fastify.post('/api/projects/:id/reviews', async (request, reply) => {
+    try { await request.jwtVerify(); } catch { return reply.code(401).send({ error: 'Not authenticated' }); }
+
+    const { id } = request.params;
+    const reviewerId = request.user.id;
+    const { reviews } = request.body; // [{ user_id, collaboration: 1-5, craft: 1-5, velocity: 1-5 }]
+
+    if (!Array.isArray(reviews) || reviews.length === 0) {
+      return reply.code(400).send({ error: 'reviews array is required' });
+    }
+
+    // Verify project exists and is in review status
+    const projCheck = await pool.query('SELECT status FROM projects WHERE id = $1', [id]);
+    if (projCheck.rows.length === 0) return reply.code(404).send({ error: 'Project not found' });
+    if (projCheck.rows[0].status !== 'review') {
+      return reply.code(400).send({ error: 'Reviews can only be submitted during review phase' });
+    }
+
+    // Verify reviewer is a member
+    const memberCheck = await pool.query(
+      'SELECT 1 FROM project_members WHERE project_id = $1 AND user_id = $2',
+      [id, reviewerId]
+    );
+    if (memberCheck.rows.length === 0) return reply.code(403).send({ error: 'Not a project member' });
+
+    // Insert reviews
+    for (const review of reviews) {
+      if (review.user_id === reviewerId) continue; // Can't review yourself
+
+      for (const pillar of REVIEW_PILLARS) {
+        const rating = parseInt(review[pillar]);
+        if (!rating || rating < 1 || rating > 5) continue;
+
+        await pool.query(`
+          INSERT INTO peer_reviews (project_id, reviewer_id, reviewee_id, pillar, rating)
+          VALUES ($1, $2, $3, $4, $5)
+          ON CONFLICT (project_id, reviewer_id, reviewee_id, pillar)
+          DO UPDATE SET rating = $5, created_at = NOW()
+        `, [id, reviewerId, review.user_id, pillar, rating]);
+      }
+    }
+
+    return { ok: true };
+  });
+
+  // GET /api/projects/:id/reviews — get review status for this project
+  fastify.get('/api/projects/:id/reviews', async (request, reply) => {
+    const { id } = request.params;
+
+    // Who has reviewed
+    const reviewersResult = await pool.query(
+      'SELECT DISTINCT reviewer_id FROM peer_reviews WHERE project_id = $1',
+      [id]
+    );
+    const reviewerIds = reviewersResult.rows.map(r => r.reviewer_id);
+
+    // Get current user's reviews (if authenticated)
+    let myReviews = [];
+    try {
+      await request.jwtVerify();
+      const userId = request.user.id;
+      const myResult = await pool.query(
+        'SELECT reviewee_id, pillar, rating FROM peer_reviews WHERE project_id = $1 AND reviewer_id = $2',
+        [id, userId]
+      );
+      myReviews = myResult.rows;
+    } catch { /* not authenticated, that's fine */ }
+
+    return { reviewerIds, myReviews };
   });
 
   // GET /api/users/:login/portfolio — public portfolio

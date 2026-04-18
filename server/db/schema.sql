@@ -102,6 +102,18 @@ CREATE TABLE score_snapshots (
   UNIQUE(user_id, project_id)
 );
 
+-- Peer reviews (closing ritual)
+CREATE TABLE peer_reviews (
+  id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
+  project_id UUID NOT NULL REFERENCES projects(id) ON DELETE CASCADE,
+  reviewer_id UUID NOT NULL REFERENCES users(id) ON DELETE CASCADE,
+  reviewee_id UUID NOT NULL REFERENCES users(id) ON DELETE CASCADE,
+  pillar VARCHAR(20) NOT NULL,
+  rating SMALLINT NOT NULL CHECK (rating >= 1 AND rating <= 5),
+  created_at TIMESTAMPTZ DEFAULT NOW(),
+  UNIQUE(project_id, reviewer_id, reviewee_id, pillar)
+);
+
 -- Indexes
 CREATE INDEX idx_users_github_login ON users(github_login);
 CREATE INDEX idx_developers_user_id ON developers(user_id);
@@ -116,3 +128,5 @@ CREATE INDEX idx_project_members_user ON project_members(user_id);
 CREATE INDEX idx_contribution_events_project ON contribution_events(project_id);
 CREATE INDEX idx_contribution_events_user ON contribution_events(user_id);
 CREATE INDEX idx_score_snapshots_user ON score_snapshots(user_id);
+CREATE INDEX idx_peer_reviews_project ON peer_reviews(project_id);
+CREATE INDEX idx_peer_reviews_reviewee ON peer_reviews(reviewee_id);

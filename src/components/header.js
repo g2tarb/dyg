@@ -10,6 +10,7 @@ function createHeader() {
       <div class="header-links">
         <a href="#/about" class="header-link">Qui sommes-nous</a>
         <a href="#/search" class="header-link">Explorer</a>
+        <a href="#/projects" class="header-link">Projets</a>
         <a href="#/team" class="header-link header-team">
           <span class="team-icon">&#9776;</span>
           Ma team
