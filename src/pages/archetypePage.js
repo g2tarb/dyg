@@ -2,13 +2,13 @@ import { escapeHTML } from '../utils/sanitize.js';
 import { t } from '../i18n/index.js';
 
 const ARCHETYPE_DATA = {
-  architect: { color: '#3B82F6', dominants: ['code', 'autonomy'], image: '/src/assets/archetypes/architect.png' },
-  shipper: { color: '#22C55E', dominants: ['velocity', 'autonomy'], image: '/src/assets/archetypes/shipper.png' },
-  artisan: { color: '#F5C542', dominants: ['craft', 'code'], image: '/src/assets/archetypes/artisan.png' },
-  creative: { color: '#A855F7', dominants: ['creativity', 'versatility'], image: '/src/assets/archetypes/creative.png' },
-  explorer: { color: '#06B6D4', dominants: ['versatility', 'creativity'], image: '/src/assets/archetypes/explorer.png' },
-  commando: { color: '#EF4444', dominants: ['velocity', 'collaboration'], image: '/src/assets/archetypes/commando.png' },
-  mentor: { color: '#F97316', dominants: ['collaboration', 'craft'], image: '/src/assets/archetypes/mentor.png' }
+  architect: { color: '#3B82F6', dominants: ['code', 'autonomy'], image: '/assets/archetypes/architect.png' },
+  shipper: { color: '#22C55E', dominants: ['velocity', 'autonomy'], image: '/assets/archetypes/shipper.png' },
+  artisan: { color: '#F5C542', dominants: ['craft', 'code'], image: '/assets/archetypes/artisan.png' },
+  creative: { color: '#A855F7', dominants: ['creativity', 'versatility'], image: '/assets/archetypes/creative.png' },
+  explorer: { color: '#06B6D4', dominants: ['versatility', 'creativity'], image: '/assets/archetypes/explorer.png' },
+  commando: { color: '#EF4444', dominants: ['velocity', 'collaboration'], image: '/assets/archetypes/commando.png' },
+  mentor: { color: '#F97316', dominants: ['collaboration', 'craft'], image: '/assets/archetypes/mentor.png' }
 };
 
 async function renderArchetypePage(container, params = {}) {

@@ -165,7 +165,7 @@ function renderAbout(container) {
           ${ARCHETYPES_KEYS.map((key, i) => `
             <div class="about-archetype ${i % 2 !== 0 ? 'about-archetype--reverse' : ''}" style="--arch-color: ${ARCHETYPES_COLORS[key]};">
               <div class="about-archetype__portrait">
-                <img src="/src/assets/archetypes/${escapeHTML(key)}.png" alt="${escapeHTML(t('archetype.' + key + '.name'))}" class="about-archetype__img">
+                <img src="/assets/archetypes/${escapeHTML(key)}.png" alt="${escapeHTML(t('archetype.' + key + '.name'))}" class="about-archetype__img">
                 <div class="about-archetype__portrait-glow"></div>
               </div>
               <div class="about-archetype__content">

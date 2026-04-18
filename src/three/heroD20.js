@@ -6,13 +6,13 @@ const disposables = [];
 const cardMeshes = [];
 
 const ARCHETYPES = [
-  { key: 'architect', name: 'ARCHITECTE', color: '#3B82F6', image: '/src/assets/archetypes/architect.png' },
-  { key: 'shipper', name: 'SHIPPER', color: '#22C55E', image: '/src/assets/archetypes/shipper.png' },
-  { key: 'artisan', name: 'ARTISAN', color: '#F5C542', image: '/src/assets/archetypes/artisan.png' },
-  { key: 'creative', name: 'CRÉATIF', color: '#A855F7', image: '/src/assets/archetypes/creative.png' },
-  { key: 'explorer', name: 'EXPLORATEUR', color: '#06B6D4', image: '/src/assets/archetypes/explorer.png' },
-  { key: 'commando', name: 'COMMANDO', color: '#EF4444', image: '/src/assets/archetypes/commando.png' },
-  { key: 'mentor', name: 'MENTOR', color: '#F97316', image: '/src/assets/archetypes/mentor.png' }
+  { key: 'architect', name: 'ARCHITECTE', color: '#3B82F6', image: '/assets/archetypes/architect.png' },
+  { key: 'shipper', name: 'SHIPPER', color: '#22C55E', image: '/assets/archetypes/shipper.png' },
+  { key: 'artisan', name: 'ARTISAN', color: '#F5C542', image: '/assets/archetypes/artisan.png' },
+  { key: 'creative', name: 'CRÉATIF', color: '#A855F7', image: '/assets/archetypes/creative.png' },
+  { key: 'explorer', name: 'EXPLORATEUR', color: '#06B6D4', image: '/assets/archetypes/explorer.png' },
+  { key: 'commando', name: 'COMMANDO', color: '#EF4444', image: '/assets/archetypes/commando.png' },
+  { key: 'mentor', name: 'MENTOR', color: '#F97316', image: '/assets/archetypes/mentor.png' }
 ];
 
 function initHeroD20(container) {

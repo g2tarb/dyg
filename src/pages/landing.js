@@ -6,13 +6,13 @@ import { t } from '../i18n/index.js';
 let cleanupD20 = null;
 
 const ALL_ARCHETYPES = [
-  { key: 'architect', name: 'Architecte', tagline: 'Il construit ce qui dure.', color: '#3B82F6', image: '/src/assets/archetypes/architect.png' },
-  { key: 'shipper', name: 'Shipper', tagline: 'Il livre. Point.', color: '#22C55E', image: '/src/assets/archetypes/shipper.png' },
-  { key: 'artisan', name: 'Artisan', tagline: 'Chaque pixel est une décision.', color: '#F5C542', image: '/src/assets/archetypes/artisan.png' },
-  { key: 'creative', name: 'Créatif', tagline: 'Il voit ce qui n\'existe pas encore.', color: '#A855F7', image: '/src/assets/archetypes/creative.png' },
-  { key: 'explorer', name: 'Explorateur', tagline: 'Là où tu spécialises, il connecte.', color: '#06B6D4', image: '/src/assets/archetypes/explorer.png' },
-  { key: 'commando', name: 'Commando', tagline: 'Rapide. Collectif. Létal.', color: '#EF4444', image: '/src/assets/archetypes/commando.png' },
-  { key: 'mentor', name: 'Mentor', tagline: 'Son code review vaut de l\'or.', color: '#F97316', image: '/src/assets/archetypes/mentor.png' }
+  { key: 'architect', name: 'Architecte', tagline: 'Il construit ce qui dure.', color: '#3B82F6', image: '/assets/archetypes/architect.png' },
+  { key: 'shipper', name: 'Shipper', tagline: 'Il livre. Point.', color: '#22C55E', image: '/assets/archetypes/shipper.png' },
+  { key: 'artisan', name: 'Artisan', tagline: 'Chaque pixel est une décision.', color: '#F5C542', image: '/assets/archetypes/artisan.png' },
+  { key: 'creative', name: 'Créatif', tagline: 'Il voit ce qui n\'existe pas encore.', color: '#A855F7', image: '/assets/archetypes/creative.png' },
+  { key: 'explorer', name: 'Explorateur', tagline: 'Là où tu spécialises, il connecte.', color: '#06B6D4', image: '/assets/archetypes/explorer.png' },
+  { key: 'commando', name: 'Commando', tagline: 'Rapide. Collectif. Létal.', color: '#EF4444', image: '/assets/archetypes/commando.png' },
+  { key: 'mentor', name: 'Mentor', tagline: 'Son code review vaut de l\'or.', color: '#F97316', image: '/assets/archetypes/mentor.png' }
 ];
 
 function renderLanding(container) {
@@ -20,7 +20,7 @@ function renderLanding(container) {
     <section class="landing-hero">
       <!-- Video background -->
       <video class="landing-hero__video" id="hero-video" autoplay muted loop playsinline>
-        <source src="/src/assets/hero-reel.mp4" type="video/mp4">
+        <source src="/assets/hero-reel.mp4" type="video/mp4">
       </video>
       <!-- Dark overlay on top of video -->
       <div class="landing-hero__overlay"></div>

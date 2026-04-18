@@ -4,77 +4,77 @@
 
 -- ARCHITECTES (dominant: code + autonomy)
 INSERT INTO developers (id, name, avatar_url, bio, archetype, price_range, github_username, languages) VALUES
-('a1000000-0000-0000-0000-000000000001', 'Kael Andersen', '/src/assets/portraits/kael.png',
+('a1000000-0000-0000-0000-000000000001', 'Kael Andersen', '/assets/portraits/kael.png',
  'Développeur Unity depuis 8 ans. Architecte systèmes multijoueur, son code réseau est une référence.',
  'architect', 'high', 'kael-dev',
  '["C#", "Unity", "C++", "Rust"]'),
-('a1000000-0000-0000-0000-000000000002', 'Yumi Nakamura', '/src/assets/portraits/yumi.png',
+('a1000000-0000-0000-0000-000000000002', 'Yumi Nakamura', '/assets/portraits/yumi.png',
  'Spécialiste moteur de jeu. Elle a construit 3 frameworks custom avant de rejoindre un studio AAA.',
  'architect', 'high', 'yumi-engine',
  '["C++", "Vulkan", "Rust", "Python"]');
 
 -- SHIPPERS (dominant: velocity + autonomy)
 INSERT INTO developers (id, name, avatar_url, bio, archetype, price_range, github_username, languages) VALUES
-('a2000000-0000-0000-0000-000000000001', 'Marcus Rivera', '/src/assets/portraits/marcus.png',
+('a2000000-0000-0000-0000-000000000001', 'Marcus Rivera', '/assets/portraits/marcus.png',
  '12 game jams en 2 ans. Chaque prototype fonctionne. Chaque deadline est tenue.',
  'shipper', 'medium', 'marcus-ships',
  '["GDScript", "Godot", "JavaScript", "Lua"]'),
-('a2000000-0000-0000-0000-000000000002', 'Lina Bergström', '/src/assets/portraits/lina.png',
+('a2000000-0000-0000-0000-000000000002', 'Lina Bergström', '/assets/portraits/lina.png',
  'Du concept au store en 6 semaines. Elle code, elle ship, elle recommence.',
  'shipper', 'medium', 'lina-fast',
  '["C#", "Unity", "TypeScript", "Dart"]');
 
 -- ARTISANS (dominant: craft + code)
 INSERT INTO developers (id, name, avatar_url, bio, archetype, price_range, github_username, languages) VALUES
-('a3000000-0000-0000-0000-000000000001', 'Théo Mercier', '/src/assets/portraits/theo.png',
+('a3000000-0000-0000-0000-000000000001', 'Théo Mercier', '/assets/portraits/theo.png',
  'Chaque shader est une oeuvre. Son pixel art a plus de personnalité que la plupart des jeux 3D.',
  'artisan', 'high', 'theo-craft',
  '["GLSL", "C#", "Unity", "Aseprite"]'),
-('a3000000-0000-0000-0000-000000000002', 'Sakura Hayashi', '/src/assets/portraits/sakura.png',
+('a3000000-0000-0000-0000-000000000002', 'Sakura Hayashi', '/assets/portraits/sakura.png',
  'Sound designer et dev. Ses jeux se jouent autant avec les oreilles qu''avec les mains.',
  'artisan', 'medium', 'sakura-audio',
  '["C#", "Unity", "FMOD", "Wwise", "Python"]');
 
 -- CRÉATIFS (dominant: creativity + versatility)
 INSERT INTO developers (id, name, avatar_url, bio, archetype, price_range, github_username, languages) VALUES
-('a4000000-0000-0000-0000-000000000001', 'Enzo Da Silva', '/src/assets/portraits/enzo.png',
+('a4000000-0000-0000-0000-000000000001', 'Enzo Da Silva', '/assets/portraits/enzo.png',
  'Game designer et développeur. Ses game jams finissent toujours avec un concept que personne n''avait vu venir.',
  'creative', 'medium', 'enzo-creates',
  '["GDScript", "Godot", "Lua", "JavaScript"]'),
-('a4000000-0000-0000-0000-000000000002', 'Nora Eriksen', '/src/assets/portraits/nora.png',
+('a4000000-0000-0000-0000-000000000002', 'Nora Eriksen', '/assets/portraits/nora.png',
  'Narrative designer qui code ses propres outils. Ses dialogues sont procéduraux et personne ne s''en rend compte.',
  'creative', 'low', 'nora-narrative',
  '["Ink", "C#", "Unity", "Python", "Twine"]');
 
 -- EXPLORATEURS (dominant: versatility + creativity)
 INSERT INTO developers (id, name, avatar_url, bio, archetype, price_range, github_username, languages) VALUES
-('a5000000-0000-0000-0000-000000000001', 'Amir Okafor', '/src/assets/portraits/amir.png',
+('a5000000-0000-0000-0000-000000000001', 'Amir Okafor', '/assets/portraits/amir.png',
  'Frontend, backend, shaders, IA — il a touché à tout et il recommence. Généraliste assumé.',
  'explorer', 'low', 'amir-explores',
  '["JavaScript", "Python", "C#", "Rust", "GLSL", "Lua"]'),
-('a5000000-0000-0000-0000-000000000002', 'Clara Moreau', '/src/assets/portraits/clara.png',
+('a5000000-0000-0000-0000-000000000002', 'Clara Moreau', '/assets/portraits/clara.png',
  'Ex-développeuse web reconvertie game dev. Elle apporte des patterns que l''industrie du jeu n''a pas encore.',
  'explorer', 'low', 'clara-polyglot',
  '["TypeScript", "React", "C#", "Godot", "GDScript"]');
 
 -- COMMANDOS (dominant: velocity + collaboration)
 INSERT INTO developers (id, name, avatar_url, bio, archetype, price_range, github_username, languages) VALUES
-('a6000000-0000-0000-0000-000000000001', 'Jin Park', '/src/assets/portraits/jin.png',
+('a6000000-0000-0000-0000-000000000001', 'Jin Park', '/assets/portraits/jin.png',
  'Lead d''équipes game jam. Il synchronise 4 devs en 48h et le jeu tourne à la fin.',
  'commando', 'medium', 'jin-lead',
  '["C#", "Unity", "JavaScript", "Python"]'),
-('a6000000-0000-0000-0000-000000000002', 'Sofia Petrov', '/src/assets/portraits/sofia.png',
+('a6000000-0000-0000-0000-000000000002', 'Sofia Petrov', '/assets/portraits/sofia.png',
  'QA dev. Elle casse ton jeu en 10 minutes, le patche en 20, et push avant la deadline.',
  'commando', 'low', 'sofia-qa',
  '["C#", "Unity", "Python", "Lua"]');
 
 -- MENTORS (dominant: collaboration + craft)
 INSERT INTO developers (id, name, avatar_url, bio, archetype, price_range, github_username, languages) VALUES
-('a7000000-0000-0000-0000-000000000001', 'David Kowalski', '/src/assets/portraits/david.png',
+('a7000000-0000-0000-0000-000000000001', 'David Kowalski', '/assets/portraits/david.png',
  'Ses code reviews transforment les juniors en devs solides. 15 ans d''industrie, 0 ego.',
  'mentor', 'high', 'david-reviews',
  '["C++", "C#", "Unreal", "Unity", "Python"]'),
-('a7000000-0000-0000-0000-000000000002', 'Fatou Diallo', '/src/assets/portraits/fatou.png',
+('a7000000-0000-0000-0000-000000000002', 'Fatou Diallo', '/assets/portraits/fatou.png',
  'Formatrice Unity et dev indé. Elle enseigne le jour, elle ship la nuit.',
  'mentor', 'medium', 'fatou-teaches',
  '["C#", "Unity", "GDScript", "Godot"]');
@@ -229,10 +229,10 @@ INSERT INTO developer_scores (developer_id, pillar, score) VALUES
 -- ==========================================
 
 INSERT INTO users (id, github_id, github_login, email, avatar_url, name, access_token) VALUES
-('b1000000-0000-0000-0000-000000000001', 900001, 'jin-lead', 'jin@demo.dyg', '/src/assets/portraits/jin.png', 'Jin Park', 'demo-token'),
-('b1000000-0000-0000-0000-000000000002', 900002, 'clara-polyglot', 'clara@demo.dyg', '/src/assets/portraits/clara.png', 'Clara Moreau', 'demo-token'),
-('b1000000-0000-0000-0000-000000000003', 900003, 'enzo-creates', 'enzo@demo.dyg', '/src/assets/portraits/enzo.png', 'Enzo Da Silva', 'demo-token'),
-('b1000000-0000-0000-0000-000000000004', 900004, 'theo-craft', 'theo@demo.dyg', '/src/assets/portraits/theo.png', 'Théo Mercier', 'demo-token');
+('b1000000-0000-0000-0000-000000000001', 900001, 'jin-lead', 'jin@demo.dyg', '/assets/portraits/jin.png', 'Jin Park', 'demo-token'),
+('b1000000-0000-0000-0000-000000000002', 900002, 'clara-polyglot', 'clara@demo.dyg', '/assets/portraits/clara.png', 'Clara Moreau', 'demo-token'),
+('b1000000-0000-0000-0000-000000000003', 900003, 'enzo-creates', 'enzo@demo.dyg', '/assets/portraits/enzo.png', 'Enzo Da Silva', 'demo-token'),
+('b1000000-0000-0000-0000-000000000004', 900004, 'theo-craft', 'theo@demo.dyg', '/assets/portraits/theo.png', 'Théo Mercier', 'demo-token');
 
 -- Link demo users to existing developer profiles
 UPDATE developers SET user_id = 'b1000000-0000-0000-0000-000000000001' WHERE id = 'a6000000-0000-0000-0000-000000000001';
