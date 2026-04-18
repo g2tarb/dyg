@@ -4,13 +4,14 @@ import { subscribe, getState, setState } from '../store.js';
 
 let unsubTeam = null;
 
-async function fetchDevelopers(filters = {}) {
+async function fetchDevelopers(filters = {}, offset = 0) {
   const params = new URLSearchParams();
   if (filters.archetype) params.set('archetype', filters.archetype);
   if (filters.price) params.set('price', filters.price);
   if (filters.pillar) params.set('pillar', filters.pillar);
   if (filters.min) params.set('min', filters.min);
   params.set('limit', '20');
+  params.set('offset', offset.toString());
 
   const res = await fetch(`/api/developers?${params}`);
   if (!res.ok) throw new Error('Failed to fetch developers');
@@ -69,20 +70,69 @@ function renderSearch(container) {
   const filtersMount = container.querySelector('#filters-mount');
 
   let currentFilters = {};
+  let currentOffset = 0;
+  let allLoaded = false;
 
-  async function loadDevs(filters = {}) {
-    renderSkeletons(grid);
-    try {
-      const developers = await fetchDevelopers(filters);
-      setState('developers', developers);
-      renderGrid(grid, developers);
-    } catch (err) {
-      grid.innerHTML = `
-        <div class="empty-state" style="grid-column:1/-1;">
-          <p class="empty-state__text">Erreur de chargement. Réessaie.</p>
-        </div>
-      `;
+  async function loadDevs(filters = {}, append = false) {
+    if (!append) {
+      currentOffset = 0;
+      allLoaded = false;
+      renderSkeletons(grid);
     }
+
+    try {
+      const developers = await fetchDevelopers(filters, currentOffset);
+
+      if (!append) {
+        setState('developers', developers);
+        renderGrid(grid, developers);
+      } else {
+        const existing = getState('developers');
+        const merged = [...existing, ...developers];
+        setState('developers', merged);
+        // Append new cards to grid
+        const existingLoadMore = grid.querySelector('.load-more-wrap');
+        if (existingLoadMore) existingLoadMore.remove();
+        developers.forEach((dev, i) => {
+          const card = createDevCard(dev);
+          card.style.opacity = '0';
+          card.style.transform = 'translateY(20px)';
+          card.style.transition = `opacity 0.4s var(--ease-out) ${i * 60}ms, transform 0.4s var(--ease-spring) ${i * 60}ms`;
+          grid.appendChild(card);
+          requestAnimationFrame(() => { requestAnimationFrame(() => { card.style.opacity = '1'; card.style.transform = 'translateY(0)'; }); });
+        });
+      }
+
+      if (developers.length < 20) {
+        allLoaded = true;
+      } else {
+        currentOffset += developers.length;
+        appendLoadMore();
+      }
+    } catch (err) {
+      if (!append) {
+        grid.innerHTML = `
+          <div class="empty-state" style="grid-column:1/-1;">
+            <p class="empty-state__text">Erreur de chargement. Réessaie.</p>
+          </div>
+        `;
+      }
+    }
+  }
+
+  function appendLoadMore() {
+    const existing = grid.querySelector('.load-more-wrap');
+    if (existing) existing.remove();
+
+    const wrap = document.createElement('div');
+    wrap.className = 'load-more-wrap';
+    wrap.style.cssText = 'grid-column:1/-1;text-align:center;padding:var(--space-xl) 0;';
+    wrap.innerHTML = '<button class="btn-secondary" id="btn-load-more">Charger plus</button>';
+    grid.appendChild(wrap);
+
+    wrap.querySelector('#btn-load-more').addEventListener('click', () => {
+      loadDevs(currentFilters, true);
+    });
   }
 
   // Mount filters

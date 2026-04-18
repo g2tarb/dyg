@@ -27,7 +27,10 @@ async function fetchGitHubProfile(username) {
     fetch(`${GITHUB_API}/users/${username}/repos?per_page=100&sort=updated`, { headers })
   ]);
 
-  if (!userRes.ok) throw new Error('GitHub user not found');
+  if (!userRes.ok) {
+    console.error(`GitHub API error for ${username}: ${userRes.status} ${userRes.statusText}`);
+    throw new Error('GitHub user not found');
+  }
 
   const user = await userRes.json();
   const repos = await reposRes.json();

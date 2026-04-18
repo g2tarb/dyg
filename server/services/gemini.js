@@ -32,6 +32,7 @@ Réponds uniquement avec la bio, rien d'autre.`;
   );
 
   if (!res.ok) {
+    console.error(`Gemini API error: ${res.status} ${res.statusText}`);
     return `Développeur ${profile.languages.slice(0, 3).join(', ')}. Profil ${archetype}.`;
   }
 

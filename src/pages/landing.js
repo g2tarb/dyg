@@ -106,8 +106,16 @@ function renderLanding(container) {
   requestAnimationFrame(() => {
     const canvas = container.querySelector('#hero-canvas');
     if (canvas && canvas.clientWidth > 0) {
-      try { cleanupD20 = initHeroD20(canvas); }
-      catch (e) { /* WebGL fallback */ }
+      try {
+        cleanupD20 = initHeroD20(canvas);
+      } catch (e) {
+        // WebGL not available — render CSS fallback
+        canvas.innerHTML = `
+          <div class="hero-fallback">
+            <div class="hero-fallback__d20">DYG</div>
+          </div>
+        `;
+      }
     }
   });
 
