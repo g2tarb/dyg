@@ -705,11 +705,26 @@
 
 @media (max-width: 768px) {
   .tj-hero {
-    padding: var(--space-3xl) var(--space-md);
+    padding: var(--space-2xl) var(--space-md);
+    min-height: calc(100vh - 52px);
+    min-height: calc(100dvh - 52px);
+  }
+
+  .tj-hero__center {
+    gap: var(--space-md);
   }
 
   .tj-hero__title {
-    font-size: clamp(1.75rem, 7vw, 2.5rem);
+    font-size: clamp(1.75rem, 8vw, 2.5rem);
+  }
+
+  .tj-hero__subtitle {
+    font-size: 0.875rem;
+    max-width: 100%;
+  }
+
+  .tj-hero__scan {
+    max-width: 100%;
   }
 
   .tj-hero__scan-row {
@@ -718,6 +733,11 @@
 
   .tj-hero__scan-btn {
     width: 100%;
+  }
+
+  .tj-hero__input {
+    width: 100%;
+    font-size: 1rem;
   }
 
   .tj-stats__grid {

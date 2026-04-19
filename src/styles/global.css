@@ -434,6 +434,128 @@ img {
 @media (max-width: 768px) {
   .archpage__hero { flex-direction: column; align-items: flex-start; }
   .archpage__portrait { border-radius: var(--radius-lg); width: 120px; height: 160px; }
+  .archpage__content { max-width: 100%; }
+}
+
+/* ==========================================
+   Global mobile — App-like feel
+   ========================================== */
+
+@media (max-width: 768px) {
+  .container {
+    padding: 0 var(--space-md);
+  }
+
+  h1 {
+    font-size: clamp(1.75rem, 8vw, 2.5rem);
+  }
+
+  h2 {
+    font-size: clamp(1.5rem, 6vw, 2rem);
+  }
+
+  /* Touch targets: min 44px */
+  a, button, input, select, textarea {
+    min-height: 44px;
+  }
+
+  /* Cards full width */
+  .dev-grid {
+    grid-template-columns: 1fr;
+    gap: var(--space-md);
+  }
+
+  /* Score pill smaller */
+  .score-pill {
+    font-size: 0.7rem;
+  }
+
+  /* Profile layout stack */
+  .profile-layout {
+    flex-direction: column;
+    gap: var(--space-xl);
+  }
+
+  .profile-right {
+    width: 100%;
+  }
+
+  /* Team layout stack */
+  .team-layout {
+    flex-direction: column;
+    gap: var(--space-xl);
+  }
+
+  /* Projects grid single column */
+  .projects-grid {
+    grid-template-columns: 1fr;
+  }
+
+  /* Portfolio hero stack */
+  .portfolio__hero {
+    flex-direction: column;
+    text-align: center;
+  }
+
+  .portfolio__identity {
+    flex-direction: column;
+    align-items: center;
+  }
+
+  .portfolio__layout {
+    grid-template-columns: 1fr;
+  }
+
+  .portfolio__projects {
+    grid-template-columns: 1fr;
+  }
+
+  /* Messages chat full height */
+  .msg__chat-messages {
+    max-height: calc(100vh - 200px);
+  }
+
+  /* Training tracks full width */
+  .train-lang-tracks {
+    gap: var(--space-md);
+  }
+
+  /* About sections */
+  .about-manifesto__grid {
+    grid-template-columns: 1fr;
+  }
+
+  .about-archetype,
+  .about-archetype--reverse {
+    grid-template-columns: 1fr;
+  }
+
+  .about-archetype--reverse .about-archetype__portrait { order: 0; }
+  .about-archetype--reverse .about-archetype__content { order: 0; text-align: left; }
+  .about-archetype--reverse .about-archetype__dominants { justify-content: flex-start; }
+  .about-archetype__portrait { max-width: 180px; }
+
+  .about-synergy__axes { grid-template-columns: 1fr; }
+  .about-tech__grid { grid-template-columns: 1fr; }
+  .about-cta__actions { flex-direction: column; align-items: stretch; }
+  .about-creator__identity { flex-direction: column; gap: var(--space-sm); }
+  .about-synergy__formula { flex-direction: column; gap: var(--space-sm); }
+}
+
+/* Small phones */
+@media (max-width: 380px) {
+  .container {
+    padding: 0 var(--space-sm);
+  }
+
+  h1 {
+    font-size: 1.5rem;
+  }
+
+  .tj-hero__input {
+    font-size: 0.8125rem;
+    min-height: 48px;
+  }
 }
 
 .not-found { min-height: calc(100vh - 56px); }
