@@ -1,4 +1,5 @@
 import { escapeHTML } from '../utils/sanitize.js';
+import { initHeroOrbs } from '../components/heroOrbs.js';
 import { t } from '../i18n/index.js';
 import { PILLAR_LABELS, PILLARS_ORDER } from '../components/radarChart.js';
 import { ARCHETYPE_DATA } from '../components/archetypeCard.js';
@@ -17,11 +18,10 @@ function renderLanding(container) {
   container.innerHTML = `
     <!-- HERO = THE SCAN -->
     <section class="tj-hero">
-      <video class="tj-hero__video" autoplay muted loop playsinline>
-        <source src="/assets/fondDYG.mp4" type="video/mp4">
-      </video>
+      <canvas class="tj-hero__canvas" id="hero-canvas"></canvas>
       <div class="tj-hero__overlay"></div>
       <div class="tj-hero__center">
+        <span class="tj-hero__logo-mark">DYG</span>
         <span class="tj-hero__badge">Alpha — Early Access</span>
         <h1 class="tj-hero__title">${t('landing.hero_title')}</h1>
         <p class="tj-hero__subtitle">${t('landing.hero_sub')}</p>
@@ -59,20 +59,20 @@ function renderLanding(container) {
     <section class="tj-stats">
       <div class="container tj-stats__grid">
         <div class="tj-stat">
+          <span class="tj-stat__number">8</span>
+          <span class="tj-stat__label">${t('landing.stat_pillars')}</span>
+        </div>
+        <div class="tj-stat">
           <span class="tj-stat__number">150+</span>
-          <span class="tj-stat__label">Exercises</span>
+          <span class="tj-stat__label">${t('landing.stat_exercises')}</span>
         </div>
         <div class="tj-stat">
           <span class="tj-stat__number">7</span>
-          <span class="tj-stat__label">Languages</span>
-        </div>
-        <div class="tj-stat">
-          <span class="tj-stat__number">7</span>
-          <span class="tj-stat__label">Archetypes</span>
+          <span class="tj-stat__label">${t('landing.stat_archetypes')}</span>
         </div>
         <div class="tj-stat">
           <span class="tj-stat__number">11</span>
-          <span class="tj-stat__label">Team Projects</span>
+          <span class="tj-stat__label">${t('landing.stat_projects')}</span>
         </div>
       </div>
     </section>
@@ -89,7 +89,7 @@ function renderLanding(container) {
           <div class="tj-feature-card">
             <div class="tj-feature-card__icon" style="background: rgba(59, 130, 246, 0.1); color: #3B82F6;">&#9781;</div>
             <h3 class="tj-feature-card__title">GitHub Scan</h3>
-            <p class="tj-feature-card__desc">${t('landing.pitch_bold')}</p>
+            <p class="tj-feature-card__desc">${t('landing.feature_scan')}</p>
           </div>
           <div class="tj-feature-card">
             <div class="tj-feature-card__icon" style="background: rgba(232, 98, 10, 0.1); color: #E8620A;">&#9733;</div>
@@ -99,7 +99,7 @@ function renderLanding(container) {
           <div class="tj-feature-card">
             <div class="tj-feature-card__icon" style="background: rgba(245, 197, 66, 0.1); color: #F5C542;">&#9881;</div>
             <h3 class="tj-feature-card__title">Dual Rating</h3>
-            <p class="tj-feature-card__desc">${t('landing.step1_desc')}</p>
+            <p class="tj-feature-card__desc">${t('landing.feature_dual')}</p>
           </div>
           <div class="tj-feature-card">
             <div class="tj-feature-card__icon" style="background: rgba(34, 197, 94, 0.1); color: #22C55E;">&#9776;</div>
@@ -114,7 +114,7 @@ function renderLanding(container) {
           <div class="tj-feature-card">
             <div class="tj-feature-card__icon" style="background: rgba(6, 182, 212, 0.1); color: #06B6D4;">&#9670;</div>
             <h3 class="tj-feature-card__title">Public Portfolio</h3>
-            <p class="tj-feature-card__desc">${t('landing.cta_bottom_sub')}</p>
+            <p class="tj-feature-card__desc">${t('landing.feature_portfolio')}</p>
           </div>
         </div>
       </div>
@@ -301,8 +301,13 @@ function renderLanding(container) {
 
   container.querySelectorAll('.tj-feature-card, .tj-archetype, .tj-stat').forEach(el => observer.observe(el));
 
+  // ===== HERO ORBS =====
+  const heroCanvas = container.querySelector('#hero-canvas');
+  const cleanupOrbs = heroCanvas ? initHeroOrbs(heroCanvas) : null;
+
   return () => {
     observer.disconnect();
+    if (cleanupOrbs) cleanupOrbs();
   };
 }
 
