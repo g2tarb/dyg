@@ -718,23 +718,37 @@
     padding: var(--space-2xl) var(--space-md);
     min-height: calc(100vh - 52px);
     min-height: calc(100dvh - 52px);
+    align-items: center;
+    justify-content: center;
   }
 
   .tj-hero__center {
     gap: var(--space-md);
+    align-items: center;
+    text-align: center;
+    width: 100%;
   }
 
   .tj-hero__title {
-    font-size: clamp(1.75rem, 8vw, 2.5rem);
+    font-size: clamp(3rem, 16vw, 5rem);
+    text-align: center;
   }
 
   .tj-hero__subtitle {
-    font-size: 0.875rem;
+    font-size: 0.9375rem;
+    max-width: 100%;
+    text-align: center;
+  }
+
+  .tj-hero__desc {
+    font-size: 0.8125rem;
+    text-align: center;
     max-width: 100%;
   }
 
   .tj-hero__scan {
     max-width: 100%;
+    align-items: center;
   }
 
   .tj-hero__scan-row {
