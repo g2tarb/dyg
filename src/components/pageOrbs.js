@@ -141,10 +141,11 @@ export function initPageOrbs(canvas) {
   }
 
   function onScroll() {
-    const delta = Math.abs(window.scrollY - lastScrollY);
-    scrollSpeed = Math.min(delta * 0.12, 6);
-    lastScrollY = window.scrollY;
+    const delta = window.scrollY - lastScrollY;
+    scrollSpeed = Math.min(Math.abs(delta) * 0.12, 6);
+    window.__dygScrollDir = delta >= 0 ? 1 : -1;
     window.__dygScrollSpeed = scrollSpeed;
+    lastScrollY = window.scrollY;
   }
 
   function resize() {
@@ -171,9 +172,10 @@ export function initPageOrbs(canvas) {
 
     const speedMul = 1 + scrollSpeed * 3;
     const white = Math.min(scrollSpeed / 3, 1);
+    const dir = window.__dygScrollDir || 1;
 
     for (const orb of orbs) {
-      orb.angle += orb.speed * speedMul * 0.01;
+      orb.angle += orb.speed * speedMul * 0.01 * dir;
 
       const { x, y } = patternFn(orb, cx, cy, w, h);
 

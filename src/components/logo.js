@@ -108,8 +108,10 @@ function setupLogoAnimation(svgElement) {
     const speedMul = 1 + spd * 3;
     const white = Math.min(spd / 3, 1);
 
+    const dir = window.__dygScrollDir || 1;
+
     for (const orb of orbPairs) {
-      orb.angle += 0.015 * speedMul;
+      orb.angle += 0.015 * speedMul * (-dir);
       const x = Math.cos(orb.angle) * orbitRx;
       const y = Math.sin(orb.angle) * orbitRy;
 
