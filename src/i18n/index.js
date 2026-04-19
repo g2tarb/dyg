@@ -3,6 +3,7 @@ import en from './en.js';
 
 const TRANSLATIONS = { fr, en };
 let locale = localStorage.getItem('dyg_lang') || (navigator.language.startsWith('fr') ? 'fr' : 'en');
+document.documentElement.lang = locale;
 
 export function t(key, params = {}) {
   const dict = TRANSLATIONS[locale] || TRANSLATIONS.en;

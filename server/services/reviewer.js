@@ -10,6 +10,11 @@ function getHeaders() {
 
 function parseRepoUrl(url) {
   if (!url) return null;
+  // SSRF prevention: only allow github.com URLs
+  try {
+    const parsed = new URL(url);
+    if (parsed.hostname !== 'github.com' && parsed.hostname !== 'www.github.com') return null;
+  } catch { return null; }
   const match = url.match(/github\.com\/([^/]+)\/([^/\s?#]+)/);
   if (!match) return null;
   return { owner: match[1], repo: match[2].replace('.git', '') };

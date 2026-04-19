@@ -5,6 +5,8 @@ import cookie from '@fastify/cookie';
 import jwt from '@fastify/jwt';
 import oauth2 from '@fastify/oauth2';
 import helmet from '@fastify/helmet';
+import compress from '@fastify/compress';
+import etag from '@fastify/etag';
 import fastifyStatic from '@fastify/static';
 import { fileURLToPath } from 'url';
 import { dirname, join } from 'path';
@@ -58,9 +60,29 @@ await fastify.register(helmet, {
   hidePoweredBy: true
 });
 
+// --- Compression (gzip/brotli) ---
+await fastify.register(compress, { global: true });
+
+// --- ETags (conditional GET) ---
+await fastify.register(etag);
+
 // --- CORS ---
+const ALLOWED_ORIGINS = new Set([
+  'https://dyg.dev', 'https://www.dyg.dev',
+  'https://dyg.gg', 'https://www.dyg.gg',
+  'https://dyg-olfu.onrender.com'
+]);
+if (process.env.CORS_ORIGIN) {
+  process.env.CORS_ORIGIN.split(',').map(s => s.trim()).filter(Boolean).forEach(o => ALLOWED_ORIGINS.add(o));
+}
+
 await fastify.register(cors, {
-  origin: true,
+  origin: isProd
+    ? (origin, cb) => {
+        if (!origin || ALLOWED_ORIGINS.has(origin)) return cb(null, true);
+        return cb(new Error(`Origin not allowed: ${origin}`), false);
+      }
+    : true,
   credentials: true,
   methods: ['GET', 'POST', 'PATCH', 'DELETE', 'OPTIONS']
 });
@@ -89,9 +111,10 @@ fastify.addHook('onRequest', async (request, reply) => {
   }
 });
 
-// --- Request ID in response ---
+// --- Request ID + Permissions-Policy ---
 fastify.addHook('onSend', async (request, reply) => {
   reply.header('X-Request-Id', request.id);
+  reply.header('Permissions-Policy', 'geolocation=(), camera=(), microphone=(), payment=()');
 });
 
 // --- Auth plugins ---
@@ -166,6 +189,17 @@ fastify.register(messageRoutes);
 fastify.register(dataRoutes);
 fastify.register(reputationRoutes);
 fastify.register(trainingRoutes);
+
+// --- Robots.txt ---
+fastify.get('/robots.txt', async (request, reply) => {
+  reply.header('Content-Type', 'text/plain');
+  return `User-agent: *
+Allow: /
+Disallow: /api/
+Disallow: /auth/
+Disallow: /admin/
+Sitemap: ${env.BASE_URL}/sitemap.xml`;
+});
 
 // --- Sitemap ---
 fastify.get('/sitemap.xml', async (request, reply) => {
