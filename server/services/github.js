@@ -247,6 +247,38 @@ async function fetchGitHubProfile(username) {
   const maturityRate = reposWithMultiplePushes / n;
 
   // ============================================================
+  //  AI USAGE QUALITY — Bonus/malus basé sur COMMENT l'IA est utilisée
+  // ============================================================
+
+  let aiUsageQuality = 'none'; // none, poor, decent, excellent
+  let aiQualityScore = 0; // -1 to +1.5
+
+  if (aiRate > 0) {
+    // Uses AI — evaluate HOW
+    const aiWithDescriptiveMsg = aiRate > 0 && commitDescriptiveRate > 0.3;
+    const mixedApproach = aiRate > 0.1 && aiRate < 0.8; // not 100% AI
+    const aiWithReadme = aiRate > 0 && readmeScores.hasReadme > 0;
+    const aiWithStructure = aiRate > 0 && avgProjectStructure >= 3;
+    const aiWithMaturity = aiRate > 0 && maturityRate > 0.3;
+
+    const aiSignals = [aiWithDescriptiveMsg, mixedApproach, aiWithReadme, aiWithStructure, aiWithMaturity];
+    const aiGoodSignals = aiSignals.filter(Boolean).length;
+
+    if (aiGoodSignals >= 4) {
+      // Excellent IA usage: descriptive commits, hybrid approach, README, good structure, mature repos
+      aiUsageQuality = 'excellent';
+      aiQualityScore = 1.5;
+    } else if (aiGoodSignals >= 2) {
+      aiUsageQuality = 'decent';
+      aiQualityScore = 0.5;
+    } else {
+      // Bad IA usage: 100% AI, generic messages, no docs, one-shot repos
+      aiUsageQuality = 'poor';
+      aiQualityScore = -1;
+    }
+  }
+
+  // ============================================================
   //  SCORING V4 — Sévère. Base 1, max 10. 8+ = rare. 9+ = exceptionnel.
   //  Distribution cible : moyenne ~5, 8+ = top 15%, 9+ = top 5%
   // ============================================================
@@ -260,7 +292,9 @@ async function fetchGitHubProfile(username) {
   const readmeCodeBonus = Math.min(1, (readmeScores.hasInstall + readmeScores.hasUsage) / 4);
   const depthBonus = (hasSystemLang ? 0.5 : 0) + (hasNicheLang ? 0.5 : 0); // deep technical knowledge
   const maturityBonus = Math.min(1, maturityRate * 1.5); // repos that evolved over time = real projects
-  const code = Math.min(10, Math.round(1 + sizeLog + substantialScore + largeScore + starSignal + codeQuality + readmeCodeBonus + depthBonus + maturityBonus));
+  // IA architect who documents and structures well → code bonus
+  const aiCodeBonus = aiUsageQuality === 'excellent' ? 1 : aiUsageQuality === 'poor' ? -0.5 : 0;
+  const code = Math.min(10, Math.round(1 + sizeLog + substantialScore + largeScore + starSignal + codeQuality + readmeCodeBonus + depthBonus + maturityBonus + aiCodeBonus));
 
   // --- VELOCITY: Delivery speed, consistency, regularity ---
   const recentScore = Math.min(1.5, recentRepos6m / 4);
@@ -292,7 +326,9 @@ async function fetchGitHubProfile(username) {
   // Commit message quality = craft signal (descriptive vs generic)
   const commitMsgQuality = Math.min(1, commitDescriptiveRate * 2); // descriptive messages = high craft
   const commitMsgPenalty = commitGenericRate > 0.7 ? -0.5 : 0; // >70% generic = lazy
-  const craft = Math.min(10, Math.round(1 + descScore + topicScore + licenseScore + homepageScore + reviewGiven + descQuality + readmeCraftBonus + commitMsgQuality + commitMsgPenalty));
+  // Good AI usage with proper documentation = craft discipline
+  const aiCraftBonus = aiUsageQuality === 'excellent' ? 1 : aiUsageQuality === 'poor' ? -1 : 0;
+  const craft = Math.min(10, Math.round(1 + descScore + topicScore + licenseScore + homepageScore + reviewGiven + descQuality + readmeCraftBonus + commitMsgQuality + commitMsgPenalty + aiCraftBonus));
 
   // --- COLLABORATION: Team play, community engagement, open source ---
   const forkedRepos = repos.filter(r => r.fork).length;
@@ -383,6 +419,7 @@ async function fetchGitHubProfile(username) {
     languages: Array.from(languageSet),
     dev_style: devStyle,
     dev_style_confidence: devStyleConfidence,
+    ai_usage_quality: aiUsageQuality,
     dev_metrics: {
       commit_descriptive_rate: Math.round(commitDescriptiveRate * 100),
       commit_generic_rate: Math.round(commitGenericRate * 100),
@@ -393,7 +430,9 @@ async function fetchGitHubProfile(username) {
       primary_language_ratio: Math.round(primaryLangRatio * 100),
       has_niche_lang: hasNicheLang,
       has_system_lang: hasSystemLang,
-      readme_quality: readmeScores
+      readme_quality: readmeScores,
+      ai_usage_quality: aiUsageQuality,
+      ai_quality_score: aiQualityScore
     },
     scores: [
       { pillar: 'code', score: Math.max(1, code) },
