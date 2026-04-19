@@ -83,9 +83,9 @@ async function renderTraining(container, params = {}) {
       else if (name.includes('expert') || name.includes('scope') || name.includes('prototypes') || name.includes('event loop') || name.includes('coercion') || name.includes('metaprogramming')) lang = 'js_expert';
       else if (name.startsWith('js') || name.startsWith('javascript')) lang = 'js';
       else if (name.startsWith('python')) lang = 'python';
-      else if (name.startsWith('c —') || name.startsWith('c —')) lang = 'c';
+      else if (name.startsWith('c —') || name.startsWith('c –') || name.startsWith('c -') || name === 'c') lang = 'c';
       else if (name.startsWith('shell')) lang = 'shell';
-      else if (name.startsWith('math') || name.startsWith('physique') || name.includes('mouvement') || name.includes('collision') || name.includes('forces') || name.includes('simulation')) lang = 'physics';
+      else if (name.startsWith('math') || name.startsWith('physique') || name.startsWith('projets') || name.includes('mouvement') || name.includes('collision') || name.includes('forces') || name.includes('simulation')) lang = 'physics';
 
       if (!langGroups[lang]) langGroups[lang] = [];
       langGroups[lang].push(track);
