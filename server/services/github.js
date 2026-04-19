@@ -40,15 +40,56 @@ async function fetchGitHubProfile(username) {
   const repos = await reposRes.json();
   const events = eventsRes?.ok ? await eventsRes.json() : [];
 
-  // --- Fetch detailed language breakdown for top repos (parallel, max 5) ---
+  // --- Fetch detailed language breakdown + READMEs for top repos (parallel, max 5) ---
   const topRepos = repos.filter(r => !r.fork && r.size > 10).slice(0, 5);
-  const languageDetails = await Promise.all(
-    topRepos.map(repo =>
+
+  const [languageDetails, readmeDetails] = await Promise.all([
+    // Languages per repo
+    Promise.all(topRepos.map(repo =>
       fetch(`${GITHUB_API}/repos/${repo.full_name}/languages`, { headers, signal: AbortSignal.timeout(3000) })
         .then(r => r.ok ? r.json() : {})
         .catch(() => ({}))
-    )
-  );
+    )),
+    // README content per repo
+    Promise.all(topRepos.map(repo =>
+      fetch(`${GITHUB_API}/repos/${repo.full_name}/readme`, { headers, signal: AbortSignal.timeout(3000) })
+        .then(r => r.ok ? r.json() : null)
+        .then(data => {
+          if (!data || !data.content) return null;
+          try { return Buffer.from(data.content, 'base64').toString('utf-8'); } catch { return null; }
+        })
+        .catch(() => null)
+    ))
+  ]);
+
+  // --- Analyze README quality ---
+  let readmeScores = { hasReadme: 0, hasInstall: 0, hasUsage: 0, hasScreenshot: 0, hasLicense: 0, avgLength: 0 };
+  let totalReadmeLength = 0;
+
+  for (const readme of readmeDetails) {
+    if (!readme) continue;
+    readmeScores.hasReadme++;
+    totalReadmeLength += readme.length;
+    const lower = readme.toLowerCase();
+    if (lower.includes('install') || lower.includes('setup') || lower.includes('getting started') || lower.includes('npm install') || lower.includes('pip install')) readmeScores.hasInstall++;
+    if (lower.includes('usage') || lower.includes('how to use') || lower.includes('example') || lower.includes('utilisation')) readmeScores.hasUsage++;
+    if (lower.includes('screenshot') || lower.includes('![') || lower.includes('demo') || lower.includes('.gif') || lower.includes('.png')) readmeScores.hasScreenshot++;
+    if (lower.includes('license') || lower.includes('licence') || lower.includes('mit') || lower.includes('apache')) readmeScores.hasLicense++;
+  }
+  readmeScores.avgLength = readmeScores.hasReadme > 0 ? totalReadmeLength / readmeScores.hasReadme : 0;
+
+  // --- Analyze project structure from repos ---
+  let projectStructureScore = 0;
+  for (const repo of topRepos) {
+    let repoScore = 0;
+    if (repo.description && repo.description.length > 10) repoScore++;
+    if (repo.license) repoScore++;
+    if (repo.homepage) repoScore++;
+    if (repo.topics && repo.topics.length > 0) repoScore++;
+    if (repo.size > 50) repoScore++; // substantial code
+    projectStructureScore += repoScore;
+  }
+  const avgProjectStructure = topRepos.length > 0 ? projectStructureScore / topRepos.length : 0;
 
   // --- Extract comprehensive metrics ---
 
@@ -152,8 +193,9 @@ async function fetchGitHubProfile(username) {
   const substantialScore = Math.min(1.5, substantialRepos / 4);
   const largeScore = Math.min(1, largeRepos / 3);
   const starSignal = totalStars >= 200 ? 3 : totalStars >= 50 ? 2.5 : totalStars >= 20 ? 2 : totalStars >= 10 ? 1.5 : totalStars >= 5 ? 1 : totalStars >= 1 ? 0.5 : 0;
-  const codeQuality = Math.min(1.5, repos.filter(r => !r.fork && r.size > 100 && r.description && r.description.length > 20).length / 3); // well-described big projects
-  const code = Math.min(10, Math.round(1 + sizeLog + substantialScore + largeScore + starSignal + codeQuality));
+  const codeQuality = Math.min(1.5, repos.filter(r => !r.fork && r.size > 100 && r.description && r.description.length > 20).length / 3);
+  const readmeCodeBonus = Math.min(1, (readmeScores.hasInstall + readmeScores.hasUsage) / 4); // projects with install/usage docs
+  const code = Math.min(10, Math.round(1 + sizeLog + substantialScore + largeScore + starSignal + codeQuality + readmeCodeBonus));
 
   // --- VELOCITY: Delivery speed, consistency, regularity ---
   const recentScore = Math.min(1.5, recentRepos6m / 4);
@@ -172,8 +214,15 @@ async function fetchGitHubProfile(username) {
   const licenseScore = reposWithLicense >= 5 ? 1.5 : reposWithLicense >= 3 ? 1 : reposWithLicense >= 1 ? 0.5 : 0;
   const homepageScore = reposWithHomepage >= 3 ? 1 : reposWithHomepage >= 1 ? 0.5 : 0;
   const reviewGiven = Math.min(1.5, reviewEvents / 5);
-  const descQuality = Math.min(1, repos.filter(r => r.description && r.description.length > 30).length / 5); // longer descriptions = more craft
-  const craft = Math.min(10, Math.round(1 + descScore + topicScore + licenseScore + homepageScore + reviewGiven + descQuality));
+  const descQuality = Math.min(1, repos.filter(r => r.description && r.description.length > 30).length / 5);
+  // README quality: install instructions, usage examples, screenshots = high craft
+  const readmeCraftBonus = Math.min(2, (
+    (readmeScores.hasInstall > 0 ? 0.5 : 0) +
+    (readmeScores.hasUsage > 0 ? 0.5 : 0) +
+    (readmeScores.hasScreenshot > 0 ? 0.5 : 0) +
+    (readmeScores.avgLength > 500 ? 0.5 : readmeScores.avgLength > 200 ? 0.25 : 0)
+  ));
+  const craft = Math.min(10, Math.round(1 + descScore + topicScore + licenseScore + homepageScore + reviewGiven + descQuality + readmeCraftBonus));
 
   // --- COLLABORATION: Team play, community engagement, open source ---
   const forkedRepos = repos.filter(r => r.fork).length;
@@ -223,7 +272,10 @@ async function fetchGitHubProfile(username) {
   const ageScore = Math.min(1.5, accountAgeMonths / 24); // experience over time
   const soloRepos = repos.filter(r => !r.fork && r.forks_count === 0 && r.size > 20).length;
   const soloScore = Math.min(1, soloRepos / 4); // builds alone
-  const autonomy = Math.min(10, Math.round(1 + originalRateScore + documentedScore + structuredScore + ageScore + soloScore));
+  // README = proof of autonomy (you document your own work)
+  const readmeAutonomyBonus = Math.min(1.5, readmeScores.hasReadme * 0.4);
+  const projectStructureBonus = Math.min(1, avgProjectStructure / 4); // well-structured projects
+  const autonomy = Math.min(10, Math.round(1 + originalRateScore + documentedScore + structuredScore + ageScore + soloScore + readmeAutonomyBonus + projectStructureBonus));
 
   return {
     username: user.login,
