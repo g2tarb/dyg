@@ -2,74 +2,38 @@
    Buttons
    ========================================== */
 
-/* From Uiverse.io by ShadowShahriar — conic gradient border */
+/* From Uiverse.io by portseif — line + text */
 .btn-primary {
-  --border-radius: 15px;
-  --border-width: 4px;
-  appearance: none;
-  position: relative;
-  display: inline-flex;
   align-items: center;
-  justify-content: center;
-  gap: var(--space-sm);
-  padding: 1em 2em;
-  border: 0;
-  background-color: #212121;
+  background-color: transparent;
+  color: #fff;
+  cursor: pointer;
+  display: inline-flex;
   font-family: var(--font-body);
   font-size: 0.875rem;
-  font-weight: 500;
-  color: #fff;
-  z-index: 2;
-  cursor: pointer;
+  font-weight: 700;
+  line-height: 1.5;
   text-decoration: none;
-  min-height: 44px;
-  box-sizing: border-box;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  outline: 0;
+  border: 0;
+  padding: 0.75rem 0;
 }
 
-.btn-primary::after {
-  --m-i: linear-gradient(#000, #000);
-  --m-o: content-box, padding-box;
+.btn-primary::before {
+  background-color: #fff;
   content: '';
-  position: absolute;
-  left: 0;
-  top: 0;
-  width: 100%;
-  height: 100%;
-  padding: var(--border-width);
-  border-radius: var(--border-radius);
-  background-image: conic-gradient(
-    #488cfb,
-    #29dbbc,
-    #ddf505,
-    #ff9f0e,
-    #e440bb,
-    #655adc,
-    #488cfb
-  );
-  -webkit-mask-image: var(--m-i), var(--m-i);
-  mask-image: var(--m-i), var(--m-i);
-  -webkit-mask-origin: var(--m-o);
-  mask-origin: var(--m-o);
-  -webkit-mask-clip: var(--m-o);
-  mask-clip: var(--m-o);
-  mask-composite: exclude;
-  -webkit-mask-composite: destination-out;
-  filter: hue-rotate(0);
-  animation: btn-hue-rotate linear 500ms infinite;
-  animation-play-state: paused;
+  display: inline-block;
+  height: 1px;
+  margin-right: 10px;
+  transition: all 0.42s cubic-bezier(0.25, 0.8, 0.25, 1);
+  width: 0;
 }
 
-.btn-primary:hover::after {
-  animation-play-state: running;
-}
-
-.btn-primary:active {
-  --border-width: 5px;
-}
-
-.btn-primary:focus-visible {
-  outline: 2px solid var(--color-accent);
-  outline-offset: 2px;
+.btn-primary:hover::before {
+  background-color: #fff;
+  width: 3rem;
 }
 
 .btn-primary:disabled,
@@ -78,24 +42,14 @@
   cursor: not-allowed;
 }
 
-.btn-primary:disabled::after,
-.btn-primary--disabled::after {
-  animation-play-state: paused;
-  opacity: 0.3;
-}
-
 .btn-primary--sm {
-  padding: 0.6em 1.2em;
-  font-size: 0.8125rem;
+  font-size: 0.75rem;
+  padding: 0.5rem 0;
 }
 
 .btn-primary--lg {
-  padding: 1.2em 2.5em;
   font-size: 1rem;
-}
-
-@keyframes btn-hue-rotate {
-  to { filter: hue-rotate(1turn); }
+  padding: 1rem 0;
 }
 
 .btn-secondary {

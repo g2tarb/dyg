@@ -17,7 +17,7 @@ function createHeader() {
 
     header.innerHTML = `
       <nav class="header-nav container">
-        <a href="#/" class="header-logo">${createLogoSVG('sm')}</a>
+        <a href="#/" class="header-logo">${createLogoSVG('sm')}<span class="header-alpha">alpha</span></a>
         <div class="header-actions">
           <a href="#/search" class="header-scan">${t('header.explore')}</a>
           ${user ? `

@@ -19,8 +19,8 @@ function renderLanding(container) {
     <section class="tj-hero">
       <div class="tj-hero__overlay"></div>
       <div class="tj-hero__center">
-        <span class="tj-hero__logo-mark">DYG</span>
-        <h1 class="tj-hero__title">${t('landing.hero_title')} <span class="tj-hero__alpha">alpha</span></h1>
+        <h1 class="tj-hero__title">DYG <span class="tj-hero__alpha">alpha</span></h1>
+        <p class="tj-hero__subtitle">${t('landing.hero_title')}</p>
         <p class="tj-hero__subtitle">${t('landing.hero_sub')}</p>
 
         <!-- Scan input -->
