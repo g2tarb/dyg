@@ -17,10 +17,10 @@ function renderLanding(container) {
   container.innerHTML = `
     <!-- HERO = THE SCAN -->
     <section class="tj-hero">
-      <div class="tj-hero__bg">
-        <div class="tj-hero__glow tj-hero__glow--1"></div>
-        <div class="tj-hero__glow tj-hero__glow--2"></div>
-      </div>
+      <video class="tj-hero__video" autoplay muted loop playsinline>
+        <source src="/assets/fondDYG.mp4" type="video/mp4">
+      </video>
+      <div class="tj-hero__overlay"></div>
       <div class="tj-hero__center">
         <span class="tj-hero__badge">Alpha — Early Access</span>
         <h1 class="tj-hero__title">${t('landing.hero_title')}</h1>
