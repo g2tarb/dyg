@@ -179,9 +179,71 @@ async function fetchGitHubProfile(username) {
   }
 
   const accountAgeMonths = Math.max(1, Math.floor((now - new Date(user.created_at)) / (30 * 24 * 60 * 60 * 1000)));
-  const activeDays = pushDays.size; // unique days with pushes in last 90 days
+  const activeDays = pushDays.size;
   const repoCount = repos.length;
   const n = Math.max(1, repoCount);
+
+  // ============================================================
+  //  DEV STYLE DETECTION — Real Dev vs Vibe Coder vs IA Architect
+  // ============================================================
+
+  // Analyze commit messages from push events
+  let totalCommits = 0;
+  let genericCommitMsgs = 0; // "update", "fix", "initial commit", "."
+  let descriptiveCommitMsgs = 0; // "Add user auth with JWT", "Fix race condition on join"
+  let aiCoauthoredCommits = 0; // "Co-Authored-By: Claude/GPT/Copilot"
+  let commitSizes = []; // number of commits per push
+
+  for (const event of events) {
+    if (event.type === 'PushEvent' && event.payload?.commits) {
+      commitSizes.push(event.payload.commits.length);
+      for (const commit of event.payload.commits) {
+        totalCommits++;
+        const msg = (commit.message || '').toLowerCase();
+        // Generic/lazy messages
+        if (msg.length < 10 || /^(update|fix|init|wip|test|\.+|merge|commit|changes|stuff|misc)$/i.test(msg.trim()) || msg === 'initial commit') {
+          genericCommitMsgs++;
+        }
+        // Descriptive messages (20+ chars, contains a verb)
+        if (msg.length >= 20 && /\b(add|fix|implement|refactor|update|remove|create|improve|migrate|configure)\b/i.test(msg)) {
+          descriptiveCommitMsgs++;
+        }
+        // AI co-authored
+        if (msg.includes('co-authored-by') && (msg.includes('claude') || msg.includes('copilot') || msg.includes('gpt') || msg.includes('anthropic') || msg.includes('openai'))) {
+          aiCoauthoredCommits++;
+        }
+      }
+    }
+  }
+
+  // Commit granularity: real devs do small incremental commits, vibe coders do huge dumps
+  const avgCommitsPerPush = commitSizes.length > 0 ? commitSizes.reduce((a, b) => a + b, 0) / commitSizes.length : 0;
+  const hasHugePushes = commitSizes.some(s => s > 20); // 20+ commits in one push = suspicious
+
+  // Language depth analysis
+  const langArray = Object.entries(languageBytes).sort((a, b) => b[1] - a[1]);
+  const primaryLangBytes = langArray[0]?.[1] || 0;
+  const primaryLangName = langArray[0]?.[0] || 'unknown';
+  const primaryLangRatio = totalBytes > 0 ? primaryLangBytes / totalBytes : 1;
+
+  // Depth indicators: using advanced/niche languages
+  const NICHE_LANGS = new Set(['Rust', 'Haskell', 'Elixir', 'Clojure', 'OCaml', 'Zig', 'Nim', 'Crystal', 'Erlang']);
+  const SYSTEM_LANGS = new Set(['C', 'C++', 'Rust', 'Go', 'Assembly']);
+  const hasNicheLang = [...languageSet].some(l => NICHE_LANGS.has(l));
+  const hasSystemLang = [...languageSet].some(l => SYSTEM_LANGS.has(l));
+
+  // Dev style classification
+  const commitDescriptiveRate = totalCommits > 0 ? descriptiveCommitMsgs / totalCommits : 0;
+  const commitGenericRate = totalCommits > 0 ? genericCommitMsgs / totalCommits : 0;
+  const aiRate = totalCommits > 0 ? aiCoauthoredCommits / totalCommits : 0;
+
+  // Repo maturity: repos that evolved over time (multiple pushes) vs one-shot repos
+  const reposWithMultiplePushes = repos.filter(r => {
+    const created = new Date(r.created_at);
+    const pushed = new Date(r.pushed_at || r.updated_at);
+    return (pushed - created) > 7 * 24 * 60 * 60 * 1000; // pushed at least 7 days after creation
+  }).length;
+  const maturityRate = reposWithMultiplePushes / n;
 
   // ============================================================
   //  SCORING V4 — Sévère. Base 1, max 10. 8+ = rare. 9+ = exceptionnel.
@@ -194,8 +256,10 @@ async function fetchGitHubProfile(username) {
   const largeScore = Math.min(1, largeRepos / 3);
   const starSignal = totalStars >= 200 ? 3 : totalStars >= 50 ? 2.5 : totalStars >= 20 ? 2 : totalStars >= 10 ? 1.5 : totalStars >= 5 ? 1 : totalStars >= 1 ? 0.5 : 0;
   const codeQuality = Math.min(1.5, repos.filter(r => !r.fork && r.size > 100 && r.description && r.description.length > 20).length / 3);
-  const readmeCodeBonus = Math.min(1, (readmeScores.hasInstall + readmeScores.hasUsage) / 4); // projects with install/usage docs
-  const code = Math.min(10, Math.round(1 + sizeLog + substantialScore + largeScore + starSignal + codeQuality + readmeCodeBonus));
+  const readmeCodeBonus = Math.min(1, (readmeScores.hasInstall + readmeScores.hasUsage) / 4);
+  const depthBonus = (hasSystemLang ? 0.5 : 0) + (hasNicheLang ? 0.5 : 0); // deep technical knowledge
+  const maturityBonus = Math.min(1, maturityRate * 1.5); // repos that evolved over time = real projects
+  const code = Math.min(10, Math.round(1 + sizeLog + substantialScore + largeScore + starSignal + codeQuality + readmeCodeBonus + depthBonus + maturityBonus));
 
   // --- VELOCITY: Delivery speed, consistency, regularity ---
   const recentScore = Math.min(1.5, recentRepos6m / 4);
@@ -203,8 +267,10 @@ async function fetchGitHubProfile(username) {
   const pushConsistency = Math.min(2.5, activeDays / 12); // need 30 active days for max
   const productivityRate = Math.min(1, (repoCount / Math.max(6, accountAgeMonths)) * 1.5);
   const prDelivery = Math.min(1.5, prMergedEvents / 5);
-  const commitDensity = Math.min(1.5, pushEvents / 20); // need 30+ pushes for max
-  const velocity = Math.min(10, Math.round(1 + recentScore + burstScore + pushConsistency + productivityRate + prDelivery + commitDensity));
+  const commitDensity = Math.min(1.5, pushEvents / 20);
+  // Penalize huge single pushes (vibe coder pattern: dump 50 files at once)
+  const pushGranularity = hasHugePushes ? -0.5 : (avgCommitsPerPush <= 5 ? 0.5 : 0);
+  const velocity = Math.min(10, Math.round(1 + recentScore + burstScore + pushConsistency + productivityRate + prDelivery + commitDensity + pushGranularity));
 
   // --- CRAFT: Code quality, polish, documentation, professionalism ---
   const descRate = reposWithDescription / n;
@@ -222,7 +288,10 @@ async function fetchGitHubProfile(username) {
     (readmeScores.hasScreenshot > 0 ? 0.5 : 0) +
     (readmeScores.avgLength > 500 ? 0.5 : readmeScores.avgLength > 200 ? 0.25 : 0)
   ));
-  const craft = Math.min(10, Math.round(1 + descScore + topicScore + licenseScore + homepageScore + reviewGiven + descQuality + readmeCraftBonus));
+  // Commit message quality = craft signal (descriptive vs generic)
+  const commitMsgQuality = Math.min(1, commitDescriptiveRate * 2); // descriptive messages = high craft
+  const commitMsgPenalty = commitGenericRate > 0.7 ? -0.5 : 0; // >70% generic = lazy
+  const craft = Math.min(10, Math.round(1 + descScore + topicScore + licenseScore + homepageScore + reviewGiven + descQuality + readmeCraftBonus + commitMsgQuality + commitMsgPenalty));
 
   // --- COLLABORATION: Team play, community engagement, open source ---
   const forkedRepos = repos.filter(r => r.fork).length;
@@ -260,7 +329,9 @@ async function fetchGitHubProfile(username) {
   // Penalize if most repos are forks (not creative)
   const forkRatio = forkedRepos / n;
   const forkPenalty = forkRatio > 0.7 ? -1.5 : forkRatio > 0.5 ? -1 : forkRatio > 0.3 ? -0.5 : 0;
-  const creativity = Math.min(10, Math.max(1, Math.round(1 + originalScore + uniqueTopicScore + personalScore + createScore + forkPenalty)));
+  // Repos that evolved = creative iteration (not one-shot AI dump)
+  const iterationBonus = Math.min(1, maturityRate * 1.5);
+  const creativity = Math.min(10, Math.max(1, Math.round(1 + originalScore + uniqueTopicScore + personalScore + createScore + forkPenalty + iterationBonus)));
 
   // --- AUTONOMY: Self-sufficiency, independence, documentation ---
   const originalRate = originalRepos / n;
@@ -277,11 +348,52 @@ async function fetchGitHubProfile(username) {
   const projectStructureBonus = Math.min(1, avgProjectStructure / 4); // well-structured projects
   const autonomy = Math.min(10, Math.round(1 + originalRateScore + documentedScore + structuredScore + ageScore + soloScore + readmeAutonomyBonus + projectStructureBonus));
 
+  // --- Dev Style Classification ---
+  let devStyle = 'traditional'; // default
+  let devStyleConfidence = 'low';
+
+  if (aiRate > 0.3) {
+    // >30% of commits are AI co-authored → IA Architect
+    devStyle = 'ia-architect';
+    devStyleConfidence = aiRate > 0.6 ? 'high' : 'medium';
+  } else if (
+    commitGenericRate > 0.6 &&
+    hasHugePushes &&
+    readmeScores.hasReadme === 0 &&
+    maturityRate < 0.3
+  ) {
+    // Generic commits + huge pushes + no README + one-shot repos → Vibe Coder
+    devStyle = 'vibe-coder';
+    devStyleConfidence = commitGenericRate > 0.8 ? 'high' : 'medium';
+  } else if (
+    commitDescriptiveRate > 0.4 &&
+    !hasHugePushes &&
+    maturityRate > 0.4
+  ) {
+    // Descriptive commits + granular pushes + mature repos → Real Dev
+    devStyle = 'traditional';
+    devStyleConfidence = commitDescriptiveRate > 0.6 ? 'high' : 'medium';
+  }
+
   return {
     username: user.login,
     name: user.name || user.login,
     avatar_url: user.avatar_url,
     languages: Array.from(languageSet),
+    dev_style: devStyle,
+    dev_style_confidence: devStyleConfidence,
+    dev_metrics: {
+      commit_descriptive_rate: Math.round(commitDescriptiveRate * 100),
+      commit_generic_rate: Math.round(commitGenericRate * 100),
+      ai_coauthored_rate: Math.round(aiRate * 100),
+      avg_commits_per_push: Math.round(avgCommitsPerPush * 10) / 10,
+      repo_maturity_rate: Math.round(maturityRate * 100),
+      primary_language: primaryLangName,
+      primary_language_ratio: Math.round(primaryLangRatio * 100),
+      has_niche_lang: hasNicheLang,
+      has_system_lang: hasSystemLang,
+      readme_quality: readmeScores
+    },
     scores: [
       { pillar: 'code', score: Math.max(1, code) },
       { pillar: 'velocity', score: Math.max(1, velocity) },
