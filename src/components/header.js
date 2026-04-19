@@ -24,7 +24,9 @@ function createHeader() {
             <button class="header-burger" id="btn-burger" aria-label="Menu">
               <span></span><span></span><span></span>
             </button>
-          ` : ''}
+          ` : `
+            <a href="/auth/github" class="btn-secondary btn-secondary--nav">${t('common.login')}</a>
+          `}
           <button class="header-lang" id="btn-lang" title="Language">${lang === 'fr' ? 'EN' : 'FR'}</button>
         </div>
       </nav>

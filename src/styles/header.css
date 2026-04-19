@@ -99,6 +99,12 @@
   color: #fff;
 }
 
+/* Login in nav — secondary style, compact */
+.btn-secondary--nav {
+  font-size: 0.75rem;
+  padding: 0.4rem 0;
+}
+
 /* Language toggle */
 .header-lang {
   background: none;
