@@ -7,22 +7,21 @@
   align-items: center;
   justify-content: center;
   gap: var(--space-sm);
-  padding: var(--space-sm) var(--space-2xl);
-  font-family: var(--font-display);
-  font-size: 1.125rem;
-  text-transform: uppercase;
-  letter-spacing: 0.1em;
+  padding: 10px 28px;
+  font-family: var(--font-body);
+  font-size: 0.875rem;
+  font-weight: 600;
+  letter-spacing: 0.01em;
   color: #fff;
   background: var(--color-primary);
   border: none;
+  border-radius: var(--radius-md);
   cursor: pointer;
   text-decoration: none;
   position: relative;
   overflow: hidden;
-  transition: transform var(--duration-fast) var(--ease-aggressive), box-shadow var(--duration-fast) ease;
-
-  /* Activision angular button */
-  clip-path: polygon(8px 0, 100% 0, calc(100% - 8px) 100%, 0 100%);
+  transition: all var(--duration-md) var(--ease-smooth);
+  min-height: 44px;
 }
 
 .btn-primary::before {
@@ -42,8 +41,9 @@
 }
 
 .btn-primary:hover {
-  transform: translateY(-2px);
-  box-shadow: 0 6px 25px rgba(232, 98, 10, 0.5);
+  transform: translateY(-1px);
+  box-shadow: 0 4px 20px rgba(232, 98, 10, 0.4);
+  filter: brightness(1.1);
 }
 
 .btn-primary:focus-visible {
@@ -64,8 +64,9 @@
 }
 
 .btn-primary--lg {
-  padding: var(--space-md) var(--space-2xl);
-  font-size: 1.375rem;
+  padding: 14px 36px;
+  font-size: 1rem;
+  border-radius: var(--radius-lg);
 }
 
 .btn-secondary {
@@ -73,23 +74,23 @@
   align-items: center;
   justify-content: center;
   gap: var(--space-sm);
-  padding: var(--space-sm) var(--space-xl);
-  font-family: var(--font-display);
-  font-size: 1.125rem;
-  text-transform: uppercase;
-  letter-spacing: 0.03em;
-  color: var(--color-primary);
-  background: transparent;
-  border: 1px solid var(--color-primary);
-  border-radius: var(--radius-sm);
+  padding: 10px 24px;
+  font-family: var(--font-body);
+  font-size: 0.875rem;
+  font-weight: 500;
+  color: var(--color-text);
+  background: var(--color-surface);
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-md);
   cursor: pointer;
   text-decoration: none;
-  transition: all var(--duration-fast) ease;
+  transition: all var(--duration-md) var(--ease-smooth);
+  min-height: 44px;
 }
 
 .btn-secondary:hover {
-  background: rgba(232, 98, 10, 0.1);
-  box-shadow: var(--shadow-md);
+  background: var(--color-surface-hover);
+  border-color: var(--color-border-hover);
 }
 
 .btn-secondary:focus-visible {
@@ -103,15 +104,16 @@
 
 .input {
   width: 100%;
-  padding: var(--space-sm) var(--space-md);
+  padding: 10px var(--space-md);
   font-family: var(--font-body);
-  font-size: 0.9375rem;
+  font-size: 0.875rem;
   color: var(--color-text);
   background: var(--color-surface);
-  border: 1px solid var(--color-text-dim);
-  border-radius: var(--radius-sm);
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-md);
   outline: none;
-  transition: border-color var(--duration-fast) ease, box-shadow var(--duration-fast) ease;
+  transition: all var(--duration-md) var(--ease-smooth);
+  min-height: 44px;
 }
 
 .input::placeholder {
@@ -120,7 +122,7 @@
 
 .input:focus {
   border-color: var(--color-primary);
-  box-shadow: 0 0 12px rgba(232, 98, 10, 0.15);
+  box-shadow: 0 0 0 3px rgba(232, 98, 10, 0.1);
 }
 
 .input--error {
@@ -204,14 +206,14 @@
 .badge {
   display: inline-flex;
   align-items: center;
-  padding: 2px var(--space-sm);
+  padding: 3px 10px;
   font-family: var(--font-body);
   font-size: 0.625rem;
-  font-weight: 700;
+  font-weight: 600;
   text-transform: uppercase;
-  letter-spacing: 0.1em;
+  letter-spacing: 0.08em;
   white-space: nowrap;
-  clip-path: polygon(4px 0, 100% 0, calc(100% - 4px) 100%, 0 100%);
+  border-radius: var(--radius-pill);
 }
 
 .badge--architect {
@@ -307,15 +309,15 @@
   align-items: center;
   justify-content: center;
   min-width: 40px;
-  height: 22px;
+  height: 24px;
   padding: 0 var(--space-sm);
-  font-family: var(--font-display);
-  font-size: 0.875rem;
-  letter-spacing: 0.05em;
+  font-family: var(--font-mono);
+  font-size: 0.75rem;
+  font-weight: 500;
   color: var(--color-accent);
-  background: rgba(245, 197, 66, 0.08);
-  border: 1px solid rgba(245, 197, 66, 0.15);
-  clip-path: polygon(4px 0, 100% 0, calc(100% - 4px) 100%, 0 100%);
+  background: rgba(245, 197, 66, 0.06);
+  border: 1px solid rgba(245, 197, 66, 0.12);
+  border-radius: var(--radius-pill);
 }
 
 /* ==========================================
@@ -333,20 +335,14 @@
   position: relative;
   overflow: hidden;
   border: 1px solid var(--color-border);
-  transition: transform var(--duration-md) var(--ease-aggressive),
-              box-shadow var(--duration-md) ease,
-              border-color var(--duration-md) ease;
-
-  /* Activision diagonal cut */
-  clip-path: polygon(0 0, calc(100% - 16px) 0, 100% 16px, 100% 100%, 16px 100%, 0 calc(100% - 16px));
+  border-radius: var(--radius-lg);
+  transition: all var(--duration-md) var(--ease-smooth);
 }
 
 .dev-card:hover {
-  transform: translateY(-6px);
-  box-shadow:
-    0 12px 40px color-mix(in srgb, var(--card-archetype-color, #E8620A) 20%, transparent),
-    inset 0 0 40px color-mix(in srgb, var(--card-archetype-color, #E8620A) 5%, transparent);
-  border-color: color-mix(in srgb, var(--card-archetype-color, #E8620A) 40%, transparent);
+  transform: translateY(-4px);
+  border-color: var(--color-border-hover);
+  box-shadow: 0 12px 40px rgba(0,0,0,0.4), 0 0 0 1px var(--color-border-hover);
 }
 
 .dev-card:focus-visible {
