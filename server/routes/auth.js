@@ -11,7 +11,14 @@ import env from '../config/env.js';
 async function authRoutes(fastify) {
   // OAuth callback
   fastify.get('/auth/github/callback', async (request, reply) => {
-    const { token } = await fastify.githubOAuth2.getAccessTokenFromAuthorizationCodeFlow(request);
+    let token;
+    try {
+      const result = await fastify.githubOAuth2.getAccessTokenFromAuthorizationCodeFlow(request);
+      token = result.token;
+    } catch (err) {
+      request.log.error({ err: err.message, query: request.query }, 'OAuth token exchange failed');
+      return reply.redirect('/#/?auth=error');
+    }
 
     const ghRes = await fetch('https://api.github.com/user', {
       headers: {
