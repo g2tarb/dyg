@@ -2,44 +2,44 @@ import { escapeHTML } from '../utils/sanitize.js';
 
 const ARCHETYPE_DATA = {
   architect: {
-    name: 'Architecte',
-    description: 'Il pense en systèmes. Son code tient debout dans 5 ans.',
+    name: 'Architect',
+    description: 'Thinks in systems. Their code stands strong 5 years later.',
     color: '#3B82F6',
     image: '/assets/archetypes/architect.png'
   },
   shipper: {
     name: 'Shipper',
-    description: 'Il livre. Pas de réunion, pas d\'excuses. Le projet avance.',
+    description: 'Ships. No meetings, no excuses. The project moves forward.',
     color: '#22C55E',
     image: '/assets/archetypes/shipper.png'
   },
   artisan: {
     name: 'Artisan',
-    description: 'Chaque pixel, chaque fonction est poncée. Il livre du propre.',
+    description: 'Every pixel, every function is polished. Delivers clean work.',
     color: '#F5C542',
     image: '/assets/archetypes/artisan.png'
   },
   creative: {
-    name: 'Créatif',
-    description: 'Ses projets n\'existent nulle part ailleurs. Il invente avant de construire.',
+    name: 'Creative',
+    description: 'Their projects exist nowhere else. Invents before building.',
     color: '#A855F7',
     image: '/assets/archetypes/creative.png'
   },
   explorer: {
-    name: 'Explorateur',
-    description: 'Il touche à tout, il apprend vite. Là où les autres spécialisent, lui connecte.',
+    name: 'Explorer',
+    description: 'Touches everything, learns fast. Where others specialize, they connect.',
     color: '#06B6D4',
     image: '/assets/archetypes/explorer.png'
   },
   commando: {
     name: 'Commando',
-    description: 'Rapide ET collectif. Le coéquipier idéal en game jam.',
+    description: 'Fast AND collaborative. The ideal teammate in a game jam.',
     color: '#EF4444',
     image: '/assets/archetypes/commando.png'
   },
   mentor: {
     name: 'Mentor',
-    description: 'Il élève le niveau de l\'équipe. Ses code reviews valent de l\'or.',
+    description: 'Raises the team\'s level. Their code reviews are worth gold.',
     color: '#F97316',
     image: '/assets/archetypes/mentor.png'
   }

@@ -54,7 +54,7 @@ async function loadProject(container, projectId) {
     container.innerHTML = `
       <section class="project-detail">
         <div class="container" style="padding-top:var(--space-2xl);">
-          <a href="#/projects" class="profile-back">&larr; Retour</a>
+          <a href="#/projects" class="profile-back">&larr; Back</a>
           <div class="empty-state"><p class="empty-state__text">${t('notfound.text')}</p></div>
         </div>
       </section>`;
@@ -107,7 +107,7 @@ async function loadProject(container, projectId) {
 
         <div class="projdet__layout">
           <div class="projdet__members-section">
-            <h3 class="projdet__section-title">Membres (${project.members.length} / ${project.max_members})</h3>
+            <h3 class="projdet__section-title">Members (${project.members.length} / ${project.max_members})</h3>
             <div class="projdet__members">
               ${project.members.map(m => `
                 <div class="projdet__member">
@@ -123,21 +123,21 @@ async function loadProject(container, projectId) {
           </div>
 
           <div class="projdet__info-section">
-            <h3 class="projdet__section-title">Infos</h3>
+            <h3 class="projdet__section-title">Info</h3>
             <div class="projdet__info-grid">
               <div class="projdet__info-item">
                 <span class="projdet__info-label">${t('project.created_at')}</span>
-                <span class="projdet__info-value">${new Date(project.created_at).toLocaleDateString('fr-FR')}</span>
+                <span class="projdet__info-value">${new Date(project.created_at).toLocaleDateString('en-US')}</span>
               </div>
               ${project.started_at ? `
               <div class="projdet__info-item">
                 <span class="projdet__info-label">${t('project.started_at')}</span>
-                <span class="projdet__info-value">${new Date(project.started_at).toLocaleDateString('fr-FR')}</span>
+                <span class="projdet__info-value">${new Date(project.started_at).toLocaleDateString('en-US')}</span>
               </div>` : ''}
               ${project.ended_at ? `
               <div class="projdet__info-item">
                 <span class="projdet__info-label">${t('project.ended_at')}</span>
-                <span class="projdet__info-value">${new Date(project.ended_at).toLocaleDateString('fr-FR')}</span>
+                <span class="projdet__info-value">${new Date(project.ended_at).toLocaleDateString('en-US')}</span>
               </div>` : ''}
             </div>
           </div>

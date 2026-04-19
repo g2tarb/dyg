@@ -57,14 +57,14 @@ function renderOnboarding(container) {
             <div class="onboarding-card-zone" id="card-zone">
               <div class="card-flip" id="card-flip">
                 <div class="card-flip__inner" id="card-inner">
-                  <!-- Back (face cachée) -->
+                  <!-- Back (hidden face) -->
                   <div class="card-flip__back">
                     <div class="card-back-content">
                       <span class="card-back-logo">DYG</span>
                       <span class="card-back-sub">DO YOUR GAME</span>
                     </div>
                   </div>
-                  <!-- Front (archétype révélé) -->
+                  <!-- Front (revealed archetype) -->
                   <div class="card-flip__front" id="card-front">
                   </div>
                 </div>
@@ -156,7 +156,7 @@ function renderOnboarding(container) {
       const res = await apiCall;
       if (!res.ok) {
         const err = await res.json();
-        throw new Error(err.error || 'Profil non trouvé');
+        throw new Error(err.error || 'Profile not found');
       }
       data = await res.json();
     } catch (err) {
@@ -164,7 +164,7 @@ function renderOnboarding(container) {
       btnScan.disabled = false;
       btnScan.classList.remove('btn-primary--disabled');
       input.disabled = false;
-      showError(err.message || 'Ce profil GitHub n\'existe pas.');
+      showError(err.message || 'This GitHub profile does not exist.');
       return;
     }
 
@@ -252,13 +252,13 @@ function renderOnboarding(container) {
 
     // Bio
     resultBio.innerHTML = `
-      <h3 style="font-size:1.25rem;color:var(--color-text);margin-bottom:var(--space-sm);">Bio générée par IA</h3>
+      <h3 style="font-size:1.25rem;color:var(--color-text);margin-bottom:var(--space-sm);">AI-Generated Bio</h3>
       <p style="color:var(--color-text-dim);line-height:1.6;">${escapeHTML(data.bio || '')}</p>
     `;
 
     // Langs
     resultLangs.innerHTML = `
-      <h3 style="font-size:1.25rem;color:var(--color-text);margin-bottom:var(--space-sm);">Langages détectés</h3>
+      <h3 style="font-size:1.25rem;color:var(--color-text);margin-bottom:var(--space-sm);">Detected Languages</h3>
       <div class="profile-langs">
         ${(data.languages || []).map(l => `<span class="profile-lang">${escapeHTML(l)}</span>`).join('')}
       </div>

@@ -10,37 +10,37 @@ export class DygError extends Error {
 }
 
 export class ValidationError extends DygError {
-  constructor(message = 'Données invalides', details = null) {
+  constructor(message = 'Invalid data', details = null) {
     super(message, 422, 'VALIDATION_FAILED', details);
   }
 }
 
 export class NotFoundError extends DygError {
-  constructor(message = 'Ressource non trouvée') {
+  constructor(message = 'Resource not found') {
     super(message, 404, 'NOT_FOUND');
   }
 }
 
 export class UnauthorizedError extends DygError {
-  constructor(message = 'Non authentifié') {
+  constructor(message = 'Not authenticated') {
     super(message, 401, 'UNAUTHORIZED');
   }
 }
 
 export class ForbiddenError extends DygError {
-  constructor(message = 'Accès interdit') {
+  constructor(message = 'Access denied') {
     super(message, 403, 'FORBIDDEN');
   }
 }
 
 export class ConflictError extends DygError {
-  constructor(message = 'Conflit') {
+  constructor(message = 'Conflict') {
     super(message, 409, 'CONFLICT');
   }
 }
 
 export class IntegrationError extends DygError {
-  constructor(message = 'Erreur service tiers', details = null) {
+  constructor(message = 'Third-party service error', details = null) {
     super(message, 502, 'INTEGRATION_FAILED', details);
   }
 }

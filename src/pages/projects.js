@@ -129,7 +129,7 @@ function renderProjects(container) {
         });
         if (!res.ok) {
           const err = await res.json();
-          throw new Error(err.error || 'Erreur');
+          throw new Error(err.error || 'Error');
         }
         createForm.style.display = 'none';
         showToast(t('projects.created'));

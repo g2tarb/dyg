@@ -31,7 +31,7 @@ async function onboardingRoutes(fastify) {
       };
     } catch (err) {
       request.log.error({ err, username: parsed.github_username }, 'GitHub scan failed');
-      return reply.code(404).send({ error: 'NOT_FOUND', message: 'Profil GitHub introuvable' });
+      return reply.code(404).send({ error: 'NOT_FOUND', message: 'GitHub profile not found' });
     }
   });
 }

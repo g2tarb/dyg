@@ -6,9 +6,9 @@ dotenv.config();
 const envSchema = z.object({
   NODE_ENV: z.enum(['development', 'production', 'test']).default('development'),
   PORT: z.string().transform(Number).default('3001'),
-  DATABASE_URL: z.string().min(1, 'DATABASE_URL requis'),
-  JWT_SECRET: z.string().min(32, 'JWT_SECRET doit faire au moins 32 caractères'),
-  ENCRYPTION_KEY: z.string().length(64, 'ENCRYPTION_KEY doit faire 64 chars hex').optional(),
+  DATABASE_URL: z.string().min(1, 'DATABASE_URL is required'),
+  JWT_SECRET: z.string().min(32, 'JWT_SECRET must be at least 32 characters'),
+  ENCRYPTION_KEY: z.string().length(64, 'ENCRYPTION_KEY must be 64 hex chars').optional(),
   GITHUB_PAT: z.string().optional(),
   GEMINI_API_KEY: z.string().optional(),
   GH_CLIENT_ID: z.string().optional(),

@@ -247,7 +247,7 @@ async function fetchGitHubProfile(username) {
   const maturityRate = reposWithMultiplePushes / n;
 
   // ============================================================
-  //  AI USAGE QUALITY — Bonus/malus basé sur COMMENT l'IA est utilisée
+  //  AI USAGE QUALITY — Bonus/malus based on HOW AI is used
   // ============================================================
 
   let aiUsageQuality = 'none'; // none, poor, decent, excellent
@@ -279,8 +279,8 @@ async function fetchGitHubProfile(username) {
   }
 
   // ============================================================
-  //  SCORING V4 — Sévère. Base 1, max 10. 8+ = rare. 9+ = exceptionnel.
-  //  Distribution cible : moyenne ~5, 8+ = top 15%, 9+ = top 5%
+  //  SCORING V4 — Strict. Base 1, max 10. 8+ = rare. 9+ = exceptional.
+  //  Target distribution: average ~5, 8+ = top 15%, 9+ = top 5%
   // ============================================================
 
   // --- CODE: Technical depth, production volume, quality signals ---

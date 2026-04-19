@@ -3,12 +3,12 @@ import { ARCHETYPE_NAMES } from './devCard.js';
 const ARCHETYPES_LIST = ['architect', 'shipper', 'artisan', 'creative', 'explorer', 'commando', 'mentor'];
 const PILLARS_LIST = [
   { key: 'code', label: 'Code' },
-  { key: 'velocity', label: 'Vélocité' },
+  { key: 'velocity', label: 'Velocity' },
   { key: 'craft', label: 'Craft' },
   { key: 'collaboration', label: 'Collaboration' },
-  { key: 'versatility', label: 'Polyvalence' },
-  { key: 'creativity', label: 'Créativité' },
-  { key: 'autonomy', label: 'Autonomie' }
+  { key: 'versatility', label: 'Versatility' },
+  { key: 'creativity', label: 'Creativity' },
+  { key: 'autonomy', label: 'Autonomy' }
 ];
 
 function createFilters(onChange) {
@@ -34,9 +34,9 @@ function createFilters(onChange) {
   pillarGroup.className = 'filters-bar__group';
   pillarGroup.style.minWidth = '200px';
   pillarGroup.innerHTML = `
-    <span class="filters-bar__label">Pilier minimum</span>
+    <span class="filters-bar__label">Minimum pillar</span>
     <select class="input" style="padding:4px 8px;font-size:0.8125rem;" id="filter-pillar">
-      <option value="">Tous</option>
+      <option value="">All</option>
       ${PILLARS_LIST.map(p => `<option value="${p.key}">${p.label}</option>`).join('')}
     </select>
   `;
@@ -46,7 +46,7 @@ function createFilters(onChange) {
   sliderGroup.style.minWidth = '140px';
   sliderGroup.innerHTML = `
     <div class="slider-label">
-      <span>Score min</span>
+      <span>Min score</span>
       <span class="slider-label__value" id="slider-val">1</span>
     </div>
     <input type="range" class="slider" id="filter-min" min="1" max="10" value="1">
@@ -55,7 +55,7 @@ function createFilters(onChange) {
   // Archetype toggles
   const archGroup = document.createElement('div');
   archGroup.className = 'filters-bar__group';
-  archGroup.innerHTML = `<span class="filters-bar__label">Archétype</span>`;
+  archGroup.innerHTML = `<span class="filters-bar__label">Archetype</span>`;
   const archToggles = document.createElement('div');
   archToggles.className = 'filters-bar__archetypes';
   ARCHETYPES_LIST.forEach(a => {

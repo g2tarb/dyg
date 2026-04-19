@@ -20,11 +20,16 @@ export default {
   'header.messages': 'Messages',
 
   // Landing
+  'landing.hero_title': 'Quel développeur es-tu vraiment ?',
+  'landing.hero_sub': 'Entre ton pseudo GitHub. En 10 secondes, tu connais ton archétype, tes scores et ton style de dev.',
   'landing.tagline': 'Progresse. Rejoins. Prouve.',
   'landing.pitch': 'Apprends à coder à la dure. Sans framework. Sans raccourci.',
   'landing.pitch_bold': 'Scanne ton GitHub. Découvre ton archétype. Entraîne-toi. Livre des projets en équipe. Forge un portfolio que personne ne peut ignorer.',
   'landing.cta_find': 'Scanner mon GitHub',
   'landing.cta_discover': 'Découvrir DYG',
+  'landing.scroll_more': 'Comment ça marche ?',
+  'landing.social_proof': 'Déjà scanné par',
+  'landing.social_devs': 'devs',
   'landing.how_title': '3 pôles. 1 parcours.',
   'landing.how_sub': 'Du scan au portfolio.',
   'landing.step1_title': 'Apprendre',
@@ -37,6 +42,10 @@ export default {
   'landing.archetypes_sub': 'Architecte, Shipper, Artisan, Créatif, Explorateur, Commando, Mentor. Ton style de dev définit ton rôle dans une équipe.',
   'landing.cta_bottom_title': 'Prêt à savoir ce que tu vaux ?',
   'landing.cta_bottom_sub': '10 secondes. Ton GitHub. Ton archétype. Tes scores.',
+  'landing.scan_prompt': 'Découvre ton archétype en 10 secondes',
+  'landing.scan_placeholder': 'Ton pseudo GitHub',
+  'landing.scan_btn': 'Scanner',
+  'landing.scan_full': 'Voir le profil complet →',
 
   // Search
   'search.title': 'Explorer les profils',

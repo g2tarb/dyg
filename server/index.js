@@ -156,7 +156,7 @@ fastify.setErrorHandler((error, request, reply) => {
   if (error instanceof z.ZodError) {
     return reply.code(422).send({
       error: 'VALIDATION_FAILED',
-      message: 'Données invalides',
+      message: 'Invalid data',
       details: error.flatten().fieldErrors
     });
   }

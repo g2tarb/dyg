@@ -14,7 +14,7 @@ async function messageRoutes(fastify) {
     const { to, body } = parsed;
 
     if (to === senderId) {
-      return reply.code(400).send({ error: 'VALIDATION_FAILED', message: 'Impossible de s\'envoyer un message' });
+      return reply.code(400).send({ error: 'VALIDATION_FAILED', message: 'Cannot send a message to yourself' });
     }
 
     // Check recipient exists

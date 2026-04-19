@@ -70,15 +70,15 @@ async function loadPortfolio(container, login) {
           <div class="portfolio__stats">
             <div class="portfolio__stat">
               <span class="portfolio__stat-value">${projects.length}</span>
-              <span class="portfolio__stat-label">Projets</span>
+              <span class="portfolio__stat-label">Projects</span>
             </div>
             <div class="portfolio__stat">
               <span class="portfolio__stat-value">${shippedCount}</span>
-              <span class="portfolio__stat-label">Livrés</span>
+              <span class="portfolio__stat-label">Shipped</span>
             </div>
             <div class="portfolio__stat">
               <span class="portfolio__stat-value">${progression.length}</span>
-              <span class="portfolio__stat-label">Évolutions</span>
+              <span class="portfolio__stat-label">Evolutions</span>
             </div>
           </div>
         </div>
@@ -86,7 +86,7 @@ async function loadPortfolio(container, login) {
         ${developer ? `
         <div class="portfolio__layout">
           <div class="portfolio__radar-section">
-            <h2 class="portfolio__section-title">Radar de compétences</h2>
+            <h2 class="portfolio__section-title">Skills Radar</h2>
             <div id="portfolio-radar"></div>
             <div class="portfolio__scores" id="portfolio-scores"></div>
           </div>
@@ -95,7 +95,7 @@ async function loadPortfolio(container, login) {
             ${developer.bio ? `<p class="portfolio__bio">${escapeHTML(developer.bio)}</p>` : ''}
             ${developer.languages && developer.languages.length > 0 ? `
             <div class="portfolio__langs">
-              <h3 class="portfolio__langs-title">Langages</h3>
+              <h3 class="portfolio__langs-title">Languages</h3>
               <div class="portfolio__langs-list">
                 ${developer.languages.map(l => `<span class="profile-lang">${escapeHTML(l)}</span>`).join('')}
               </div>
@@ -105,7 +105,7 @@ async function loadPortfolio(container, login) {
         ` : `<p style="color:var(--color-text-dim);padding:var(--space-xl) 0;">${t('portfolio.no_profile')}</p>`}
 
         <div class="portfolio__projects-section">
-          <h2 class="portfolio__section-title">Projets</h2>
+          <h2 class="portfolio__section-title">Projects</h2>
           ${projects.length > 0 ? `
           <div class="portfolio__projects">
             ${projects.map(p => {
@@ -120,8 +120,8 @@ async function loadPortfolio(container, login) {
                   </div>
                   <p class="portfolio__project-desc">${escapeHTML(p.description || '')}</p>
                   <div class="portfolio__project-meta">
-                    <span>${p.member_count || 0} membre${(p.member_count || 0) > 1 ? 's' : ''}</span>
-                    ${p.ended_at ? `<span>Livré le ${new Date(p.ended_at).toLocaleDateString('fr-FR')}</span>` : ''}
+                    <span>${p.member_count || 0} member${(p.member_count || 0) > 1 ? 's' : ''}</span>
+                    ${p.ended_at ? `<span>Shipped ${new Date(p.ended_at).toLocaleDateString('en-US')}</span>` : ''}
                   </div>
                 </div>
               </a>`;
@@ -133,10 +133,11 @@ async function loadPortfolio(container, login) {
         ${progression.length > 0 ? `
         <div class="portfolio__progression-section">
           <h2 class="portfolio__section-title">Progression</h2>
+
           <div class="portfolio__progression">
             ${progression.map(s => `
             <div class="portfolio__snap">
-              <span class="portfolio__snap-date">${new Date(s.computed_at).toLocaleDateString('fr-FR')}</span>
+              <span class="portfolio__snap-date">${new Date(s.computed_at).toLocaleDateString('en-US')}</span>
               <span class="portfolio__snap-project">${escapeHTML(s.project_name)}</span>
               ${s.archetype_before !== s.archetype_after ? `
               <span class="portfolio__snap-evolution">
@@ -154,7 +155,7 @@ async function loadPortfolio(container, login) {
   const actionsEl = container.querySelector('#portfolio-actions');
   const currentUser = getState('user');
   if (currentUser && currentUser.id !== user.id) {
-    actionsEl.innerHTML = `<button class="btn-primary btn-primary--sm" id="btn-contact">Contacter</button>`;
+    actionsEl.innerHTML = `<button class="btn-primary btn-primary--sm" id="btn-contact">Contact</button>`;
     actionsEl.querySelector('#btn-contact').addEventListener('click', async () => {
       const btn = actionsEl.querySelector('#btn-contact');
       btn.disabled = true;
@@ -162,14 +163,14 @@ async function loadPortfolio(container, login) {
         const res = await fetch('/api/messages/send', {
           method: 'POST',
           headers: { 'Content-Type': 'application/json' },
-          body: JSON.stringify({ to: user.id, body: 'Salut ! Je t\u2019ai trouvé sur DYG.' })
+          body: JSON.stringify({ to: user.id, body: 'Hey! I found you on DYG.' })
         });
         if (!res.ok) throw new Error();
         const data = await res.json();
-        showToast('Message envoyé');
+        showToast('Message sent');
         window.location.hash = `#/messages/${data.conversation_id}`;
       } catch {
-        showToast('Erreur d\u2019envoi', 'error');
+        showToast('Failed to send', 'error');
         btn.disabled = false;
       }
     });

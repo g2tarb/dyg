@@ -104,8 +104,8 @@ async function renderConversation(container, convId) {
     container.innerHTML = `
       <section class="messages">
         <div class="container" style="padding-top:var(--space-2xl);">
-          <a href="#/messages" class="profile-back">&larr; Retour</a>
-          <div class="empty-state"><p class="empty-state__text">Conversation non trouvée.</p></div>
+          <a href="#/messages" class="profile-back">&larr; Back</a>
+          <div class="empty-state"><p class="empty-state__text">Conversation not found.</p></div>
         </div>
       </section>`;
     return;
@@ -165,7 +165,7 @@ async function renderConversation(container, convId) {
       chatEl.appendChild(bubble);
       chatEl.scrollTop = chatEl.scrollHeight;
     } catch {
-      showToast('Erreur d\'envoi', 'error');
+      showToast('Failed to send', 'error');
     } finally {
       btnSend.disabled = false;
       input.focus();
@@ -213,11 +213,11 @@ function formatTime(iso) {
   const now = new Date();
   const diffMs = now - d;
   const diffMin = Math.floor(diffMs / 60000);
-  if (diffMin < 1) return 'maintenant';
+  if (diffMin < 1) return 'now';
   if (diffMin < 60) return `${diffMin}min`;
   const diffH = Math.floor(diffMin / 60);
   if (diffH < 24) return `${diffH}h`;
-  return d.toLocaleDateString('fr-FR', { day: 'numeric', month: 'short' });
+  return d.toLocaleDateString('en-US', { day: 'numeric', month: 'short' });
 }
 
 export { renderMessages };
