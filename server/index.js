@@ -126,7 +126,10 @@ await fastify.register(jwt, {
 });
 
 // --- GitHub OAuth ---
-if (env.GH_CLIENT_ID && env.GH_CLIENT_ID !== 'your_github_client_id') {
+const hasOAuth = env.GH_CLIENT_ID && env.GH_CLIENT_ID !== 'your_github_client_id';
+fastify.log.info(`OAuth config: hasOAuth=${hasOAuth}, GH_CLIENT_ID=${env.GH_CLIENT_ID ? env.GH_CLIENT_ID.slice(0, 4) + '...' : 'MISSING'}, BASE_URL=${env.BASE_URL}`);
+
+if (hasOAuth) {
   await fastify.register(oauth2, {
     name: 'githubOAuth2',
     scope: ['read:user', 'user:email'],
@@ -139,6 +142,14 @@ if (env.GH_CLIENT_ID && env.GH_CLIENT_ID !== 'your_github_client_id') {
     },
     startRedirectPath: '/auth/github',
     callbackUri: env.BASE_URL + '/auth/github/callback'
+  });
+} else {
+  // Fallback: redirect to homepage with error if OAuth not configured
+  fastify.get('/auth/github', async (request, reply) => {
+    return reply.redirect('/#/?auth=not_configured');
+  });
+  fastify.get('/auth/github/callback', async (request, reply) => {
+    return reply.redirect('/#/?auth=not_configured');
   });
 }
 
