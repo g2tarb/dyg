@@ -313,11 +313,6 @@ function renderAbout(container) {
             <p class="about-tech-card__desc">${t('about.tech_synergy_desc')}</p>
           </div>
           <div class="about-tech-card hud-corner">
-            <span class="about-tech-card__icon">\u25B2</span>
-            <h3 class="about-tech-card__name">${t('about.tech_threejs_name')}</h3>
-            <p class="about-tech-card__desc">${t('about.tech_threejs_desc')}</p>
-          </div>
-          <div class="about-tech-card hud-corner">
             <span class="about-tech-card__icon">\u25BA</span>
             <h3 class="about-tech-card__name">${t('about.tech_fastify_name')}</h3>
             <p class="about-tech-card__desc">${t('about.tech_fastify_desc')}</p>
