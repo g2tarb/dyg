@@ -1,7 +1,12 @@
 import { ARCHETYPES, PILLARS } from '../constants/archetypes.js';
 
-const DUAL_THRESHOLD = 14;   // Both dominant pillars 7+ (7+7=14)
-const TRIPLE_THRESHOLD = 16; // At least one 9 and one 7 (9+7=16) — extremely rare
+// Dual: both dominant pillars must be 8+ (sum >= 16) — should be ~10-15% of devs
+const DUAL_THRESHOLD = 16;
+const DUAL_MIN_PILLAR = 8;
+
+// Triple: on top of dual, a third archetype with both dominants 9+ (sum >= 18) — should be ~1-2%
+const TRIPLE_THRESHOLD = 18;
+const TRIPLE_MIN_PILLAR = 9;
 
 function determineArchetype(scores) {
   const ranked = [];
@@ -22,33 +27,24 @@ function determineArchetype(scores) {
 
   const primary = ranked[0]?.key || 'architect';
 
-  // Secondary: different archetype with both dominants 7+ (sum >= 14)
   let secondary = null;
-  // Tertiary: different archetype with at least 2x9 and 1x7+ (sum >= 16, max >= 9, min >= 7)
   let tertiary = null;
 
   const extras = ranked.filter(e => e.key !== primary);
 
+  // Secondary: BOTH dominants must be 8+ (not just the sum)
   for (const entry of extras) {
-    if (!secondary && entry.dominantSum >= DUAL_THRESHOLD && entry.minDominant >= 7) {
+    if (entry.minDominant >= DUAL_MIN_PILLAR && entry.dominantSum >= DUAL_THRESHOLD) {
       secondary = entry.key;
-      continue;
-    }
-    if (secondary && !tertiary && entry.dominantSum >= DUAL_THRESHOLD && entry.minDominant >= 7) {
-      // Triple requires: the secondary already qualifies, AND this third one has sum >= 16 with a 9
-      if (entry.dominantSum >= TRIPLE_THRESHOLD && entry.maxDominant >= 9) {
-        tertiary = entry.key;
-      }
+      break;
     }
   }
 
-  // Also check: can secondary be promoted to triple-level?
-  // Triple = primary + 2 other archetypes qualifying
-  // We already have secondary. For tertiary, need another archetype at sum >= 16 with a 9
-  if (secondary && !tertiary) {
+  // Tertiary: a THIRD archetype with BOTH dominants 9+ — legendary
+  if (secondary) {
     for (const entry of extras) {
       if (entry.key === secondary) continue;
-      if (entry.dominantSum >= TRIPLE_THRESHOLD && entry.maxDominant >= 9 && entry.minDominant >= 7) {
+      if (entry.minDominant >= TRIPLE_MIN_PILLAR && entry.dominantSum >= TRIPLE_THRESHOLD) {
         tertiary = entry.key;
         break;
       }

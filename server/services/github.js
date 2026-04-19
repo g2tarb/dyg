@@ -143,79 +143,87 @@ async function fetchGitHubProfile(username) {
   const n = Math.max(1, repoCount);
 
   // ============================================================
-  //  SCORING — each pillar: base 2 + up to 8 points from metrics
+  //  SCORING V4 — Sévère. Base 1, max 10. 8+ = rare. 9+ = exceptionnel.
+  //  Distribution cible : moyenne ~5, 8+ = top 15%, 9+ = top 5%
   // ============================================================
 
   // --- CODE: Technical depth, production volume, quality signals ---
-  const sizeLog = Math.min(2.5, Math.log2(Math.max(1, totalSizeKB / 100))); // 0-2.5 based on total code volume
-  const substantialScore = Math.min(2, substantialRepos / 3); // having real projects
-  const largeScore = Math.min(1, largeRepos / 2); // big projects bonus
-  const starSignal = totalStars >= 100 ? 2.5 : totalStars >= 30 ? 2 : totalStars >= 10 ? 1.5 : totalStars >= 3 ? 1 : totalStars >= 1 ? 0.5 : 0;
-  const code = Math.min(10, Math.round(2 + sizeLog + substantialScore + largeScore + starSignal));
+  const sizeLog = Math.min(2, Math.log2(Math.max(1, totalSizeKB / 200))); // harder curve
+  const substantialScore = Math.min(1.5, substantialRepos / 4);
+  const largeScore = Math.min(1, largeRepos / 3);
+  const starSignal = totalStars >= 200 ? 3 : totalStars >= 50 ? 2.5 : totalStars >= 20 ? 2 : totalStars >= 10 ? 1.5 : totalStars >= 5 ? 1 : totalStars >= 1 ? 0.5 : 0;
+  const codeQuality = Math.min(1.5, repos.filter(r => !r.fork && r.size > 100 && r.description && r.description.length > 20).length / 3); // well-described big projects
+  const code = Math.min(10, Math.round(1 + sizeLog + substantialScore + largeScore + starSignal + codeQuality));
 
   // --- VELOCITY: Delivery speed, consistency, regularity ---
-  const recentScore = Math.min(2, recentRepos6m / 3); // active in last 6 months
-  const burstScore = Math.min(1.5, recentRepos1m * 0.75); // very recent activity
-  const pushConsistency = Math.min(2, activeDays / 10); // spread of activity (not just 1 big push day)
-  const productivityRate = Math.min(1.5, (repoCount / accountAgeMonths) * 2); // repos/month
-  const prDelivery = Math.min(1, prMergedEvents / 3); // merged PRs
-  const velocity = Math.min(10, Math.round(2 + recentScore + burstScore + pushConsistency + productivityRate + prDelivery));
+  const recentScore = Math.min(1.5, recentRepos6m / 4);
+  const burstScore = Math.min(1, recentRepos1m * 0.5);
+  const pushConsistency = Math.min(2.5, activeDays / 12); // need 30 active days for max
+  const productivityRate = Math.min(1, (repoCount / Math.max(6, accountAgeMonths)) * 1.5);
+  const prDelivery = Math.min(1.5, prMergedEvents / 5);
+  const commitDensity = Math.min(1.5, pushEvents / 20); // need 30+ pushes for max
+  const velocity = Math.min(10, Math.round(1 + recentScore + burstScore + pushConsistency + productivityRate + prDelivery + commitDensity));
 
   // --- CRAFT: Code quality, polish, documentation, professionalism ---
   const descRate = reposWithDescription / n;
   const topicRate = reposWithTopics / n;
-  const descScore = Math.min(2.5, descRate * 3.5); // repos with descriptions
-  const topicScore = Math.min(1.5, topicRate * 2.5); // repos with topics
-  const licenseScore = reposWithLicense >= 5 ? 1.5 : reposWithLicense >= 2 ? 1 : reposWithLicense >= 1 ? 0.5 : 0;
-  const homepageScore = reposWithHomepage >= 3 ? 1.5 : reposWithHomepage >= 1 ? 0.8 : 0;
-  const reviewGiven = Math.min(1, reviewEvents / 3); // gives code reviews = cares about quality
-  const craft = Math.min(10, Math.round(2 + descScore + topicScore + licenseScore + homepageScore + reviewGiven));
+  const descScore = Math.min(2, descRate * 2.5);
+  const topicScore = Math.min(1.5, topicRate * 2);
+  const licenseScore = reposWithLicense >= 5 ? 1.5 : reposWithLicense >= 3 ? 1 : reposWithLicense >= 1 ? 0.5 : 0;
+  const homepageScore = reposWithHomepage >= 3 ? 1 : reposWithHomepage >= 1 ? 0.5 : 0;
+  const reviewGiven = Math.min(1.5, reviewEvents / 5);
+  const descQuality = Math.min(1, repos.filter(r => r.description && r.description.length > 30).length / 5); // longer descriptions = more craft
+  const craft = Math.min(10, Math.round(1 + descScore + topicScore + licenseScore + homepageScore + reviewGiven + descQuality));
 
   // --- COLLABORATION: Team play, community engagement, open source ---
   const forkedRepos = repos.filter(r => r.fork).length;
-  const forkScore = Math.min(2, forkedRepos * 0.7); // contributes to others
-  const externalScore = Math.min(2, externalContribRepos.size * 0.7); // events on other repos
-  const prScore = Math.min(1.5, prEvents / 4); // opens PRs
-  const reviewCollab = Math.min(1, reviewEvents / 3); // reviews others
-  const issueScore = Math.min(1, (issueEvents + issueCommentEvents) / 5); // issue engagement
-  const followerScore = user.followers >= 50 ? 1.5 : user.followers >= 10 ? 1 : user.followers >= 3 ? 0.5 : 0;
-  const collaboration = Math.min(10, Math.round(2 + forkScore + externalScore + prScore + reviewCollab + issueScore + followerScore));
+  const forkScore = Math.min(1.5, forkedRepos * 0.5);
+  const externalScore = Math.min(2, externalContribRepos.size * 0.5);
+  const prScore = Math.min(1.5, prEvents / 5);
+  const reviewCollab = Math.min(1.5, reviewEvents / 5);
+  const issueScore = Math.min(1, (issueEvents + issueCommentEvents) / 8);
+  const followerScore = user.followers >= 100 ? 1.5 : user.followers >= 30 ? 1 : user.followers >= 10 ? 0.5 : 0;
+  const collaboration = Math.min(10, Math.round(1 + forkScore + externalScore + prScore + reviewCollab + issueScore + followerScore));
 
   // --- VERSATILITY: Language & domain diversity, full-stack capability ---
   const langCount = languageSet.size;
-  const langScore = Math.min(2.5, langCount * 0.5); // raw language count
+  const langScore = Math.min(2, langCount * 0.35); // need 6+ langs for max
   const hasFrontend = [...languageSet].some(l => FRONTEND_LANGS.has(l));
   const hasBackend = [...languageSet].some(l => BACKEND_LANGS.has(l));
   const hasDevOps = [...languageSet].some(l => DEVOPS_LANGS.has(l));
-  const stackBonus = (hasFrontend && hasBackend ? 2 : 0) + (hasDevOps ? 1 : 0); // full-stack + devops
-  const topicDiversity = Math.min(1.5, topicSet.size / 4); // topic breadth
-  // Dominant language ratio — penalize if >80% is one language
+  const stackBonus = (hasFrontend && hasBackend ? 1.5 : 0) + (hasDevOps ? 0.5 : 0);
+  const topicDiversity = Math.min(1.5, topicSet.size / 5);
   const totalBytes = Object.values(languageBytes).reduce((s, v) => s + v, 0);
   const maxBytes = Math.max(...Object.values(languageBytes), 0);
   const dominanceRatio = totalBytes > 0 ? maxBytes / totalBytes : 1;
-  const diversityBonus = dominanceRatio < 0.5 ? 1 : dominanceRatio < 0.7 ? 0.5 : 0;
-  const versatility = Math.min(10, Math.round(2 + langScore + stackBonus + topicDiversity + diversityBonus));
+  const diversityBonus = dominanceRatio < 0.4 ? 1.5 : dominanceRatio < 0.6 ? 1 : dominanceRatio < 0.75 ? 0.5 : 0;
+  // Penalize single-language devs harder
+  const langPenalty = langCount <= 1 ? -1 : langCount <= 2 ? -0.5 : 0;
+  const versatility = Math.min(10, Math.max(1, Math.round(1 + langScore + stackBonus + topicDiversity + diversityBonus + langPenalty)));
 
   // --- CREATIVITY: Originality, innovation, unique projects ---
   const uniqueTopics = [...topicSet].filter(t => !COMMON_TOPICS.has(t));
-  const uniqueTopicScore = Math.min(2, uniqueTopics.length * 0.4); // non-generic topics
-  const originalScore = Math.min(2.5, originalRepos / 3); // original (non-fork) work
-  const personalProjects = repos.filter(r => !r.fork && r.size > 10 && !r.description?.toLowerCase().includes('tutorial')).length;
-  const personalScore = Math.min(2, personalProjects / 3); // original projects (not tutorials)
-  const createScore = Math.min(1, createEvents / 5); // creates new things
-  const creativity = Math.min(10, Math.round(2 + originalScore + uniqueTopicScore + personalScore + createScore));
+  const uniqueTopicScore = Math.min(1.5, uniqueTopics.length * 0.3);
+  const originalScore = Math.min(2, originalRepos / 4);
+  const personalProjects = repos.filter(r => !r.fork && r.size > 20 && !r.description?.toLowerCase().includes('tutorial') && !r.description?.toLowerCase().includes('course') && !r.description?.toLowerCase().includes('udemy')).length;
+  const personalScore = Math.min(2, personalProjects / 4);
+  const createScore = Math.min(1, createEvents / 8);
+  // Penalize if most repos are forks (not creative)
+  const forkRatio = forkedRepos / n;
+  const forkPenalty = forkRatio > 0.7 ? -1.5 : forkRatio > 0.5 ? -1 : forkRatio > 0.3 ? -0.5 : 0;
+  const creativity = Math.min(10, Math.max(1, Math.round(1 + originalScore + uniqueTopicScore + personalScore + createScore + forkPenalty)));
 
   // --- AUTONOMY: Self-sufficiency, independence, documentation ---
   const originalRate = originalRepos / n;
-  const originalRateScore = Math.min(2, originalRate * 3); // high % of original repos
-  const documentedRepos = repos.filter(r => r.description && r.description.length > 10 && r.size > 10).length;
-  const documentedScore = Math.min(2, documentedRepos / 3); // well-described repos
-  const structuredRepos = repos.filter(r => !r.fork && r.size > 50 && r.description).length;
-  const structuredScore = Math.min(1.5, structuredRepos / 2); // structured projects
+  const originalRateScore = Math.min(2, originalRate * 2.5);
+  const documentedRepos = repos.filter(r => r.description && r.description.length > 15 && r.size > 20).length;
+  const documentedScore = Math.min(2, documentedRepos / 4);
+  const structuredRepos = repos.filter(r => !r.fork && r.size > 100 && r.description).length;
+  const structuredScore = Math.min(1.5, structuredRepos / 3);
   const ageScore = Math.min(1.5, accountAgeMonths / 24); // experience over time
   const soloRepos = repos.filter(r => !r.fork && r.forks_count === 0 && r.size > 20).length;
   const soloScore = Math.min(1, soloRepos / 4); // builds alone
-  const autonomy = Math.min(10, Math.round(2 + originalRateScore + documentedScore + structuredScore + ageScore + soloScore));
+  const autonomy = Math.min(10, Math.round(1 + originalRateScore + documentedScore + structuredScore + ageScore + soloScore));
 
   return {
     username: user.login,
@@ -223,13 +231,13 @@ async function fetchGitHubProfile(username) {
     avatar_url: user.avatar_url,
     languages: Array.from(languageSet),
     scores: [
-      { pillar: 'code', score: Math.max(2, code) },
-      { pillar: 'velocity', score: Math.max(2, velocity) },
-      { pillar: 'craft', score: Math.max(2, craft) },
-      { pillar: 'collaboration', score: Math.max(2, collaboration) },
-      { pillar: 'versatility', score: Math.max(2, versatility) },
-      { pillar: 'creativity', score: Math.max(2, creativity) },
-      { pillar: 'autonomy', score: Math.max(2, autonomy) }
+      { pillar: 'code', score: Math.max(1, code) },
+      { pillar: 'velocity', score: Math.max(1, velocity) },
+      { pillar: 'craft', score: Math.max(1, craft) },
+      { pillar: 'collaboration', score: Math.max(1, collaboration) },
+      { pillar: 'versatility', score: Math.max(1, versatility) },
+      { pillar: 'creativity', score: Math.max(1, creativity) },
+      { pillar: 'autonomy', score: Math.max(1, autonomy) }
     ]
   };
 }
