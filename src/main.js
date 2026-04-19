@@ -1,5 +1,6 @@
 import { loadTeamFromServer, checkAuth, subscribe } from './store.js';
 import { startIdleCoach, stopIdleCoach } from './components/idleCoach.js';
+import { initTheme, setArchetypeTheme, resetTheme } from './utils/theme.js';
 import { registerRoute, initRouter, setNotFoundHandler } from './router.js';
 import { createHeader } from './components/header.js';
 import { renderLanding } from './pages/landing.js';
@@ -52,6 +53,9 @@ setNotFoundHandler(renderNotFound);
 // Mount footer
 const footer = createFooter();
 app.appendChild(footer);
+
+// Start theme system
+initTheme();
 
 // Start router
 initRouter();

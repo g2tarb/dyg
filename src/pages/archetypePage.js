@@ -1,5 +1,6 @@
 import { escapeHTML } from '../utils/sanitize.js';
 import { t } from '../i18n/index.js';
+import { setArchetypeTheme } from '../utils/theme.js';
 
 const ARCHETYPE_DATA = {
   architect: { color: '#3B82F6', dominants: ['code', 'autonomy'], image: '/assets/archetypes/architect.png' },
@@ -22,6 +23,7 @@ async function renderArchetypePage(container, params = {}) {
 
   const name = t(`archetype.${key}`);
   const color = data.color;
+  setArchetypeTheme(key);
 
   // Fetch devs of this archetype
   let devs = [];

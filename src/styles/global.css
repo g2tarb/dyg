@@ -19,6 +19,11 @@
   --color-border: rgba(255, 255, 255, 0.06);
   --color-border-hover: rgba(255, 255, 255, 0.12);
 
+  /* Dynamic theme — changes per archetype context */
+  --color-active: #E8620A;
+  --color-active-dim: rgba(232, 98, 10, 0.15);
+  --color-active-glow: 0 0 40px rgba(232, 98, 10, 0.15);
+
   /* Spacing — 4px base */
   --space-xs: 4px;
   --space-sm: 8px;
@@ -107,7 +112,7 @@ h3, h4, h5, h6 {
 }
 
 a {
-  color: var(--color-primary);
+  color: var(--color-active);
   text-decoration: none;
   transition: color var(--duration-fast) ease;
 }
@@ -120,7 +125,7 @@ img {
 }
 
 ::selection {
-  background: rgba(232, 98, 10, 0.4);
+  background: var(--color-active-dim);
   color: #fff;
 }
 
@@ -129,7 +134,7 @@ img {
   position: absolute;
   top: -100%;
   left: 0;
-  background: var(--color-primary);
+  background: var(--color-active);
   color: #fff;
   padding: 8px 16px;
   z-index: 10000;
@@ -141,7 +146,7 @@ img {
 }
 
 *:focus-visible {
-  outline: 2px solid var(--color-primary);
+  outline: 2px solid var(--color-active);
   outline-offset: 2px;
 }
 
@@ -193,7 +198,7 @@ img {
   position: absolute;
   width: 12px;
   height: 12px;
-  border-color: var(--color-primary);
+  border-color: var(--color-active);
   border-style: solid;
   opacity: 0.4;
 }
@@ -266,7 +271,7 @@ img {
   padding: var(--space-2xl);
   background: var(--color-surface);
   border: 1px solid var(--color-border);
-  border-left: 3px solid var(--color-primary);
+  border-left: 3px solid var(--color-active);
 }
 
 .settings__card-title { font-size: 1.25rem; color: var(--color-text); margin-bottom: var(--space-md); }
@@ -378,7 +383,7 @@ img {
 .not-found__code {
   font-family: var(--font-display);
   font-size: clamp(6rem, 20vw, 12rem);
-  color: var(--color-primary);
+  color: var(--color-active);
   opacity: 0.15;
   line-height: 1;
 }

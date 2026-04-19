@@ -22,8 +22,9 @@
   left: 0;
   right: 0;
   height: 1px;
-  background: linear-gradient(90deg, transparent 20%, var(--color-primary) 50%, transparent 80%);
+  background: linear-gradient(90deg, transparent 20%, var(--color-active) 50%, transparent 80%);
   opacity: 0.15;
+  transition: background 0.4s ease;
 }
 
 .header-nav {
@@ -69,7 +70,7 @@
   left: 0;
   width: 0;
   height: 2px;
-  background: var(--color-primary);
+  background: var(--color-active);
   transition: width var(--duration-md) var(--ease-aggressive);
 }
 
@@ -83,7 +84,7 @@
 
 .header-link--dev {
   color: var(--color-text-dim);
-  border: 1px solid rgba(232, 98, 10, 0.2);
+  border: 1px solid var(--color-active-dim);
   padding: 6px var(--space-md);
   border-radius: var(--radius-sm);
   transition: all var(--duration-fast) ease;
@@ -97,14 +98,14 @@
   content: '';
   position: absolute;
   inset: 0;
-  background: var(--color-primary);
+  background: var(--color-active);
   opacity: 0;
   transition: opacity var(--duration-fast) ease;
 }
 
 .header-link--dev:hover {
   color: #fff;
-  border-color: var(--color-primary);
+  border-color: var(--color-active);
 }
 
 .header-link--dev:hover::before {
@@ -136,9 +137,9 @@
 }
 
 .team-badge--active {
-  background: var(--color-primary);
+  background: var(--color-active);
   opacity: 1;
-  box-shadow: 0 0 12px rgba(232, 98, 10, 0.5);
+  box-shadow: 0 0 12px var(--color-active-dim);
 }
 
 /* Auth — user logged in */
@@ -158,7 +159,7 @@
   width: 26px;
   height: 26px;
   border-radius: var(--radius-full);
-  border: 1px solid var(--color-primary);
+  border: 1px solid var(--color-active);
 }
 
 .header-user__link {
@@ -187,7 +188,7 @@
   line-height: 1;
 }
 
-.header-user__settings:hover { color: var(--color-primary); }
+.header-user__settings:hover { color: var(--color-active); }
 
 .header-user__logout {
   background: none;
@@ -220,8 +221,8 @@
 }
 
 .header-lang:hover {
-  border-color: var(--color-primary);
-  color: var(--color-primary);
+  border-color: var(--color-active);
+  color: var(--color-active);
 }
 
 #page-content {
@@ -244,7 +245,7 @@
   .dyg-header::after {
     bottom: auto;
     top: -1px;
-    background: linear-gradient(90deg, transparent 20%, var(--color-primary) 50%, transparent 80%);
+    background: linear-gradient(90deg, transparent 20%, var(--color-active) 50%, transparent 80%);
   }
 
   .header-nav {

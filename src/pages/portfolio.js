@@ -3,6 +3,7 @@ import { escapeHTML } from '../utils/sanitize.js';
 import { getState } from '../store.js';
 import { showToast } from '../components/toast.js';
 import { t } from '../i18n/index.js';
+import { setArchetypeTheme } from '../utils/theme.js';
 
 function archName(k) { return t(`archetype.${k}`); }
 const ARCHETYPE_COLORS = {
@@ -47,6 +48,7 @@ async function loadPortfolio(container, login) {
 
   const { user, developer, projects, progression } = data;
   const arch = developer?.archetype;
+  if (arch) setArchetypeTheme(arch);
   const archColor = ARCHETYPE_COLORS[arch] || '#E8620A';
   const archLabel = archName(arch);
   const scores = developer?.scores || [];

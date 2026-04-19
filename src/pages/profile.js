@@ -5,6 +5,7 @@ import { addToTeam, isInTeam, subscribe } from '../store.js';
 import { showToast } from '../components/toast.js';
 import { ARCHETYPE_NAMES } from '../components/devCard.js';
 import { escapeHTML } from '../utils/sanitize.js';
+import { setArchetypeTheme } from '../utils/theme.js';
 
 let unsubTeam = null;
 
@@ -44,6 +45,7 @@ function renderProfile(container, params = {}) {
   `;
 
   fetchDeveloper(devId).then(dev => {
+    if (dev.archetype) setArchetypeTheme(dev.archetype);
     const inTeam = isInTeam(dev.id);
     const safeName = escapeHTML(dev.name);
     const safeBio = escapeHTML(dev.bio || '');
