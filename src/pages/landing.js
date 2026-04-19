@@ -47,7 +47,6 @@ function renderLanding(container) {
           </div>
         </div>
 
-        <a href="#section-features" class="tj-hero__scroll"><span>&#8595;</span></a>
       </div>
     </section>
 
