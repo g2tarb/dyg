@@ -86,7 +86,6 @@ async function reputationRoutes(fastify) {
       reviews: reviewsResult.rows
     };
   });
-}
 
   // POST /api/report — signal content (moderation)
   fastify.post('/api/report', {
