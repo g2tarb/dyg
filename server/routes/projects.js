@@ -108,7 +108,8 @@ async function projectRoutes(fastify) {
     if (projCheck.rows.length === 0) return reply.code(404).send({ error: 'Project not found' });
     if (projCheck.rows[0].creator_id !== userId) return reply.code(403).send({ error: 'Only the creator can update this project' });
 
-    const { name, description, repo_url, status } = request.body;
+    const parsed = UpdateProjectSchema.parse(request.body);
+    const { name, description, repo_url, status } = parsed;
     const current = projCheck.rows[0];
 
     // Validate status transitions (no skipping)

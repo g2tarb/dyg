@@ -52,7 +52,20 @@ const fastify = Fastify({
 
 // --- Security headers ---
 await fastify.register(helmet, {
-  contentSecurityPolicy: false,
+  contentSecurityPolicy: isProd ? {
+    directives: {
+      defaultSrc: ["'self'"],
+      scriptSrc: ["'self'", "'unsafe-inline'"],
+      styleSrc: ["'self'", "'unsafe-inline'", "https://fonts.googleapis.com"],
+      fontSrc: ["'self'", "https://fonts.gstatic.com"],
+      imgSrc: ["'self'", "data:", "https://*.githubusercontent.com"],
+      connectSrc: ["'self'"],
+      mediaSrc: ["'self'"],
+      objectSrc: ["'none'"],
+      baseUri: ["'self'"],
+      formAction: ["'self'"],
+    }
+  } : false,
   crossOriginEmbedderPolicy: false,
   frameguard: { action: 'deny' },
   hsts: isProd ? { maxAge: 31536000, includeSubDomains: true, preload: true } : false,

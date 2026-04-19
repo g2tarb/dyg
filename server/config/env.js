@@ -20,6 +20,10 @@ let env;
 
 try {
   env = envSchema.parse(process.env);
+  if (env.NODE_ENV === 'production' && !env.ENCRYPTION_KEY) {
+    console.error('ENCRYPTION_KEY is required in production (64 hex chars). Generate with: node -e "console.log(require(\'crypto\').randomBytes(32).toString(\'hex\'))"');
+    process.exit(1);
+  }
 } catch (err) {
   if (err instanceof z.ZodError) {
     console.error('Configuration invalide :');
