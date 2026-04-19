@@ -189,29 +189,47 @@ async function fetchGitHubProfile(username) {
 
   // Analyze commit messages from push events
   let totalCommits = 0;
-  let genericCommitMsgs = 0; // "update", "fix", "initial commit", "."
-  let descriptiveCommitMsgs = 0; // "Add user auth with JWT", "Fix race condition on join"
-  let aiCoauthoredCommits = 0; // "Co-Authored-By: Claude/GPT/Copilot"
-  let commitSizes = []; // number of commits per push
+  let genericCommitMsgs = 0;
+  let descriptiveCommitMsgs = 0;
+  let aiCoauthoredCommits = 0;
+  let commitSizes = [];
 
+  function analyzeCommitMsg(msg) {
+    const lower = (msg || '').toLowerCase();
+    totalCommits++;
+    if (lower.length < 10 || /^(update|fix|init|wip|test|\.+|merge|commit|changes|stuff|misc)$/i.test(lower.trim()) || lower === 'initial commit') {
+      genericCommitMsgs++;
+    }
+    if (lower.length >= 20 && /\b(add|fix|implement|refactor|update|remove|create|improve|migrate|configure)\b/i.test(lower)) {
+      descriptiveCommitMsgs++;
+    }
+    if (lower.includes('co-authored-by') && (lower.includes('claude') || lower.includes('copilot') || lower.includes('gpt') || lower.includes('anthropic') || lower.includes('openai'))) {
+      aiCoauthoredCommits++;
+    }
+  }
+
+  // Source 1: Push events
   for (const event of events) {
     if (event.type === 'PushEvent' && event.payload?.commits) {
       commitSizes.push(event.payload.commits.length);
       for (const commit of event.payload.commits) {
-        totalCommits++;
-        const msg = (commit.message || '').toLowerCase();
-        // Generic/lazy messages
-        if (msg.length < 10 || /^(update|fix|init|wip|test|\.+|merge|commit|changes|stuff|misc)$/i.test(msg.trim()) || msg === 'initial commit') {
-          genericCommitMsgs++;
-        }
-        // Descriptive messages (20+ chars, contains a verb)
-        if (msg.length >= 20 && /\b(add|fix|implement|refactor|update|remove|create|improve|migrate|configure)\b/i.test(msg)) {
-          descriptiveCommitMsgs++;
-        }
-        // AI co-authored
-        if (msg.includes('co-authored-by') && (msg.includes('claude') || msg.includes('copilot') || msg.includes('gpt') || msg.includes('anthropic') || msg.includes('openai'))) {
-          aiCoauthoredCommits++;
-        }
+        analyzeCommitMsg(commit.message);
+      }
+    }
+  }
+
+  // Source 2: If events gave few commits, fetch directly from top repos
+  if (totalCommits < 10) {
+    const commitFetches = await Promise.all(
+      topRepos.slice(0, 3).map(repo =>
+        fetch(`${GITHUB_API}/repos/${repo.full_name}/commits?per_page=30`, { headers, signal: AbortSignal.timeout(3000) })
+          .then(r => r.ok ? r.json() : [])
+          .catch(() => [])
+      )
+    );
+    for (const commits of commitFetches) {
+      for (const c of commits) {
+        analyzeCommitMsg(c.commit?.message);
       }
     }
   }
