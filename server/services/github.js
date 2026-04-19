@@ -385,7 +385,46 @@ async function fetchGitHubProfile(username) {
   const projectStructureBonus = Math.min(1, avgProjectStructure / 4); // well-structured projects
   const autonomy = Math.min(10, Math.round(1 + originalRateScore + documentedScore + structuredScore + ageScore + soloScore + readmeAutonomyBonus + projectStructureBonus));
 
-  // --- Dev Style Classification ---
+  // --- IA MASTERY: How well the dev uses AI as a tool ---
+  // 5 = neutral (no AI). <5 = bad AI usage. >5 = good AI usage. 10 = IA Architect.
+  let ia = 5; // neutral baseline
+
+  if (aiRate > 0) {
+    // Uses AI — evaluate quality
+    ia = 1; // start from 1 for AI users, earn your way up
+
+    // Signal 1: Descriptive commits even with AI (+2) — means you understand what AI generates
+    if (commitDescriptiveRate > 0.5) ia += 2;
+    else if (commitDescriptiveRate > 0.25) ia += 1;
+
+    // Signal 2: Hybrid approach — not 100% AI (+1.5) — AI is a tool, not a crutch
+    if (aiRate >= 0.1 && aiRate <= 0.7) ia += 1.5;
+    else if (aiRate > 0.9) ia -= 1; // 90%+ AI = probably can't code without it
+
+    // Signal 3: Documentation exists (+1.5) — IA Architect documents, vibe coder doesn't
+    if (readmeScores.hasReadme >= 2) ia += 1.5;
+    else if (readmeScores.hasReadme >= 1) ia += 0.75;
+
+    // Signal 4: Good project structure despite AI (+1) — architecture skills
+    if (avgProjectStructure >= 3.5) ia += 1;
+    else if (avgProjectStructure >= 2) ia += 0.5;
+
+    // Signal 5: Repo maturity — iterates on AI output vs one-shot dump (+1.5)
+    if (maturityRate > 0.5) ia += 1.5;
+    else if (maturityRate > 0.25) ia += 0.75;
+    else ia -= 0.5; // one-shot repos = bad AI workflow
+
+    // Signal 6: Code volume with AI — produces substantial code (+1)
+    if (substantialRepos >= 5 && aiRate > 0.1) ia += 1;
+
+    // Penalty: generic commits + AI = copy-paste monkey
+    if (commitGenericRate > 0.7 && aiRate > 0.3) ia -= 1.5;
+  }
+  // No AI at all → stays at 5 (neutral, not penalized)
+
+  ia = Math.min(10, Math.max(1, Math.round(ia)));
+
+
   let devStyle = 'traditional'; // default
   let devStyleConfidence = 'low';
 
@@ -441,7 +480,8 @@ async function fetchGitHubProfile(username) {
       { pillar: 'collaboration', score: Math.max(1, collaboration) },
       { pillar: 'versatility', score: Math.max(1, versatility) },
       { pillar: 'creativity', score: Math.max(1, creativity) },
-      { pillar: 'autonomy', score: Math.max(1, autonomy) }
+      { pillar: 'autonomy', score: Math.max(1, autonomy) },
+      { pillar: 'ia', score: Math.max(1, ia) }
     ]
   };
 }

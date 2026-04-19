@@ -8,7 +8,8 @@ const PILLARS_LIST = [
   { key: 'collaboration', label: 'Collaboration' },
   { key: 'versatility', label: 'Versatility' },
   { key: 'creativity', label: 'Creativity' },
-  { key: 'autonomy', label: 'Autonomy' }
+  { key: 'autonomy', label: 'Autonomy' },
+  { key: 'ia', label: 'IA Mastery' }
 ];
 
 function createFilters(onChange) {

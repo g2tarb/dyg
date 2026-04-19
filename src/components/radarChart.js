@@ -5,7 +5,7 @@ function getPillarLabel(key) { return t(`pillar.${key}`); }
 // Keep PILLAR_LABELS as getter for backward compat
 const PILLAR_LABELS = new Proxy({}, { get: (_, key) => getPillarLabel(key) });
 
-const PILLARS_ORDER = ['code', 'velocity', 'craft', 'collaboration', 'versatility', 'creativity', 'autonomy'];
+const PILLARS_ORDER = ['code', 'velocity', 'craft', 'collaboration', 'versatility', 'creativity', 'autonomy', 'ia'];
 
 const SIZE = 300;
 const CENTER = SIZE / 2;

@@ -71,6 +71,7 @@ export default {
   'pillar.versatility': 'Polyvalence',
   'pillar.creativity': 'Créativité',
   'pillar.autonomy': 'Autonomie',
+  'pillar.ia': 'Maîtrise IA',
 
   // Projects
   'projects.title': 'Projets d\'équipe',
@@ -444,6 +445,9 @@ export default {
   'pillar.autonomy.name': 'Autonomie',
   'pillar.autonomy.desc': 'La capacité à porter un projet seul, documenter, résoudre des problèmes sans qu\'on te tienne la main. Le pilier que 42 valorise le plus.',
   'pillar.autonomy.measure': 'Projets autonomes, initiative, docs',
+  'pillar.ia.name': 'Maîtrise IA',
+  'pillar.ia.desc': 'Pas si tu utilises l\'IA, mais comment. Mauvais prompts + copier-coller = note basse. Approche hybride + bonne architecture + documentation = note haute. Les devs qui dirigent l\'IA comme un senior dirige des juniors scorent le plus haut.',
+  'pillar.ia.measure': 'Qualité des commits IA, ratio hybride, documentation, maturité des projets',
 
   // Archetype details
   'archetype.architect.name': 'Architecte',
@@ -527,4 +531,7 @@ export default {
   'coach.autonomy_1': 'Ajoute des licences. Structure tes fichiers. Écris de la doc sans qu\'on te le demande.',
   'coach.autonomy_2': 'Tes repos doivent tourner sans toi. CI pipelines, README clairs, auto-déployable.',
   'coach.autonomy_3': 'Tu es autonome. Concentre-toi sur la maintenance long terme : versioning, changelogs, tests solides.',
+  'coach.ia_1': 'Si tu utilises l\'IA, arrête de copier-coller à l\'aveugle. Lis ce qu\'elle génère. Modifie-le. Écris des commits descriptifs qui expliquent ce qui a changé et pourquoi.',
+  'coach.ia_2': 'Bon début avec l\'IA. Passe en mode hybride — écris l\'architecture toi-même, laisse l\'IA gérer le boilerplate. Documente tes projets même quand l\'IA a aidé.',
+  'coach.ia_3': 'Tu utilises l\'IA comme un outil, pas une béquille. Continue de la diriger avec intention — ton historique de commits montre que tu comprends ce que tu livres.',
 };

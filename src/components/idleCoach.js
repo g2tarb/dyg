@@ -40,6 +40,11 @@ const TIPS_PER_PILLAR = {
     'coach.autonomy_1',
     'coach.autonomy_2',
     'coach.autonomy_3'
+  ],
+  ia: [
+    'coach.ia_1',
+    'coach.ia_2',
+    'coach.ia_3'
   ]
 };
 

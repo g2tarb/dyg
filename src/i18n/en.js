@@ -71,6 +71,7 @@ export default {
   'pillar.versatility': 'Versatility',
   'pillar.creativity': 'Creativity',
   'pillar.autonomy': 'Autonomy',
+  'pillar.ia': 'IA Mastery',
 
   // Projects
   'projects.title': 'Team Projects',
@@ -444,6 +445,9 @@ export default {
   'pillar.autonomy.name': 'Autonomy',
   'pillar.autonomy.desc': 'The ability to carry a project alone, document, solve problems without hand-holding. The pillar that 42 values most.',
   'pillar.autonomy.measure': 'Solo projects, initiative, docs',
+  'pillar.ia.name': 'IA Mastery',
+  'pillar.ia.desc': 'Not whether you use AI, but how. Bad prompts + copy-paste = low score. Hybrid approach + good architecture + documentation = high score. The devs who direct AI like a senior directs juniors score highest.',
+  'pillar.ia.measure': 'AI commit quality, hybrid ratio, documentation, project maturity',
 
   // Archetype details
   'archetype.architect.name': 'Architect',
@@ -527,4 +531,7 @@ export default {
   'coach.autonomy_1': 'Add licenses. Structure your files. Write docs without being asked. Autonomy = self-sufficient repos.',
   'coach.autonomy_2': 'Your repos should work without you explaining them. CI pipelines, clear READMEs, auto-deployable.',
   'coach.autonomy_3': 'You\'re autonomous. Focus on long-term maintenance: versioning, changelogs, solid test coverage.',
+  'coach.ia_1': 'If you use AI, stop copy-pasting blindly. Read what it generates. Edit it. Write descriptive commit messages explaining what changed and why.',
+  'coach.ia_2': 'Good start with AI. Now go hybrid — write the architecture yourself, let AI handle the boilerplate. Document your projects even when AI helped build them.',
+  'coach.ia_3': 'You use AI like a tool, not a crutch. Keep directing it with clear intent — your commit history shows you understand what you ship.',
 };

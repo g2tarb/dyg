@@ -43,6 +43,6 @@ const ARCHETYPES = {
   }
 };
 
-const PILLARS = ['code', 'velocity', 'craft', 'collaboration', 'versatility', 'creativity', 'autonomy'];
+const PILLARS = ['code', 'velocity', 'craft', 'collaboration', 'versatility', 'creativity', 'autonomy', 'ia'];
 
 export { ARCHETYPES, PILLARS };
