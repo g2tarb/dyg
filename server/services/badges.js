@@ -69,11 +69,15 @@ async function checkAndAwardBadges(userId, trigger, extra = {}) {
 }
 
 async function getUserBadges(userId) {
-  const result = await pool.query(
-    'SELECT badge_key, earned_at FROM badges WHERE user_id = $1 ORDER BY earned_at',
-    [userId]
-  );
-  return result.rows;
+  try {
+    const result = await pool.query(
+      'SELECT badge_key, earned_at FROM badges WHERE user_id = $1 ORDER BY earned_at',
+      [userId]
+    );
+    return result.rows;
+  } catch {
+    return [];
+  }
 }
 
 export { checkAndAwardBadges, getUserBadges, BADGE_DEFINITIONS };
