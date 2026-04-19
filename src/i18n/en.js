@@ -505,6 +505,56 @@ export default {
   'archetype.mentor.dom1': 'Collaboration',
   'archetype.mentor.dom2': 'Craft',
 
+  // Archetype page section titles
+  'archepage.strengths_title': 'Strengths',
+  'archepage.weaknesses_title': 'Weaknesses',
+  'archepage.team_title': 'Role in a team',
+  'archepage.examples_title': 'Devs who embody this archetype',
+  'archepage.ideal_title': 'Ideal for',
+
+  // Archetype long descriptions
+  'archetype.architect.long': 'The Architect doesn\'t code features \u2014 he codes foundations. When he opens a project, he thinks structure first: how modules communicate, where to place abstractions, how the system will evolve in 2 years. His code is verbose at first, but it never breaks at scale. He\'s the one who says "let\'s refactor before adding that" \u2014 and he\'s always right.',
+  'archetype.architect.examples': 'Linus Torvalds (Linux), Brendan Eich (JavaScript), Rich Harris (Svelte). Devs who designed the architecture before writing code. The Linux kernel has been running for 30+ years. JavaScript powers the web. Svelte rethought frontend compilation.',
+  'archetype.architect.strengths': 'Long-term vision, maintainable code, solid patterns, ability to structure a project from zero, clear technical documentation.',
+  'archetype.architect.weaknesses': 'Can over-engineer simple solutions. Sometimes slow to start because he plans too much. Risk of coding for the future instead of the present.',
+  'archetype.architect.team_role': 'The natural tech lead. He defines the architecture, sets conventions, and ensures the team\'s code stays coherent. Without an Architect, a project grows in chaos.',
+
+  'archetype.shipper.long': 'The Shipper is obsessed with one thing: delivering. Not "soon", not "when it\'s perfect" \u2014 now. His GitHub is a continuous stream of commits. He takes a ticket, codes, pushes, moves on. Meetings bore him. 40-page specs put him to sleep. He wants code that runs, not code that\'s perfect. And ironically, by shipping so much, he ends up being really good.',
+  'archetype.shipper.examples': 'Pieter Levels (Nomad List, 12 startups in 12 months), TJ Holowaychuk (Express.js, Koa, 1000+ npm modules), Salvatore Sanfilippo (Redis \u2014 coded solo, in production everywhere). Devs who ship faster than teams of 20.',
+  'archetype.shipper.strengths': 'Execution speed, pragmatism, result focus, ability to ship an MVP in 48h, no paralysis by analysis.',
+  'archetype.shipper.weaknesses': 'May sacrifice quality for speed. Tech debt accumulates. Code sometimes hard for others to pick up. Impatient with processes.',
+  'archetype.shipper.team_role': 'The engine. When the team stalls, he pushes the first commit and unblocks everything. Ideal in game jams, hackathons, or tight sprints.',
+
+  'archetype.artisan.long': 'The Artisan refuses "it works, let\'s move on". For him, every function is a craft piece. Naming is deliberate. Indentation is perfect. Edge cases are handled. His code doesn\'t need comments because it reads like prose. When you review his work, you learn something.',
+  'archetype.artisan.examples': 'Evan You (Vue.js \u2014 elegant API, crystal-clear source), Guillermo Rauch (Vercel/Next.js \u2014 DX pushed to the pixel), John Carmack (Doom, Quake \u2014 C code optimized to perfection). Devs for whom quality is non-negotiable.',
+  'archetype.artisan.strengths': 'Clean maintainable code, attention to detail, quality reviews, high standards, polished documentation.',
+  'archetype.artisan.weaknesses': 'Can be slow. Perfectionism blocks delivery. Sometimes frustrated by others\' code. Risk of polishing a feature nobody uses.',
+  'archetype.artisan.team_role': 'The quality guardian. His code reviews elevate the entire team. He sets the craft standards others follow.',
+
+  'archetype.creative.long': 'The Creative doesn\'t copy \u2014 he invents. His projects exist nowhere else. He connects domains nobody thinks to cross: AI + music, physics + UI, data + art. In a game jam, he proposes the concept nobody saw coming. He doesn\'t code to solve a problem \u2014 he codes to explore a possibility.',
+  'archetype.creative.examples': 'Bret Victor (experimental interfaces, "Inventing on Principle"), Casey Muratori (Handmade Hero \u2014 rethinking game dev from scratch), Zach Gage (minimalist innovative iOS games). Devs who invent before they build.',
+  'archetype.creative.strengths': 'Innovation, original concepts, ability to see what doesn\'t exist yet, cross-pollination between domains, rapid idea prototyping.',
+  'archetype.creative.weaknesses': 'Can lack focus \u2014 too many ideas, not enough finishing. Abandoned projects. Sometimes hard to follow for a team that wants stability.',
+  'archetype.creative.team_role': 'The spark. When the team needs direction, a concept, an unexpected feature \u2014 he finds it. Without a Creative, the team produces clones.',
+
+  'archetype.explorer.long': 'The Explorer touches everything. JavaScript Monday, Rust Wednesday, a GLSL shader Friday. He has 6 languages on his GitHub and is learning a 7th this weekend. Where the Architect digs deep, the Explorer weaves wide. He\'s the first to try a new tech, the first to read an unknown API\'s docs, the last to say "not my scope".',
+  'archetype.explorer.examples': 'Fabrice Bellard (QEMU, FFmpeg, TCC, BPG \u2014 one man, completely different domains), Andr\u00e9 Staltz (Cycle.js, reactive programming, Manyverse), Sophie Alpert (React core, then infrastructure at Khan Academy). Devs who switch domains and excel every time.',
+  'archetype.explorer.strengths': 'Versatility, adaptability, cross-domain vision, fast learner, connects solutions from different fields.',
+  'archetype.explorer.weaknesses': 'Risk of staying superficial. Jack of all trades, master of none. May struggle to pick a specialization when needed.',
+  'archetype.explorer.team_role': 'The Swiss army knife. Stack migration? He handles it. Bug in a tech nobody knows? He dives in. He bridges frontend, backend, and DevOps.',
+
+  'archetype.commando.long': 'The Commando is rare: he\'s FAST and COLLABORATIVE. Most fast devs are lone wolves. The Commando brings others along. In a game jam, he\'s the lead everyone wants. He syncs 4 devs in 48h and the game runs at the end. He doesn\'t shine alone \u2014 he makes the whole team shine. His secret: he communicates as much as he codes.',
+  'archetype.commando.examples': 'Dan Abramov (Redux, Create React App \u2014 turned React into a team ecosystem), Kent C. Dodds (Testing Library \u2014 made testing accessible to everyone), Sindre Sorhus (1000+ npm modules, each useful to other devs). Fast devs who make others more productive.',
+  'archetype.commando.strengths': 'Speed + team spirit, clear communication, effective pair programming, unblocks others, natural leadership under pressure.',
+  'archetype.commando.weaknesses': 'Can burn out doing everything. Risk of taking too much responsibility. Sometimes frustrated when the team can\'t keep up.',
+  'archetype.commando.team_role': 'The catalyst. In a tight sprint or crisis, he aligns the team and delivers. Without a Commando, the team has talent but no rhythm.',
+
+  'archetype.mentor.long': 'The Mentor doesn\'t code for himself \u2014 he codes for others. His pull requests are masterclasses. His code reviews don\'t just say "change this" \u2014 they explain why. A junior working with a Mentor progresses 3x faster. He often has 10+ years of experience but zero ego. His satisfaction comes not from HIS code, but from the team\'s level.',
+  'archetype.mentor.examples': 'Martin Fowler (Refactoring, Patterns of Enterprise Architecture \u2014 educated a generation), Addy Osmani (web.dev, performance patterns \u2014 trained millions of devs), Sarah Drasner (Vue core, frontend teacher, VP Engineering). Devs who multiply others\' strength.',
+  'archetype.mentor.strengths': 'Knowledge transfer, code reviews that elevate, patience, pedagogy, long-term vision for team growth.',
+  'archetype.mentor.weaknesses': 'May code slower because he teaches. Risk of over-mentoring and under-producing. Sometimes perceived as too senior for "dirty" tasks.',
+  'archetype.mentor.team_role': 'The force multiplier. A team with a Mentor has lower turnover, faster onboarding, and better code quality long-term.',
+
   // Profile page
   'profile.back_search': 'Back to search',
   'profile.see_others': 'See other devs',

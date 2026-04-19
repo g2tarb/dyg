@@ -370,6 +370,53 @@ img {
   letter-spacing: 0.1em;
 }
 
+.archpage__tagline {
+  font-family: 'Caveat', cursive;
+  font-size: 1.25rem;
+  color: var(--color-text-dim);
+  font-style: italic;
+}
+
+.archpage__content {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-2xl);
+  margin-bottom: var(--space-3xl);
+  max-width: 720px;
+}
+
+.archpage__section-title {
+  font-size: 1.125rem;
+  font-weight: 700;
+  color: var(--arch-color);
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  margin-bottom: var(--space-sm);
+}
+
+.archpage__long {
+  font-size: 1.0625rem;
+  line-height: 1.8;
+  color: var(--color-text);
+}
+
+.archpage__text {
+  font-size: 0.9375rem;
+  line-height: 1.7;
+  color: var(--color-text-dim);
+}
+
+.archpage__examples {
+  padding: var(--space-lg);
+  border-left: 3px solid var(--arch-color);
+  background: color-mix(in srgb, var(--arch-color) 4%, transparent);
+  border-radius: 0 var(--radius-md) var(--radius-md) 0;
+}
+
+.archpage__devs {
+  margin-bottom: var(--space-2xl);
+}
+
 .archpage__devs-title {
   font-size: 1.5rem;
   color: var(--color-text);

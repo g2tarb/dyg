@@ -25,7 +25,6 @@ async function renderArchetypePage(container, params = {}) {
   const color = data.color;
   setArchetypeTheme(key);
 
-  // Fetch devs of this archetype
   let devs = [];
   try {
     const res = await fetch(`/api/developers?archetype=${key}&limit=10`);
@@ -36,17 +35,52 @@ async function renderArchetypePage(container, params = {}) {
     <section class="archpage" style="--arch-color:${color};">
       <div class="container" style="padding-top:var(--space-2xl);">
 
+        <a href="#/" class="profile-back">&larr; ${t('common.back')}</a>
+
         <div class="archpage__hero">
           <div class="archpage__portrait">
             <img src="${escapeHTML(data.image)}" alt="${escapeHTML(name)}" class="archpage__img">
           </div>
           <div class="archpage__info">
-            <span class="archpage__label" style="color:${color};">${t(`archetype.${key}`)}</span>
+            <span class="archpage__tagline">${t(`archetype.${key}.tagline`)}</span>
             <h1 class="archpage__name" style="color:${color};">${escapeHTML(name)}</h1>
             <div class="archpage__dominants">
               ${data.dominants.map(p => `<span class="archpage__dominant">${t(`pillar.${p}`)}</span>`).join(' + ')}
             </div>
           </div>
+        </div>
+
+        <div class="archpage__content">
+
+          <div class="archpage__section">
+            <p class="archpage__long">${t(`archetype.${key}.long`)}</p>
+          </div>
+
+          <div class="archpage__section">
+            <h2 class="archpage__section-title">${t('archepage.strengths_title')}</h2>
+            <p class="archpage__text">${t(`archetype.${key}.strengths`)}</p>
+          </div>
+
+          <div class="archpage__section">
+            <h2 class="archpage__section-title">${t('archepage.weaknesses_title')}</h2>
+            <p class="archpage__text">${t(`archetype.${key}.weaknesses`)}</p>
+          </div>
+
+          <div class="archpage__section">
+            <h2 class="archpage__section-title">${t('archepage.team_title')}</h2>
+            <p class="archpage__text">${t(`archetype.${key}.team_role`)}</p>
+          </div>
+
+          <div class="archpage__section archpage__examples">
+            <h2 class="archpage__section-title">${t('archepage.examples_title')}</h2>
+            <p class="archpage__text">${t(`archetype.${key}.examples`)}</p>
+          </div>
+
+          <div class="archpage__section">
+            <h2 class="archpage__section-title">${t('archepage.ideal_title')}</h2>
+            <p class="archpage__text">${t(`archetype.${key}.ideal`)}</p>
+          </div>
+
         </div>
 
         <div class="archpage__devs">
@@ -64,7 +98,7 @@ async function renderArchetypePage(container, params = {}) {
                 </div>
                 <p class="dev-card__bio">${escapeHTML(dev.bio || '')}</p>
                 <div class="dev-card__footer">
-                  <span class="score-pill">${dev.avg_score || '—'}/10</span>
+                  <span class="score-pill">${dev.avg_score || '\u2014'}/10</span>
                 </div>
               </a>
             `).join('') : `<p style="color:var(--color-text-dim);grid-column:1/-1;">${t('search.empty')}</p>`}
