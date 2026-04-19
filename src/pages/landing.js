@@ -286,6 +286,15 @@ function renderLanding(container) {
   // Auto-focus input on load
   requestAnimationFrame(() => heroInput.focus());
 
+  // ===== H1 FADE ON SCROLL =====
+  const heroTitle = container.querySelector('.tj-hero__title');
+  function onHeroScroll() {
+    const fade = Math.max(0, 1 - window.scrollY / 300);
+    heroTitle.style.opacity = fade;
+    heroTitle.style.transform = `scale(${0.95 + fade * 0.05})`;
+  }
+  window.addEventListener('scroll', onHeroScroll, { passive: true });
+
   // ===== SCROLL ANIMATIONS =====
   const observer = new IntersectionObserver((entries) => {
     entries.forEach(entry => {
@@ -311,6 +320,7 @@ function renderLanding(container) {
 
   return () => {
     observer.disconnect();
+    window.removeEventListener('scroll', onHeroScroll);
   };
 }
 
