@@ -67,7 +67,7 @@ CREATE TABLE developer_scores (
   id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
   developer_id UUID NOT NULL REFERENCES developers(id) ON DELETE CASCADE,
   pillar VARCHAR(20) NOT NULL
-    CHECK (pillar IN ('code', 'velocity', 'craft', 'collaboration', 'versatility', 'creativity', 'autonomy')),
+    CHECK (pillar IN ('code', 'velocity', 'craft', 'collaboration', 'versatility', 'creativity', 'autonomy', 'ia')),
   score SMALLINT NOT NULL CHECK (score >= 1 AND score <= 10),
   UNIQUE(developer_id, pillar)
 );

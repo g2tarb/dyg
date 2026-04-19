@@ -24,7 +24,7 @@ export const SaveProfileSchema = z.object({
   scores: z.array(z.object({
     pillar: pillar,
     score: z.number().int().min(1).max(10)
-  })).length(7)
+  })).min(7).max(8)
 }).strip();
 
 // --- Projects ---

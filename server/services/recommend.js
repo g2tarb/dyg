@@ -24,7 +24,7 @@ function complementarity(myScores, theirScores) {
   return score;
 }
 
-const PILLAR_ORDER = ['code', 'velocity', 'craft', 'collaboration', 'versatility', 'creativity', 'autonomy'];
+const PILLAR_ORDER = ['code', 'velocity', 'craft', 'collaboration', 'versatility', 'creativity', 'autonomy', 'ia'];
 
 async function getRecommendations(userId, limit = 5) {
   // Get user's scores
