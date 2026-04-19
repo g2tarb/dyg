@@ -230,8 +230,10 @@ export default {
   'training.submit_title': 'Soumettre ta solution',
   'training.repo_placeholder': 'URL de ton repo GitHub (optionnel)',
   'training.submit': 'Soumettre',
-  'training.submitted': 'Solution soumise',
+  'training.submitted': 'Solution analysée',
   'training.completed_label': 'Exercice terminé',
+  'training.feedback': 'Feedback DYG',
+  'training.no_repo': 'Colle l\'URL de ton repo GitHub pour que DYG analyse ton code.',
 
   // Moderation
   'report.button': 'Signaler',

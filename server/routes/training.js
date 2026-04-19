@@ -1,5 +1,6 @@
 import pool from '../db/connection.js';
 import { UnauthorizedError } from '../utils/errors.js';
+import { reviewSubmission } from '../services/reviewer.js';
 
 async function trainingRoutes(fastify) {
   // GET /api/training/tracks — list all tracks with progress
@@ -211,12 +212,30 @@ async function trainingRoutes(fastify) {
       return reply.code(400).send({ error: 'VALIDATION_FAILED', message: 'Already submitted' });
     }
 
-    await pool.query(`
-      UPDATE training_submissions SET status = 'submitted', repo_url = $1, submitted_at = NOW()
-      WHERE exercise_id = $2 AND user_id = $3
-    `, [repo_url || null, exerciseId, userId]);
+    // Auto-review the GitHub repo
+    let goldStars = 0;
+    let feedback = '';
 
-    return { ok: true, status: 'submitted' };
+    if (repo_url) {
+      try {
+        const exerciseData = await pool.query('SELECT * FROM training_exercises WHERE id = $1', [exerciseId]);
+        const result = await reviewSubmission(repo_url, exerciseData.rows[0]);
+        goldStars = result.gold_stars;
+        feedback = result.feedback;
+      } catch (err) {
+        console.warn('[reviewer] Auto-review failed:', err.message);
+        goldStars = 1;
+        feedback = 'Auto-review failed. Manual review pending.';
+      }
+    }
+
+    await pool.query(`
+      UPDATE training_submissions SET status = 'reviewed', repo_url = $1, submitted_at = NOW(),
+             reviewed_at = NOW(), gold_stars = $2
+      WHERE exercise_id = $3 AND user_id = $4
+    `, [repo_url || null, goldStars, exerciseId, userId]);
+
+    return { ok: true, status: 'reviewed', gold_stars: goldStars, feedback };
   });
 
   // GET /api/training/my-progress — overview of user's training progress

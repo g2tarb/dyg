@@ -230,8 +230,10 @@ export default {
   'training.submit_title': 'Submit your solution',
   'training.repo_placeholder': 'GitHub repo URL (optional)',
   'training.submit': 'Submit',
-  'training.submitted': 'Solution submitted',
+  'training.submitted': 'Solution analyzed',
   'training.completed_label': 'Exercise completed',
+  'training.feedback': 'DYG Feedback',
+  'training.no_repo': 'Paste your GitHub repo URL so DYG can analyze your code.',
 
   // Moderation
   'report.button': 'Report',

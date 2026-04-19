@@ -265,7 +265,8 @@ async function renderExercise(container, exerciseId) {
             body: JSON.stringify({ repo_url: repoUrl || null })
           });
           if (!res.ok) throw new Error();
-          showToast(t('training.submitted'));
+          const result = await res.json();
+          showToast(`${t('training.submitted')} — ${result.gold_stars}/5 ★`);
           renderExercise(container, exerciseId);
         } catch {
           showToast(t('common.error'), 'error');
