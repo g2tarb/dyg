@@ -122,7 +122,7 @@ await fastify.register(cookie);
 await fastify.register(jwt, {
   secret: env.JWT_SECRET,
   cookie: { cookieName: 'token', signed: false },
-  sign: { expiresIn: '15m' }
+  sign: { expiresIn: '30d' }
 });
 
 // --- GitHub OAuth ---

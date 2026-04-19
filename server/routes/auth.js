@@ -70,7 +70,7 @@ async function authRoutes(fastify) {
       path: '/',
       httpOnly: true,
       secure: env.NODE_ENV === 'production',
-      sameSite: 'strict',
+      sameSite: 'lax',
       maxAge: 60 * 60 * 24 * 30
     });
 

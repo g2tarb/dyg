@@ -51,7 +51,7 @@ function renderLanding(container) {
           </div>
         </div>
 
-        <a href="#section-how" class="tj-hero__scroll">${t('landing.scroll_more')} <span>&#8595;</span></a>
+        <a href="#section-features" class="tj-hero__scroll"><span>&#8595;</span></a>
       </div>
     </section>
 
@@ -77,35 +77,8 @@ function renderLanding(container) {
       </div>
     </section>
 
-    <!-- HOW IT WORKS -->
-    <section class="tj-how" id="section-how">
-      <div class="container">
-        <div class="tj-section-header">
-          <span class="tj-section-label">${t('landing.how_sub')}</span>
-          <h2 class="tj-section-title">${t('landing.how_title')}</h2>
-        </div>
-        <div class="tj-how__steps">
-          <div class="tj-how__step" id="step-1">
-            <div class="tj-how__step-num">01</div>
-            <h3 class="tj-how__step-title">${t('landing.step1_title')}</h3>
-            <p class="tj-how__step-desc">${t('landing.step1_desc')}</p>
-          </div>
-          <div class="tj-how__step" id="step-2">
-            <div class="tj-how__step-num">02</div>
-            <h3 class="tj-how__step-title">${t('landing.step2_title')}</h3>
-            <p class="tj-how__step-desc">${t('landing.step2_desc')}</p>
-          </div>
-          <div class="tj-how__step" id="step-3">
-            <div class="tj-how__step-num">03</div>
-            <h3 class="tj-how__step-title">${t('landing.step3_title')}</h3>
-            <p class="tj-how__step-desc">${t('landing.step3_desc')}</p>
-          </div>
-        </div>
-      </div>
-    </section>
-
     <!-- FEATURES GRID -->
-    <section class="tj-features">
+    <section class="tj-features" id="section-features">
       <div class="container">
         <div class="tj-section-header">
           <span class="tj-section-label">Features</span>
@@ -326,7 +299,7 @@ function renderLanding(container) {
     });
   }, { threshold: 0.15 });
 
-  container.querySelectorAll('.tj-feature-card, .tj-how__step, .tj-archetype, .tj-stat').forEach(el => observer.observe(el));
+  container.querySelectorAll('.tj-feature-card, .tj-archetype, .tj-stat').forEach(el => observer.observe(el));
 
   return () => {
     observer.disconnect();
