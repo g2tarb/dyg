@@ -11,6 +11,7 @@ export default {
   'common.loading': 'Chargement...',
   'common.error': 'Erreur de chargement.',
   'common.save': 'Sauvegarder',
+  'common.login_required': 'Connecte-toi pour accéder à cette fonctionnalité.',
 
   // Header
   'header.about': 'Qui sommes-nous',

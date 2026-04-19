@@ -11,6 +11,7 @@ export default {
   'common.loading': 'Loading...',
   'common.error': 'Failed to load.',
   'common.save': 'Save',
+  'common.login_required': 'Log in to access this feature.',
 
   // Header
   'header.about': 'About',

@@ -18,19 +18,20 @@ function createHeader() {
       <nav class="header-nav container">
         <a href="#/" class="header-logo">${createLogoSVG('sm')}</a>
         <div class="header-links">
-          <a href="#/about" class="header-link">${t('header.about')}</a>
+          <a href="#/onboarding" class="header-link">${t('common.scan_github')}</a>
+          <a href="#/training" class="header-link ${user ? '' : 'header-link--locked'}" ${user ? '' : 'tabindex="-1"'}>${t('training.title')}</a>
+          <a href="#/projects" class="header-link ${user ? '' : 'header-link--locked'}" ${user ? '' : 'tabindex="-1"'}>${t('header.projects')}</a>
           <a href="#/search" class="header-link">${t('header.explore')}</a>
-          <a href="#/training" class="header-link">${t('training.title')}</a>
-        <a href="#/projects" class="header-link">${t('header.projects')}</a>
-          <a href="#/team" class="header-link header-team">
+          <a href="#/team" class="header-link header-team ${user ? '' : 'header-link--locked'}" ${user ? '' : 'tabindex="-1"'}>
             <span class="team-icon">&#9776;</span>
             ${t('header.team')}
             <span class="team-badge" id="team-badge">0</span>
           </a>
-          <a href="#/messages" class="header-link" id="header-msg-link" style="display:${user ? '' : 'none'};">
+          <a href="#/messages" class="header-link ${user ? '' : 'header-link--locked'}" ${user ? '' : 'tabindex="-1"'}>
             ${t('header.messages')}
             <span class="header-msg-badge" id="msg-badge" style="display:none;">0</span>
           </a>
+          <a href="#/about" class="header-link">${t('header.about')}</a>
           <div class="header-auth" id="header-auth">
             ${user ? `
               <div class="header-user">
@@ -39,16 +40,24 @@ function createHeader() {
                   <span class="header-user__name">${escapeHTML(user.name || user.github_login)}</span>
                 </a>
                 <a href="#/settings" class="header-user__settings" title="Settings">&#9881;</a>
-          <button class="header-user__logout" id="btn-logout" title="${t('common.logout')}">&times;</button>
+                <button class="header-user__logout" id="btn-logout" title="${t('common.logout')}">&times;</button>
               </div>
             ` : `
-              <a href="/auth/github" class="header-link header-link--dev">${t('common.login')}</a>
+              <a href="/auth/github" class="header-link header-link--cta">${t('common.login')}</a>
             `}
           </div>
           <button class="header-lang" id="btn-lang" title="Language">${lang === 'fr' ? 'EN' : 'FR'}</button>
         </div>
       </nav>
     `;
+
+    // Locked links → redirect to login on click
+    header.querySelectorAll('.header-link--locked').forEach(link => {
+      link.addEventListener('click', (e) => {
+        e.preventDefault();
+        showToast(t('common.login_required'), 'error');
+      });
+    });
 
     // Event listeners
     const btnLogout = header.querySelector('#btn-logout');
@@ -63,7 +72,7 @@ function createHeader() {
     const btnLang = header.querySelector('#btn-lang');
     btnLang.addEventListener('click', () => {
       setLocale(lang === 'fr' ? 'en' : 'fr');
-      render(); // Re-render header immediately
+      render();
     });
 
     // Update team badge

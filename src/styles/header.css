@@ -34,6 +34,7 @@
   height: 56px;
 }
 
+/* Logo */
 .header-logo {
   display: flex;
   align-items: center;
@@ -45,12 +46,14 @@
   filter: drop-shadow(0 0 10px rgba(250, 250, 250, 0.3));
 }
 
+/* Links container */
 .header-links {
   display: flex;
   align-items: center;
-  gap: var(--space-xl);
+  gap: var(--space-lg);
 }
 
+/* Base link */
 .header-link {
   font-family: var(--font-body);
   font-size: 0.75rem;
@@ -82,36 +85,40 @@
   width: 100%;
 }
 
-.header-link--dev {
-  color: var(--color-text-dim);
-  border: 1px solid var(--color-active-dim);
+/* Locked links — requires login */
+.header-link--locked {
+  color: var(--color-text-muted);
+  cursor: not-allowed;
+  pointer-events: auto;
+}
+
+.header-link--locked::after {
+  display: none;
+}
+
+.header-link--locked:hover {
+  color: var(--color-text-muted);
+}
+
+/* Login CTA button */
+.header-link--cta {
+  color: var(--color-bg);
+  background: var(--color-text);
   padding: 6px var(--space-md);
-  border-radius: var(--radius-sm);
+  border-radius: var(--radius-pill);
+  font-weight: 700;
+  letter-spacing: 0.08em;
   transition: all var(--duration-fast) ease;
-  position: relative;
-  overflow: hidden;
 }
 
-.header-link--dev::after { display: none; }
+.header-link--cta::after { display: none; }
 
-.header-link--dev::before {
-  content: '';
-  position: absolute;
-  inset: 0;
+.header-link--cta:hover {
   background: var(--color-active);
-  opacity: 0;
-  transition: opacity var(--duration-fast) ease;
-}
-
-.header-link--dev:hover {
   color: #fff;
-  border-color: var(--color-active);
 }
 
-.header-link--dev:hover::before {
-  opacity: 0.15;
-}
-
+/* Team link */
 .header-team {
   display: flex;
   align-items: center;
@@ -142,8 +149,23 @@
   box-shadow: 0 0 12px var(--color-active-dim);
 }
 
-/* Auth — user logged in */
+/* Unread messages badge */
+.header-msg-badge {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-width: 16px;
+  height: 16px;
+  padding: 0 4px;
+  border-radius: var(--radius-pill);
+  background: var(--color-error);
+  color: #fff;
+  font-size: 0.6rem;
+  font-weight: 700;
+  margin-left: 4px;
+}
 
+/* Auth — user logged in */
 .header-auth {
   display: flex;
   align-items: center;
@@ -208,7 +230,7 @@
 /* Language toggle */
 .header-lang {
   background: none;
-  border: 1px solid var(--color-text-dim);
+  border: 1px solid var(--color-text-muted);
   color: var(--color-text-dim);
   font-size: 0.625rem;
   font-weight: 700;
@@ -289,14 +311,11 @@
 
   .header-link::after { display: none; }
 
-  .header-link--dev {
-    border: none;
-    padding: 8px 6px;
-    border-radius: 0;
+  .header-link--cta {
+    padding: 6px 10px;
     font-size: 0.625rem;
+    border-radius: var(--radius-pill);
   }
-
-  .header-link--dev::before { display: none; }
 
   .header-team {
     flex-direction: column;
