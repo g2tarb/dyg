@@ -136,16 +136,16 @@ async function renderTraining(container, params = {}) {
     tracksEl.querySelectorAll('.train-track__toggle').forEach(btn => {
       btn.addEventListener('click', async () => {
         const trackId = btn.dataset.track;
-        const container = document.querySelector(`#track-${trackId}`);
-        if (container.dataset.loaded) {
-          container.querySelector('.train-exercises').classList.toggle('hidden');
+        const trackEl = document.querySelector(`#track-${trackId}`);
+        if (trackEl.dataset.loaded) {
+          trackEl.querySelector('.train-exercises').classList.toggle('hidden');
           return;
         }
 
         btn.disabled = true;
         const res = await fetch(`/api/training/tracks/${trackId}/exercises`);
         const exercises = await res.json();
-        container.dataset.loaded = 'true';
+        trackEl.dataset.loaded = 'true';
 
         const exercisesHtml = exercises.map(ex => {
           const sub = ex.submission;
@@ -162,7 +162,7 @@ async function renderTraining(container, params = {}) {
             </a>`;
         }).join('');
 
-        container.innerHTML += `<div class="train-exercises">${exercisesHtml}</div>`;
+        trackEl.innerHTML += `<div class="train-exercises">${exercisesHtml}</div>`;
       });
     });
   } catch {

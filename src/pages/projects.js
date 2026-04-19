@@ -58,7 +58,7 @@ function renderProjects(container) {
           <div class="projects-create__fields">
             <input type="text" class="input" id="proj-name" placeholder="${t('projects.name_placeholder')}" maxlength="100">
             <textarea class="input projects-create__textarea" id="proj-desc" placeholder="${t('projects.desc_placeholder')}" rows="3"></textarea>
-            <input type="text" class="input" id="proj-repo" placeholder="${t('projects.repo_placeholder')}"
+            <input type="text" class="input" id="proj-repo" placeholder="${t('projects.repo_placeholder')}">
           </div>
           <div class="projects-create__actions">
             <button class="btn-primary" id="btn-create-submit">${t('projects.launch')}</button>
