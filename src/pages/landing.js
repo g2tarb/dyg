@@ -29,6 +29,7 @@ function renderLanding(container) {
             <input type="text" class="tj-hero__input" id="hero-github-input" placeholder="${t('landing.scan_placeholder')}" autocomplete="off" spellcheck="false">
             <button class="btn-primary btn-primary--lg tj-hero__scan-btn" id="hero-scan-btn">${t('landing.scan_btn')}</button>
           </div>
+          <a href="/auth/github" class="btn-secondary tj-hero__login">${t('common.login')}</a>
           <p class="tj-hero__error" id="hero-scan-error" style="display:none;"></p>
           <div class="tj-hero__progress" id="hero-scan-progress" style="display:none;">
             <div class="tj-hero__bar"><div class="tj-hero__bar-fill" id="hero-scan-bar"></div></div>
