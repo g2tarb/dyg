@@ -72,13 +72,45 @@ async function renderTraining(container, params = {}) {
         </div>
       </div>`;
 
-    // Tracks
+    // Group tracks by language
+    const langGroups = {};
+    const langOrder = ['htmlcss', 'js', 'js_expert', 'python', 'c', 'shell', 'physics'];
+
+    for (const track of tracks) {
+      const name = track.name.toLowerCase();
+      let lang = 'other';
+      if (name.startsWith('html') || name.startsWith('css') || name.includes('flexbox') || name.includes('grid') || name.includes('responsive') || name.includes('formulaire') || name.includes('animation') || name.startsWith('layout') || name.startsWith('projets finaux')) lang = 'htmlcss';
+      else if (name.includes('expert') || name.includes('scope') || name.includes('prototypes') || name.includes('event loop') || name.includes('coercion') || name.includes('metaprogramming')) lang = 'js_expert';
+      else if (name.startsWith('js') || name.startsWith('javascript')) lang = 'js';
+      else if (name.startsWith('python')) lang = 'python';
+      else if (name.startsWith('c —') || name.startsWith('c —')) lang = 'c';
+      else if (name.startsWith('shell')) lang = 'shell';
+      else if (name.startsWith('math') || name.startsWith('physique') || name.includes('mouvement') || name.includes('collision') || name.includes('forces') || name.includes('simulation')) lang = 'physics';
+
+      if (!langGroups[lang]) langGroups[lang] = [];
+      langGroups[lang].push(track);
+    }
+
+    // Level labels
+    const levelLabel = (l) => t(`training.level_${l}`);
+
+    // Render grouped
     const tracksEl = container.querySelector('#train-tracks');
-    tracksEl.innerHTML = tracks.map(track => `
+    let html = '';
+
+    for (const lang of langOrder) {
+      const group = langGroups[lang];
+      if (!group || group.length === 0) continue;
+
+      html += `<div class="train-lang-group">
+        <h3 class="train-lang-title">${t('training.lang_' + lang)}</h3>
+        <div class="train-lang-tracks">`;
+
+      html += group.map(track => `
       <div class="train-track">
         <div class="train-track__header">
           <div>
-            <span class="train-track__level">${t('training.level')} ${track.level}</span>
+            <span class="train-track__level">${levelLabel(track.level)}</span>
             <h3 class="train-track__name">${escapeHTML(track.name)}</h3>
             <p class="train-track__desc">${escapeHTML(track.description)}</p>
           </div>
@@ -95,6 +127,10 @@ async function renderTraining(container, params = {}) {
         </div>
       </div>
     `).join('');
+      html += '</div></div>';
+    }
+
+    tracksEl.innerHTML = html;
 
     // Toggle exercises per track
     tracksEl.querySelectorAll('.train-track__toggle').forEach(btn => {
