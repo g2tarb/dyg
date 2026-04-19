@@ -7,7 +7,7 @@
 -- NIVEAU 1-2 : Sites vitrines statiques (HTML/CSS)
 -- ==========================================
 
-INSERT INTO project_briefs (id, title, description, brief, stack, level, deadline_days, max_members, theme, sort_order) VALUES
+INSERT INTO project_briefs (id, title, description, brief, stack, level, deadline_days, theme, sort_order) VALUES
 
 ('ab100000-0000-0000-0000-000000000001',
  'Portfolio Photographe',
@@ -100,7 +100,7 @@ INSERT INTO project_briefs (id, title, description, brief, stack, level, deadlin
 -- NIVEAU 3-4 : Sites dynamiques (HTML/CSS/JS vanilla)
 -- ==========================================
 
-INSERT INTO project_briefs (id, title, description, brief, stack, level, deadline_days, max_members, theme, sort_order) VALUES
+INSERT INTO project_briefs (id, title, description, brief, stack, level, deadline_days, theme, sort_order) VALUES
 
 ('ab200000-0000-0000-0000-000000000001',
  'Dashboard Météo',
@@ -196,7 +196,7 @@ INSERT INTO project_briefs (id, title, description, brief, stack, level, deadlin
 -- NIVEAU 5-6 : Applications complètes (Full-stack vanilla)
 -- ==========================================
 
-INSERT INTO project_briefs (id, title, description, brief, stack, level, deadline_days, max_members, theme, sort_order) VALUES
+INSERT INTO project_briefs (id, title, description, brief, stack, level, deadline_days, theme, sort_order) VALUES
 
 ('ab300000-0000-0000-0000-000000000001',
  'Dashboard Analytics SaaS',
@@ -309,7 +309,7 @@ INSERT INTO project_briefs (id, title, description, brief, stack, level, deadlin
 -- NIVEAU 7+ : Projets avancés
 -- ==========================================
 
-INSERT INTO project_briefs (id, title, description, brief, stack, level, deadline_days, max_members, theme, sort_order) VALUES
+INSERT INTO project_briefs (id, title, description, brief, stack, level, deadline_days, theme, sort_order) VALUES
 
 ('ab400000-0000-0000-0000-000000000001',
  'Moteur de Particules 3D (Three.js)',
