@@ -51,25 +51,21 @@
   width: 100%;
 }
 
-.tj-hero__badge {
-  display: inline-flex;
-  padding: 5px 16px;
-  font-size: 0.625rem;
-  font-weight: 600;
-  text-transform: uppercase;
-  letter-spacing: 0.15em;
-  color: var(--color-active);
-  background: var(--color-active-dim);
-  border: 1px solid var(--color-active-dim);
-  border-radius: var(--radius-pill);
-  animation: hero-fade-in 0.5s var(--ease-out) both;
-}
-
 .tj-hero__title {
   font-size: clamp(2.25rem, 6vw, 3.5rem);
   color: var(--color-text);
   line-height: 1.05;
   animation: hero-fade-up 0.6s var(--ease-out) 0.1s both;
+}
+
+.tj-hero__alpha {
+  font-family: 'Dancing Script', 'Caveat', cursive;
+  font-size: 0.45em;
+  font-weight: 400;
+  color: var(--color-error);
+  vertical-align: super;
+  margin-left: 0.15em;
+  letter-spacing: 0.02em;
 }
 
 .tj-hero__subtitle {
