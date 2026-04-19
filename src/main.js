@@ -3,6 +3,7 @@ import { startIdleCoach, stopIdleCoach } from './components/idleCoach.js';
 import { initTheme, setArchetypeTheme, resetTheme } from './utils/theme.js';
 import { registerRoute, initRouter, setNotFoundHandler } from './router.js';
 import { createHeader } from './components/header.js';
+import { initPageOrbs, syncPatternToRoute } from './components/pageOrbs.js';
 import { renderLanding } from './pages/landing.js';
 import { renderSearch } from './pages/search.js';
 import { renderProfile } from './pages/profile.js';
@@ -20,6 +21,12 @@ import { renderNotFound } from './pages/notFound.js';
 import { createFooter } from './components/footer.js';
 
 const app = document.getElementById('app');
+
+// Mount global orbs canvas (behind everything)
+const orbsCanvas = document.createElement('canvas');
+orbsCanvas.className = 'page-orbs';
+app.appendChild(orbsCanvas);
+initPageOrbs(orbsCanvas);
 
 // Mount header
 const header = createHeader();
@@ -59,6 +66,9 @@ initTheme();
 
 // Start router
 initRouter();
+
+// Sync orb pattern on route change
+window.addEventListener('hashchange', syncPatternToRoute);
 
 // Restore state from server
 checkAuth();

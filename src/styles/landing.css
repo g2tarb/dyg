@@ -15,17 +15,6 @@
   padding: var(--space-2xl) var(--space-lg);
 }
 
-/* Canvas orbs — fixed full viewport, follows scroll */
-.tj-hero__canvas {
-  position: fixed;
-  top: 0;
-  left: 0;
-  width: 100vw;
-  height: 100vh;
-  z-index: 0;
-  pointer-events: none;
-}
-
 /* Large DYG logo mark */
 .tj-hero__logo-mark {
   font-family: var(--font-display);

@@ -96,6 +96,17 @@ body {
   overflow-x: hidden;
 }
 
+/* Global orbs canvas — fixed behind all content */
+.page-orbs {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  z-index: 0;
+  pointer-events: none;
+}
+
 h1, h2 {
   font-family: var(--font-display);
   font-weight: 400;

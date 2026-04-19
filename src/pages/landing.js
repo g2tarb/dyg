@@ -1,5 +1,4 @@
 import { escapeHTML } from '../utils/sanitize.js';
-import { initHeroOrbs } from '../components/heroOrbs.js';
 import { t } from '../i18n/index.js';
 import { PILLAR_LABELS, PILLARS_ORDER } from '../components/radarChart.js';
 import { ARCHETYPE_DATA } from '../components/archetypeCard.js';
@@ -18,7 +17,6 @@ function renderLanding(container) {
   container.innerHTML = `
     <!-- HERO = THE SCAN -->
     <section class="tj-hero">
-      <canvas class="tj-hero__canvas" id="hero-canvas"></canvas>
       <div class="tj-hero__overlay"></div>
       <div class="tj-hero__center">
         <span class="tj-hero__logo-mark">DYG</span>
@@ -301,10 +299,6 @@ function renderLanding(container) {
 
   container.querySelectorAll('.tj-feature-card, .tj-archetype, .tj-stat').forEach(el => observer.observe(el));
 
-  // ===== HERO ORBS =====
-  const heroCanvas = container.querySelector('#hero-canvas');
-  const cleanupOrbs = heroCanvas ? initHeroOrbs(heroCanvas) : null;
-
   // ===== ARCHETYPE HOVER → NAV LOGO COLOR SYNC =====
   container.querySelectorAll('.tj-archetype').forEach(el => {
     el.addEventListener('mouseenter', () => {
@@ -318,7 +312,6 @@ function renderLanding(container) {
 
   return () => {
     observer.disconnect();
-    if (cleanupOrbs) cleanupOrbs();
   };
 }
 
