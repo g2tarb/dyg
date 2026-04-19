@@ -21,11 +21,11 @@ export default {
   'header.messages': 'Messages',
 
   // Landing
-  'landing.hero_title': 'Quel développeur es-tu vraiment ?',
-  'landing.hero_sub': 'Entre ton pseudo GitHub. En 10 secondes, tu connais ton archétype, tes scores et ton style de dev.',
-  'landing.tagline': 'Progresse. Rejoins. Prouve.',
-  'landing.pitch': 'Apprends à coder à la dure. Sans framework. Sans raccourci.',
-  'landing.pitch_bold': 'Scanne ton GitHub. Découvre ton archétype. Entraîne-toi. Livre des projets en équipe. Forge un portfolio que personne ne peut ignorer.',
+  'landing.hero_title': 'Deviens le dev que tu veux être.',
+  'landing.hero_sub': 'Entraîne-toi sur 150+ exercices. Rencontre des devs. Livre de vrais projets en équipe. Tout ce que tu fais construit ton portfolio — visible, mesurable, prouvable.',
+  'landing.tagline': 'Progresse. Rencontre. Prouve.',
+  'landing.pitch': 'La plateforme gratuite où les devs autodidactes boostent leurs skills, codent ensemble et construisent un portfolio que personne ne peut ignorer.',
+  'landing.pitch_bold': 'Scanne ton GitHub pour découvrir ton profil. Rejoins une communauté de devs qui veulent progresser. Formez des équipes. Livrez des projets réels. Et si tu vises 42, Epitech ou HETIC — arrive avec un avantage que les autres n\'ont pas.',
   'landing.cta_find': 'Scanner mon GitHub',
   'landing.cta_discover': 'Découvrir DYG',
   'landing.scroll_more': 'Comment ça marche ?',
@@ -33,20 +33,31 @@ export default {
   'landing.social_devs': 'devs',
   'landing.how_title': '3 pôles. 1 parcours.',
   'landing.how_sub': 'Du scan au portfolio.',
-  'landing.step1_title': 'Apprendre',
-  'landing.step1_desc': '150+ exercices sur 7 langages. HTML, CSS, JS, Python, C, Shell, physique. Double notation : qualité du code + autonomie.',
-  'landing.step2_title': 'Collaborer',
-  'landing.step2_desc': 'Rejoins une équipe de 4. DYG calcule la synergie en temps réel. Livre un vrai projet avec une deadline.',
+  'landing.step1_title': 'Progresser',
+  'landing.step1_desc': '150+ exercices sur 7 langages. Double notation : qualité du code + autonomie. Chaque exercice fait monter tes scores. Tu vois ta progression en temps réel.',
+  'landing.step2_title': 'Rencontrer & coder',
+  'landing.step2_desc': 'Trouve des devs qui complètent tes forces. Formez une équipe. Lancez un vrai projet avec des rôles et des deadlines. Fini le code solo.',
   'landing.step3_title': 'Prouver',
-  'landing.step3_desc': 'Peer review. Scoring évolutif. Portfolio public. Ton archétype, tes projets livrés, tes métriques. Tout est vérifiable.',
+  'landing.step3_desc': 'Chaque projet livré enrichit ton portfolio. Tes coéquipiers te notent, tes scores évoluent. Tu vises une école ? Ton profil DYG parle pour toi.',
   'landing.archetypes_title': '7 archétypes. Lequel es-tu ?',
   'landing.archetypes_sub': 'Architecte, Shipper, Artisan, Créatif, Explorateur, Commando, Mentor. Ton style de dev définit ton rôle dans une équipe.',
-  'landing.cta_bottom_title': 'Prêt à savoir ce que tu vaux ?',
-  'landing.cta_bottom_sub': '10 secondes. Ton GitHub. Ton archétype. Tes scores.',
+  'landing.cta_bottom_title': 'Rejoins la communauté.',
+  'landing.cta_bottom_sub': 'Booste tes skills. Rencontre des devs. Livre des projets. Construis un portfolio vivant. Gratuit.',
   'landing.scan_prompt': 'Découvre ton archétype en 10 secondes',
   'landing.scan_placeholder': 'Ton pseudo GitHub',
   'landing.scan_btn': 'Scanner',
   'landing.scan_full': 'Voir le profil complet →',
+
+  // Feature cards (landing)
+  'landing.feature_scan': 'DYG analyse tes repos, commits, langages et activité GitHub. En 10 secondes, tu obtiens un scoring sur 8 axes et ton profil de dev.',
+  'landing.feature_dual': 'Chaque exercice est noté sur 2 dimensions : qualité du code (gold stars) et autonomie (gray stars). Demander un indice te coûte de l\'indépendance.',
+  'landing.feature_portfolio': 'Un profil public avec tes scores, tes projets livrés et ta progression. Partageable avec un jury, un recruteur ou une école. Pas du déclaratif — des preuves.',
+
+  // Stats bar (landing)
+  'landing.stat_pillars': 'Piliers de scoring',
+  'landing.stat_exercises': 'Exercices',
+  'landing.stat_archetypes': 'Archétypes',
+  'landing.stat_projects': 'Projets d\'équipe',
 
   // Search
   'search.title': 'Explorer les profils',
@@ -152,7 +163,7 @@ export default {
 
   // Onboarding
   'onboarding.title': 'Quel dev es-tu ?',
-  'onboarding.sub': 'DYG scanne ton GitHub, analyse tes repos, tes commits, tes langages, et te classe parmi 7 archétypes.',
+  'onboarding.sub': 'DYG scanne ton GitHub pour identifier tes forces et ton style de dev. C\'est le point de départ : après, tu t\'entraînes, tu rencontres des devs, et tu construis des projets ensemble.',
   'onboarding.connect_github': 'Connecter GitHub',
   'onboarding.connect_sub': 'Connecte-toi pour sauvegarder ton profil DYG',
   'onboarding.placeholder': 'ton-pseudo-github',
@@ -319,7 +330,7 @@ export default {
   'about.poles_sub': 'DYG structure ta progression en 3 phases. Chacune te rapproche de ton objectif \u2014 que ce soit une école, un studio, ou ton propre jeu.',
   'about.pole1_title': 'Trouver',
   'about.pole1_tagline': 'Scanne. Profile. Explore.',
-  'about.pole1_desc': 'Connecte ton GitHub. DYG scanne tes repos, tes langages, ton activité et calcule tes scores sur 7 piliers. Tu découvres ton archétype \u2014 ton identité de dev. Ensuite, explore les profils des autres développeurs. Trouve ceux qui complètent tes forces.',
+  'about.pole1_desc': 'Connecte ton GitHub. DYG scanne tes repos, tes langages, ton activité et calcule tes scores sur 8 piliers. Tu découvres ton archétype \u2014 ton identité de dev. Ensuite, explore les profils des autres développeurs. Trouve ceux qui complètent tes forces.',
   'about.pole2_title': 'Connecter',
   'about.pole2_tagline': 'Forme une équipe qui a du sens.',
   'about.pole2_desc': 'Une équipe performante, c\'est pas 5 clones du même profil. C\'est la diversité qui crée la synergie. DYG mesure la complémentarité en temps réel : couverture des piliers + bonus de diversité. Trouve les devs qui comblent tes lacunes et compose ta dream team.',
@@ -328,8 +339,8 @@ export default {
   'about.pole3_desc': 'C\'est là que DYG change tout. Pas de tutos YouTube. Pas de todo-list en React. Des vrais projets, avec une vraie équipe, des vraies deadlines. Chaque projet terminé nourrit ton profil : tes scores évoluent, ton archétype peut changer, ton portfolio grossit. Quand un jury regarde ton profil DYG, il voit pas ce que tu dis savoir faire \u2014 il voit ce que tu as fait.',
 
   'about.pillars_num': '03',
-  'about.pillars_label': 'Les 7 Piliers',
-  'about.pillars_title': '7 axes de progression.',
+  'about.pillars_label': 'Les 8 Piliers',
+  'about.pillars_title': '8 axes de progression.',
   'about.pillars_sub': 'Chaque pilier est un muscle. Plus tu l\'utilises, plus il se développe. Le scoring initial vient de ton GitHub. Ensuite, chaque projet le fait évoluer.',
 
   'about.archetypes_num': '04',
@@ -362,7 +373,7 @@ export default {
   'about.synergy_text': 'La synergie DYG mesure la force réelle d\'une équipe sur deux axes :',
   'about.synergy_coverage_value': '0\u2013100%',
   'about.synergy_coverage_name': 'Couverture',
-  'about.synergy_coverage_desc': 'Pour chaque pilier, on prend le meilleur score de l\'équipe. La couverture, c\'est le pourcentage du score maximum théorique (70 points = 7 piliers \u00D7 10). Une équipe qui couvre tous les piliers est une équipe complète.',
+  'about.synergy_coverage_desc': 'Pour chaque pilier, on prend le meilleur score de l\'équipe. La couverture, c\'est le pourcentage du score maximum théorique (80 points = 8 piliers \u00D7 10). Une équipe qui couvre tous les piliers est une équipe complète.',
   'about.synergy_diversity_value': '+5%',
   'about.synergy_diversity_name': 'Bonus diversité',
   'about.synergy_diversity_desc': 'Chaque archétype unique dans l\'équipe ajoute +5% de bonus. Une équipe de 5 Architectes a 0% de bonus. Une équipe avec 5 archétypes différents a +20%. La diversité gagne. Toujours.',
@@ -371,7 +382,7 @@ export default {
 
   // About — Pole features
   'about.pole1_f1': 'Scan GitHub',
-  'about.pole1_f2': '7 piliers',
+  'about.pole1_f2': '8 piliers',
   'about.pole1_f3': 'Archétypes',
   'about.pole1_f4': 'Radar',
   'about.pole1_f5': 'Filtres avancés',
@@ -386,7 +397,7 @@ export default {
 
   // About — Journey steps
   'about.step1_title': 'Tu scannes ton GitHub',
-  'about.step1_desc': 'Ton profil DYG est créé. Tes scores initiaux sont calculés sur les 7 piliers. Tu découvres ton archétype.',
+  'about.step1_desc': 'Ton profil DYG est créé. Tes scores initiaux sont calculés sur les 8 piliers. Tu découvres ton archétype.',
   'about.step2_title': 'Tu explores les devs',
   'about.step2_desc': 'Tu filtres par archétype, par pilier, par score. Tu trouves des profils complémentaires au tien.',
   'about.step3_title': 'Tu formes une équipe',
@@ -397,13 +408,13 @@ export default {
   'about.step5_desc': 'Le projet est livré. Tes piliers montent. Ton archétype peut changer. Ton portfolio s\'enrichit.',
   'about.step6_title': 'Tu postules',
   'about.step6_desc': 'Ton profil DYG parle pour toi. Des projets réels, des métriques de contribution, une progression documentée. Pas un CV \u2014 des preuves.',
-  'about.schools_text': 'Les écoles comme <strong>42</strong>, <strong>Epitech</strong> et <strong>HETIC</strong> évaluent l\'autonomie, la créativité, la collaboration et la capacité à livrer sous pression. Ce sont exactement les 7 piliers DYG. Quand tu arrives avec un profil rempli de projets livrés en équipe, t\'as pas besoin de convaincre \u2014 les données le font pour toi.',
+  'about.schools_text': 'Les écoles comme <strong>42</strong>, <strong>Epitech</strong> et <strong>HETIC</strong> évaluent l\'autonomie, la créativité, la collaboration et la capacité à livrer sous pression. Ce sont exactement les piliers DYG. Quand tu arrives avec un profil rempli de projets livrés en équipe, t\'as pas besoin de convaincre \u2014 les données le font pour toi.',
 
   // About — Tech cards
   'about.tech_github_name': 'GitHub API',
   'about.tech_github_desc': 'Scan des profils publics : repos, langages, stars, forks, activité récente. Pas de déclaratif \u2014 des données brutes.',
   'about.tech_scoring_name': 'Scoring Engine',
-  'about.tech_scoring_desc': 'Algorithme de scoring sur 7 piliers. Chaque heuristique est calibrée sur des données réelles de développeurs.',
+  'about.tech_scoring_desc': 'Algorithme de scoring sur 8 piliers. Chaque heuristique est calibrée sur des données réelles de développeurs.',
   'about.tech_gemini_name': 'Gemini AI',
   'about.tech_gemini_desc': 'Biographies générées par IA basées sur les stats réelles du dev. Assertives, précises, contextuelles.',
   'about.tech_synergy_name': 'Synergie Engine',

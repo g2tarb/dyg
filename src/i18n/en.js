@@ -21,11 +21,11 @@ export default {
   'header.messages': 'Messages',
 
   // Landing
-  'landing.hero_title': 'What kind of developer are you, really?',
-  'landing.hero_sub': 'Enter your GitHub username. In 10 seconds, you\'ll know your archetype, your scores, and your dev style.',
-  'landing.tagline': 'Progress. Join. Prove.',
-  'landing.pitch': 'Learn to code the hard way. No framework. No shortcut.',
-  'landing.pitch_bold': 'Scan your GitHub. Discover your archetype. Train. Ship projects with a team. Build a portfolio no one can ignore.',
+  'landing.hero_title': 'Become the dev you want to be.',
+  'landing.hero_sub': 'Train on 150+ exercises. Meet devs. Ship real team projects. Everything you do builds your portfolio — visible, measurable, provable.',
+  'landing.tagline': 'Progress. Meet. Prove.',
+  'landing.pitch': 'The free platform where self-taught devs boost their skills, code together, and build a portfolio no one can ignore.',
+  'landing.pitch_bold': 'Scan your GitHub to discover your profile. Join a community of devs who want to level up. Form teams. Ship real projects. And if you\'re aiming for 42, Epitech, or HETIC — show up with an advantage others don\'t have.',
   'landing.cta_find': 'Scan my GitHub',
   'landing.cta_discover': 'Discover DYG',
   'landing.scroll_more': 'How does it work?',
@@ -33,20 +33,31 @@ export default {
   'landing.social_devs': 'devs',
   'landing.how_title': '3 pillars. 1 path.',
   'landing.how_sub': 'From scan to portfolio.',
-  'landing.step1_title': 'Learn',
-  'landing.step1_desc': '150+ exercises across 7 languages. HTML, CSS, JS, Python, C, Shell, physics. Dual rating: code quality + independence.',
-  'landing.step2_title': 'Collaborate',
-  'landing.step2_desc': 'Join a team of 4. DYG calculates synergy in real time. Ship a real project with a deadline.',
+  'landing.step1_title': 'Level up',
+  'landing.step1_desc': '150+ exercises across 7 languages. Dual rating: code quality + independence. Every exercise boosts your scores. Watch your progression in real time.',
+  'landing.step2_title': 'Meet & code',
+  'landing.step2_desc': 'Find devs who complement your strengths. Form a team. Launch a real project with roles and deadlines. No more solo coding.',
   'landing.step3_title': 'Prove',
-  'landing.step3_desc': 'Peer review. Evolving scores. Public portfolio. Your archetype, your shipped projects, your metrics. All verifiable.',
+  'landing.step3_desc': 'Every shipped project feeds your portfolio. Teammates rate you, scores evolve. Aiming for a coding school? Your DYG profile speaks for you.',
   'landing.archetypes_title': '7 archetypes. Which one are you?',
   'landing.archetypes_sub': 'Architect, Shipper, Artisan, Creative, Explorer, Commando, Mentor. Your coding style defines your role in a team.',
-  'landing.cta_bottom_title': 'Ready to find out what you\'re worth?',
-  'landing.cta_bottom_sub': '10 seconds. Your GitHub. Your archetype. Your scores.',
+  'landing.cta_bottom_title': 'Join the community.',
+  'landing.cta_bottom_sub': 'Boost your skills. Meet devs. Ship projects. Build a living portfolio. Free.',
   'landing.scan_prompt': 'Discover your archetype in 10 seconds',
   'landing.scan_placeholder': 'Your GitHub username',
   'landing.scan_btn': 'Scan',
   'landing.scan_full': 'See full profile →',
+
+  // Feature cards (landing)
+  'landing.feature_scan': 'DYG analyzes your repos, commits, languages, and GitHub activity. In 10 seconds, you get an 8-axis score and your complete dev profile.',
+  'landing.feature_dual': 'Every exercise is graded on 2 dimensions: code quality (gold stars) and independence (gray stars). Requesting a hint costs you independence.',
+  'landing.feature_portfolio': 'A public profile with your scores, shipped projects, and progression history. Shareable with a jury, recruiter, or school. Not self-declared — proven.',
+
+  // Stats bar (landing)
+  'landing.stat_pillars': 'Scoring pillars',
+  'landing.stat_exercises': 'Exercises',
+  'landing.stat_archetypes': 'Archetypes',
+  'landing.stat_projects': 'Team projects',
 
   // Search
   'search.title': 'Explore profiles',
@@ -152,7 +163,7 @@ export default {
 
   // Onboarding
   'onboarding.title': 'What kind of dev are you?',
-  'onboarding.sub': 'DYG scans your GitHub — repos, commits, languages, activity — and classifies you among 7 archetypes.',
+  'onboarding.sub': 'DYG scans your GitHub to identify your strengths and dev style. It\'s your starting point: then you train, meet devs, and build projects together.',
   'onboarding.connect_github': 'Connect GitHub',
   'onboarding.connect_sub': 'Log in to save your DYG profile',
   'onboarding.placeholder': 'your-github-username',
@@ -319,7 +330,7 @@ export default {
   'about.poles_sub': 'DYG structures your progression in 3 phases. Each one brings you closer to your goal \u2014 whether it\'s a school, a studio, or your own game.',
   'about.pole1_title': 'Find',
   'about.pole1_tagline': 'Scan. Profile. Explore.',
-  'about.pole1_desc': 'Connect your GitHub. DYG scans your repos, languages, and activity, then calculates your scores across 7 pillars. You discover your archetype \u2014 your dev identity. Then explore other developers\' profiles. Find those who complement your strengths.',
+  'about.pole1_desc': 'Connect your GitHub. DYG scans your repos, languages, and activity, then calculates your scores across 8 pillars. You discover your archetype \u2014 your dev identity. Then explore other developers\' profiles. Find those who complement your strengths.',
   'about.pole2_title': 'Connect',
   'about.pole2_tagline': 'Build a team that makes sense.',
   'about.pole2_desc': 'A high-performing team isn\'t 5 clones of the same profile. It\'s diversity that creates synergy. DYG measures complementarity in real time: pillar coverage + diversity bonus. Find the devs who fill your gaps and compose your dream team.',
@@ -328,8 +339,8 @@ export default {
   'about.pole3_desc': 'This is where DYG changes everything. No YouTube tutorials. No React todo-list. Real projects, with a real team, real deadlines. Every shipped project feeds your profile: your scores evolve, your archetype can change, your portfolio grows. When a jury looks at your DYG profile, they don\'t see what you say you can do \u2014 they see what you\'ve done.',
 
   'about.pillars_num': '03',
-  'about.pillars_label': 'The 7 Pillars',
-  'about.pillars_title': '7 axes of progression.',
+  'about.pillars_label': 'The 8 Pillars',
+  'about.pillars_title': '8 axes of progression.',
   'about.pillars_sub': 'Each pillar is a muscle. The more you use it, the stronger it gets. Initial scoring comes from your GitHub. After that, every project makes it evolve.',
 
   'about.archetypes_num': '04',
@@ -362,7 +373,7 @@ export default {
   'about.synergy_text': 'DYG synergy measures a team\'s real strength on two axes:',
   'about.synergy_coverage_value': '0\u2013100%',
   'about.synergy_coverage_name': 'Coverage',
-  'about.synergy_coverage_desc': 'For each pillar, we take the team\'s best score. Coverage is the percentage of the theoretical maximum (70 points = 7 pillars \u00D7 10). A team that covers all pillars is a complete team.',
+  'about.synergy_coverage_desc': 'For each pillar, we take the team\'s best score. Coverage is the percentage of the theoretical maximum (80 points = 8 pillars \u00D7 10). A team that covers all pillars is a complete team.',
   'about.synergy_diversity_value': '+5%',
   'about.synergy_diversity_name': 'Diversity bonus',
   'about.synergy_diversity_desc': 'Each unique archetype in the team adds +5% bonus. A team of 5 Architects gets 0% bonus. A team with 5 different archetypes gets +20%. Diversity wins. Always.',
@@ -371,7 +382,7 @@ export default {
 
   // About — Pole features
   'about.pole1_f1': 'GitHub Scan',
-  'about.pole1_f2': '7 pillars',
+  'about.pole1_f2': '8 pillars',
   'about.pole1_f3': 'Archetypes',
   'about.pole1_f4': 'Radar',
   'about.pole1_f5': 'Advanced filters',
@@ -386,7 +397,7 @@ export default {
 
   // About — Journey steps
   'about.step1_title': 'You scan your GitHub',
-  'about.step1_desc': 'Your DYG profile is created. Your initial scores are calculated across the 7 pillars. You discover your archetype.',
+  'about.step1_desc': 'Your DYG profile is created. Your initial scores are calculated across the 8 pillars. You discover your archetype.',
   'about.step2_title': 'You explore devs',
   'about.step2_desc': 'You filter by archetype, by pillar, by score. You find profiles that complement yours.',
   'about.step3_title': 'You form a team',
@@ -397,13 +408,13 @@ export default {
   'about.step5_desc': 'The project ships. Your pillars rise. Your archetype can change. Your portfolio grows.',
   'about.step6_title': 'You apply',
   'about.step6_desc': 'Your DYG profile speaks for you. Real projects, contribution metrics, documented progression. Not a CV \u2014 proof.',
-  'about.schools_text': 'Schools like <strong>42</strong>, <strong>Epitech</strong>, and <strong>HETIC</strong> evaluate autonomy, creativity, collaboration, and the ability to deliver under pressure. These are exactly the 7 DYG pillars. When you show up with a profile full of projects shipped as a team, you don\'t need to convince \u2014 the data does it for you.',
+  'about.schools_text': 'Schools like <strong>42</strong>, <strong>Epitech</strong>, and <strong>HETIC</strong> evaluate autonomy, creativity, collaboration, and the ability to deliver under pressure. These are exactly the DYG pillars. When you show up with a profile full of projects shipped as a team, you don\'t need to convince \u2014 the data does it for you.',
 
   // About — Tech cards
   'about.tech_github_name': 'GitHub API',
   'about.tech_github_desc': 'Public profile scanning: repos, languages, stars, forks, recent activity. No self-reporting \u2014 raw data.',
   'about.tech_scoring_name': 'Scoring Engine',
-  'about.tech_scoring_desc': 'Scoring algorithm across 7 pillars. Each heuristic is calibrated on real developer data.',
+  'about.tech_scoring_desc': 'Scoring algorithm across 8 pillars. Each heuristic is calibrated on real developer data.',
   'about.tech_gemini_name': 'Gemini AI',
   'about.tech_gemini_desc': 'AI-generated bios based on real dev stats. Assertive, precise, contextual.',
   'about.tech_synergy_name': 'Synergy Engine',
