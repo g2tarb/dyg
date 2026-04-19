@@ -103,7 +103,7 @@
   color: var(--color-text-dim);
   background: var(--color-surface);
   padding: var(--space-xs) var(--space-md);
-  border-radius: var(--radius-sm);
+  border-radius: var(--radius-md);
 }
 
 /* Price */

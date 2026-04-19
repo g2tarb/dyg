@@ -24,14 +24,14 @@
 }
 
 .proj-filter {
-  padding: 4px var(--space-md);
+  padding: 4px 12px; border-radius: var(--radius-pill);
   font-size: 0.75rem;
   font-weight: 600;
   text-transform: uppercase;
   letter-spacing: 0.08em;
   color: var(--color-text-dim);
   background: transparent;
-  border: 1px solid var(--color-border);
+  border: 1px solid var(--color-border); border-radius: var(--radius-lg);
   cursor: pointer;
   transition: all var(--duration-fast) ease;
 }
@@ -43,7 +43,7 @@
 .projects-create {
   padding: var(--space-xl);
   background: var(--color-surface);
-  border: 1px solid var(--color-border);
+  border: 1px solid var(--color-border); border-radius: var(--radius-lg);
   border-left: 3px solid var(--color-primary);
   margin-bottom: var(--space-xl);
 }
@@ -75,7 +75,7 @@
 /* Project card */
 .project-card {
   background: var(--color-surface);
-  border: 1px solid var(--color-border);
+  border: 1px solid var(--color-border); border-radius: var(--radius-lg);
   text-decoration: none;
   color: inherit;
   display: flex;
@@ -84,7 +84,6 @@
   transition: transform var(--duration-md) var(--ease-aggressive),
               box-shadow var(--duration-md) ease,
               border-color var(--duration-md) ease;
-  clip-path: polygon(0 0, calc(100% - 16px) 0, 100% 16px, 100% 100%, 16px 100%, 0 calc(100% - 16px));
 }
 
 .project-card:hover {
@@ -111,7 +110,7 @@
   font-weight: 700;
   text-transform: uppercase;
   letter-spacing: 0.1em;
-  padding: 2px var(--space-sm);
+  padding: 3px 10px; border-radius: var(--radius-pill);
   border: 1px solid;
   white-space: nowrap;
   flex-shrink: 0;
@@ -162,7 +161,7 @@
   font-weight: 700;
   text-transform: uppercase;
   letter-spacing: 0.15em;
-  padding: 4px var(--space-md);
+  padding: 4px 12px; border-radius: var(--radius-pill);
   border: 1px solid;
   display: inline-block;
   margin-bottom: var(--space-md);
@@ -200,7 +199,7 @@
   gap: var(--space-md);
   padding: var(--space-md);
   background: var(--color-surface);
-  border: 1px solid var(--color-border);
+  border: 1px solid var(--color-border); border-radius: var(--radius-lg);
 }
 
 .projdet__member-avatar { width: 36px; height: 36px; border-radius: var(--radius-full); border: 1px solid var(--color-primary); }
@@ -216,7 +215,7 @@
   justify-content: space-between;
   padding: var(--space-sm) var(--space-md);
   background: var(--color-surface);
-  border: 1px solid var(--color-border);
+  border: 1px solid var(--color-border); border-radius: var(--radius-lg);
 }
 
 .projdet__info-label { font-size: 0.75rem; color: var(--color-text-dim); text-transform: uppercase; letter-spacing: 0.08em; }
@@ -249,7 +248,7 @@
 .projdet__review-card {
   padding: var(--space-lg);
   background: var(--color-surface);
-  border: 1px solid var(--color-border);
+  border: 1px solid var(--color-border); border-radius: var(--radius-lg);
 }
 
 .projdet__review-card-header {

@@ -186,14 +186,13 @@
   gap: var(--space-md);
   padding: var(--space-xl);
   background: var(--color-surface);
-  border: 1px solid var(--color-border);
+  border: 1px solid var(--color-border); border-radius: var(--radius-lg);
   position: relative;
   opacity: 0;
   transform: translateY(30px);
   transition: opacity 0.5s var(--ease-out), transform 0.5s var(--ease-aggressive);
 
   /* Diagonal cut top-right corner — Activision signature */
-  clip-path: polygon(0 0, calc(100% - 20px) 0, 100% 20px, 100% 100%, 0 100%);
 }
 
 #step-2 { transition-delay: 150ms; }
@@ -285,7 +284,7 @@
 .archetype-mini {
   width: 155px;
   background: var(--color-surface);
-  border: 1px solid var(--color-border);
+  border: 1px solid var(--color-border); border-radius: var(--radius-lg);
   overflow: hidden;
   display: flex;
   flex-direction: column;
@@ -293,7 +292,6 @@
   position: relative;
 
   /* Diagonal cut — matches Activision card aesthetic */
-  clip-path: polygon(0 0, calc(100% - 14px) 0, 100% 14px, 100% 100%, 14px 100%, 0 calc(100% - 14px));
 
   /* Scroll animation */
   opacity: 0;

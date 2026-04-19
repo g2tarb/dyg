@@ -138,7 +138,7 @@
 .about-vision-card {
   padding: var(--space-xl);
   background: var(--color-surface);
-  border: 1px solid var(--color-border);
+  border: 1px solid var(--color-border); border-radius: var(--radius-lg);
   opacity: 0;
   transform: translateX(30px);
   transition: opacity 0.5s var(--ease-out), transform 0.5s var(--ease-aggressive);
@@ -202,9 +202,8 @@
 .about-pole {
   padding: var(--space-2xl);
   background: var(--color-surface);
-  border: 1px solid var(--color-border);
+  border: 1px solid var(--color-border); border-radius: var(--radius-lg);
   position: relative;
-  clip-path: polygon(0 0, calc(100% - 24px) 0, 100% 24px, 100% 100%, 0 100%);
   opacity: 0;
   transform: translateY(30px);
   transition: opacity 0.5s var(--ease-out), transform 0.5s var(--ease-aggressive);
@@ -249,7 +248,7 @@
   display: flex;
   align-items: center;
   justify-content: center;
-  border: 1px solid rgba(232, 98, 10, 0.2);
+  border: 1px solid rgba(232, 98, 10, 0.2); border-radius: var(--radius-md);
   background: rgba(232, 98, 10, 0.06);
 }
 
@@ -295,14 +294,14 @@
   gap: var(--space-sm);
 }
 
-.about-pole__feature {
+.about-pole__feature { border-radius: var(--radius-pill);
   padding: 4px var(--space-md);
   font-size: 0.6875rem;
   font-weight: 600;
   text-transform: uppercase;
   letter-spacing: 0.08em;
   color: var(--color-text-dim);
-  border: 1px solid var(--color-border);
+  border: 1px solid var(--color-border); border-radius: var(--radius-lg);
   background: rgba(203, 213, 225, 0.04);
 }
 
@@ -354,7 +353,7 @@
   gap: var(--space-xl);
   padding: var(--space-xl);
   background: var(--color-surface);
-  border: 1px solid var(--color-border);
+  border: 1px solid var(--color-border); border-radius: var(--radius-lg);
   border-left: 2px solid var(--color-primary);
   opacity: 0;
   transform: translateY(20px);
@@ -476,9 +475,8 @@
 
 .about-archetype__portrait {
   position: relative;
-  aspect-ratio: 3 / 4;
+  aspect-ratio: 3 / 4; border-radius: var(--radius-lg);
   overflow: hidden;
-  clip-path: polygon(0 0, calc(100% - 20px) 0, 100% 20px, 100% 100%, 20px 100%, 0 calc(100% - 20px));
 }
 
 .about-archetype__img {
@@ -607,7 +605,7 @@
 .about-synergy__axis {
   padding: var(--space-xl);
   background: var(--color-surface);
-  border: 1px solid var(--color-border);
+  border: 1px solid var(--color-border); border-radius: var(--radius-lg);
   opacity: 0;
   transform: translateY(20px);
   transition: opacity 0.5s var(--ease-out), transform 0.5s var(--ease-aggressive);
@@ -649,7 +647,7 @@
 .about-synergy__formula {
   padding: var(--space-lg);
   background: var(--color-surface);
-  border: 1px solid var(--color-border);
+  border: 1px solid var(--color-border); border-radius: var(--radius-lg);
   border-left: 2px solid var(--color-accent);
   display: flex;
   align-items: center;
@@ -730,7 +728,7 @@
   gap: var(--space-lg);
   padding: var(--space-lg);
   background: var(--color-surface);
-  border: 1px solid var(--color-border);
+  border: 1px solid var(--color-border); border-radius: var(--radius-lg);
   position: relative;
   opacity: 0;
   transform: translateX(-20px);
@@ -793,7 +791,7 @@
 .about-journey__schools {
   padding: var(--space-xl);
   background: var(--color-surface);
-  border: 1px solid var(--color-border);
+  border: 1px solid var(--color-border); border-radius: var(--radius-lg);
   border-left: 3px solid var(--color-accent);
 }
 
@@ -850,7 +848,7 @@
 .about-tech-card {
   padding: var(--space-xl);
   background: var(--color-surface);
-  border: 1px solid var(--color-border);
+  border: 1px solid var(--color-border); border-radius: var(--radius-lg);
   opacity: 0;
   transform: translateY(20px);
   transition: opacity 0.4s var(--ease-out), transform 0.4s var(--ease-aggressive);
