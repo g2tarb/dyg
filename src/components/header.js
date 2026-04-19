@@ -19,14 +19,12 @@ function createHeader() {
       <nav class="header-nav container">
         <a href="#/" class="header-logo">${createLogoSVG('sm')}</a>
         <div class="header-actions">
-          <a href="#/onboarding" class="header-scan">${t('landing.scan_btn')}</a>
+          <a href="#/search" class="header-scan">${t('header.explore')}</a>
           ${user ? `
             <button class="header-burger" id="btn-burger" aria-label="Menu">
               <span></span><span></span><span></span>
             </button>
-          ` : `
-            <a href="/auth/github" class="header-login">${t('common.login')}</a>
-          `}
+          ` : ''}
           <button class="header-lang" id="btn-lang" title="Language">${lang === 'fr' ? 'EN' : 'FR'}</button>
         </div>
       </nav>
