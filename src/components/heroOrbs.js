@@ -1,6 +1,7 @@
 /**
- * Hero orbs — 21 archetype-colored balls orbiting the hero center.
+ * Full-page orbiting particles — fixed canvas covering the viewport.
  * Scroll-responsive: faster on scroll, turn white on fast scroll.
+ * Exposes scroll speed globally via window.__dygScrollSpeed.
  */
 
 const ORB_COLORS = [
@@ -36,15 +37,13 @@ export function initHeroOrbs(canvas) {
     const delta = Math.abs(window.scrollY - lastScrollY);
     scrollSpeed = Math.min(delta * 0.12, 6);
     lastScrollY = window.scrollY;
+    window.__dygScrollSpeed = scrollSpeed;
   }
 
   function resize() {
     const dpr = Math.min(window.devicePixelRatio, 2);
-    const parent = canvas.parentElement;
-    if (!parent) return;
-    const rect = parent.getBoundingClientRect();
-    canvas.width = rect.width * dpr;
-    canvas.height = rect.height * dpr;
+    canvas.width = window.innerWidth * dpr;
+    canvas.height = window.innerHeight * dpr;
     ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
   }
 
@@ -55,11 +54,12 @@ export function initHeroOrbs(canvas) {
     const w = canvas.width / dpr;
     const h = canvas.height / dpr;
     const cx = w / 2;
-    const cy = h * 0.4;
+    const cy = h / 2;
 
     ctx.clearRect(0, 0, w, h);
 
     scrollSpeed *= 0.92;
+    window.__dygScrollSpeed = scrollSpeed;
 
     const speedMul = 1 + scrollSpeed * 3;
     const white = Math.min(scrollSpeed / 3, 1);
@@ -81,7 +81,6 @@ export function initHeroOrbs(canvas) {
       const sz = orb.size * scale;
       const gr = sz * 6;
 
-      // Glow
       const glow = ctx.createRadialGradient(x, y, 0, x, y, gr);
       glow.addColorStop(0, `rgba(${r},${g},${b},${(alpha * 0.18).toFixed(3)})`);
       glow.addColorStop(1, `rgba(${r},${g},${b},0)`);
@@ -90,7 +89,6 @@ export function initHeroOrbs(canvas) {
       ctx.arc(x, y, gr, 0, Math.PI * 2);
       ctx.fill();
 
-      // Solid orb
       ctx.beginPath();
       ctx.arc(x, y, Math.max(0.8, sz), 0, Math.PI * 2);
       ctx.fillStyle = `rgba(${r},${g},${b},${alpha.toFixed(2)})`;
@@ -109,5 +107,6 @@ export function initHeroOrbs(canvas) {
     cancelAnimationFrame(animFrame);
     window.removeEventListener('scroll', onScroll);
     window.removeEventListener('resize', resize);
+    window.__dygScrollSpeed = 0;
   };
 }

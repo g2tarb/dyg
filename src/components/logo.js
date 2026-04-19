@@ -62,4 +62,79 @@ function createLogoSVG(size = 'md') {
   </svg>`;
 }
 
-export { createLogoSVG };
+/**
+ * Replace SVG animateMotion with JS-driven animation.
+ * Orbs speed up on scroll and turn white. Listens for dyg:archetype-hover to sync color.
+ */
+const ORB_COLORS_RGB = [
+  [59, 130, 246], [34, 197, 94], [245, 197, 66],
+  [168, 85, 247], [6, 182, 212], [239, 68, 68], [249, 115, 22]
+];
+
+function setupLogoAnimation(svgElement) {
+  if (!svgElement) return null;
+
+  const vb = svgElement.getAttribute('viewBox').split(' ').map(Number);
+  const orbitRx = vb[2] * 0.47;
+  const orbitRy = vb[3] * 0.43;
+
+  const circles = Array.from(svgElement.querySelectorAll('circle'));
+  svgElement.querySelectorAll('animateMotion').forEach(a => a.remove());
+
+  const orbPairs = [];
+  for (let i = 0; i < circles.length; i += 2) {
+    if (i + 1 >= circles.length) break;
+    orbPairs.push({
+      solid: circles[i],
+      glow: circles[i + 1],
+      baseColor: ORB_COLORS_RGB[Math.floor(i / 2) % 7],
+      angle: (Math.PI * 2 / 7) * Math.floor(i / 2)
+    });
+  }
+
+  let overrideColor = null;
+  let animFrame = null;
+
+  function onHover(e) { overrideColor = e.detail?.color || null; }
+  window.addEventListener('dyg:archetype-hover', onHover);
+
+  function lerp(a, b, t) { return a + (b - a) * t; }
+  function hexToRgb(hex) {
+    return [parseInt(hex.slice(1, 3), 16), parseInt(hex.slice(3, 5), 16), parseInt(hex.slice(5, 7), 16)];
+  }
+
+  function animate() {
+    const spd = window.__dygScrollSpeed || 0;
+    const speedMul = 1 + spd * 3;
+    const white = Math.min(spd / 3, 1);
+
+    for (const orb of orbPairs) {
+      orb.angle += 0.015 * speedMul;
+      const x = Math.cos(orb.angle) * orbitRx;
+      const y = Math.sin(orb.angle) * orbitRy;
+
+      const base = overrideColor ? hexToRgb(overrideColor) : orb.baseColor;
+      const r = Math.round(lerp(base[0], 255, white));
+      const g = Math.round(lerp(base[1], 255, white));
+      const b = Math.round(lerp(base[2], 255, white));
+      const hex = `#${[r,g,b].map(v => v.toString(16).padStart(2,'0')).join('')}`;
+
+      orb.solid.setAttribute('cx', x);
+      orb.solid.setAttribute('cy', y);
+      orb.solid.setAttribute('fill', hex);
+      orb.glow.setAttribute('cx', x);
+      orb.glow.setAttribute('cy', y);
+      orb.glow.setAttribute('fill', hex);
+    }
+    animFrame = requestAnimationFrame(animate);
+  }
+
+  animate();
+
+  return function cleanup() {
+    cancelAnimationFrame(animFrame);
+    window.removeEventListener('dyg:archetype-hover', onHover);
+  };
+}
+
+export { createLogoSVG, setupLogoAnimation };

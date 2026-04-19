@@ -15,14 +15,15 @@
   padding: var(--space-2xl) var(--space-lg);
 }
 
-/* Canvas orbs background */
+/* Canvas orbs — fixed full viewport, follows scroll */
 .tj-hero__canvas {
-  position: absolute;
+  position: fixed;
   top: 0;
   left: 0;
-  width: 100%;
-  height: 100%;
+  width: 100vw;
+  height: 100vh;
   z-index: 0;
+  pointer-events: none;
 }
 
 /* Large DYG logo mark */
@@ -613,6 +614,17 @@
 .tj-archetype.tj-visible {
   opacity: 1;
   transform: translateY(0) scale(1);
+}
+
+.tj-archetype.tj-visible .tj-archetype__img-wrap {
+  box-shadow:
+    0 0 20px color-mix(in srgb, var(--arch-color) 40%, transparent),
+    0 0 50px color-mix(in srgb, var(--arch-color) 20%, transparent);
+  border-color: var(--arch-color);
+}
+
+.tj-archetype.tj-visible .tj-archetype__name {
+  color: var(--color-text);
 }
 
 .tj-archetype:hover,

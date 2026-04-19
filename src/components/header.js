@@ -2,9 +2,10 @@ import { subscribe, getState, logout } from '../store.js';
 import { escapeHTML } from '../utils/sanitize.js';
 import { showToast } from '../components/toast.js';
 import { t, getLocale, setLocale } from '../i18n/index.js';
-import { createLogoSVG } from './logo.js';
+import { createLogoSVG, setupLogoAnimation } from './logo.js';
 
 let unreadPoll = null;
+let cleanupLogoAnim = null;
 
 function createHeader() {
   const header = document.createElement('header');
@@ -77,6 +78,11 @@ function createHeader() {
 
     // Update team badge
     updateBadge(getState('team'));
+
+    // Animate logo orbs (scroll-reactive + hover-reactive)
+    if (cleanupLogoAnim) cleanupLogoAnim();
+    const logoSvg = header.querySelector('.dyg-logo-svg');
+    cleanupLogoAnim = setupLogoAnimation(logoSvg);
 
     // Start unread poll if logged in
     if (user) {

@@ -305,6 +305,17 @@ function renderLanding(container) {
   const heroCanvas = container.querySelector('#hero-canvas');
   const cleanupOrbs = heroCanvas ? initHeroOrbs(heroCanvas) : null;
 
+  // ===== ARCHETYPE HOVER → NAV LOGO COLOR SYNC =====
+  container.querySelectorAll('.tj-archetype').forEach(el => {
+    el.addEventListener('mouseenter', () => {
+      const color = el.style.getPropertyValue('--arch-color').trim();
+      window.dispatchEvent(new CustomEvent('dyg:archetype-hover', { detail: { color } }));
+    });
+    el.addEventListener('mouseleave', () => {
+      window.dispatchEvent(new CustomEvent('dyg:archetype-hover', { detail: { color: null } }));
+    });
+  });
+
   return () => {
     observer.disconnect();
     if (cleanupOrbs) cleanupOrbs();
