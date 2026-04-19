@@ -4,22 +4,22 @@
 -- ==========================================
 
 INSERT INTO training_tracks (id, name, description, level, sort_order) VALUES
-('tj100000-0000-0000-0000-000000000001', 'JS — Variables & Opérateurs', 'Let, const, types, concaténation, opérations mathématiques. Les fondations.', 1, 10),
-('tj200000-0000-0000-0000-000000000001', 'JS — Fonctions', 'Déclaration, paramètres, return, scope, arrow functions, closures.', 1, 11),
-('tj300000-0000-0000-0000-000000000001', 'JS — Logique & Boucles', 'If/else, switch, for, while, ternaires. La logique de programmation.', 1, 12),
-('tj400000-0000-0000-0000-000000000001', 'JS — Tableaux & Objets', 'Arrays, méthodes, destructuring, spread, Set, Map. Les structures de données.', 2, 13),
-('tj500000-0000-0000-0000-000000000001', 'JS — Le DOM', 'Sélectionner, modifier, ajouter, supprimer des éléments. Communiquer avec la page.', 2, 14),
-('tj600000-0000-0000-0000-000000000001', 'JS — Événements', 'Click, submit, propagation, setTimeout, setInterval. L''interactivité.', 2, 15),
-('tj700000-0000-0000-0000-000000000001', 'JS — POO (Classes)', 'Classes, constructeurs, héritage, getters/setters. La programmation orientée objet.', 3, 16),
-('tj800000-0000-0000-0000-000000000001', 'JS — Async & API', 'Promises, async/await, fetch, localStorage. Le JS moderne.', 3, 17),
-('tj900000-0000-0000-0000-000000000001', 'JS — Projets', 'Calculatrice, générateur de citations, app météo, thème persistant. Les boss.', 3, 18);
+('c0100000-0000-0000-0000-000000000001', 'JS — Variables & Opérateurs', 'Let, const, types, concaténation, opérations mathématiques. Les fondations.', 1, 10),
+('c0200000-0000-0000-0000-000000000001', 'JS — Fonctions', 'Déclaration, paramètres, return, scope, arrow functions, closures.', 1, 11),
+('c0300000-0000-0000-0000-000000000001', 'JS — Logique & Boucles', 'If/else, switch, for, while, ternaires. La logique de programmation.', 1, 12),
+('c0400000-0000-0000-0000-000000000001', 'JS — Tableaux & Objets', 'Arrays, méthodes, destructuring, spread, Set, Map. Les structures de données.', 2, 13),
+('c0500000-0000-0000-0000-000000000001', 'JS — Le DOM', 'Sélectionner, modifier, ajouter, supprimer des éléments. Communiquer avec la page.', 2, 14),
+('c0600000-0000-0000-0000-000000000001', 'JS — Événements', 'Click, submit, propagation, setTimeout, setInterval. L''interactivité.', 2, 15),
+('c0700000-0000-0000-0000-000000000001', 'JS — POO (Classes)', 'Classes, constructeurs, héritage, getters/setters. La programmation orientée objet.', 3, 16),
+('c0800000-0000-0000-0000-000000000001', 'JS — Async & API', 'Promises, async/await, fetch, localStorage. Le JS moderne.', 3, 17),
+('c0900000-0000-0000-0000-000000000001', 'JS — Projets', 'Calculatrice, générateur de citations, app météo, thème persistant. Les boss.', 3, 18);
 
 -- ==========================================
 -- TRACK 1: Variables & Opérateurs (3 exercices)
 -- ==========================================
 
 INSERT INTO training_exercises (id, track_id, title, description, instructions, expected_result, level, sort_order, pillar_impact) VALUES
-('ej110000-0000-0000-0000-000000000001', 'tj100000-0000-0000-0000-000000000001',
+('d0110000-0000-0000-0000-000000000001', 'c0100000-0000-0000-0000-000000000001',
  'Variables et types',
  'Déclare des variables, comprends let vs const, et manipule les types primitifs.',
  'Crée un fichier script.js lié à une page HTML :
@@ -35,7 +35,7 @@ Tout doit s''afficher dans la console (F12 → Console).',
  'La console affiche les variables, leurs types, les conversions et les opérations. Aucune erreur.',
  1, 1, '{"code"}'),
 
-('ej120000-0000-0000-0000-000000000001', 'tj100000-0000-0000-0000-000000000001',
+('d0120000-0000-0000-0000-000000000001', 'c0100000-0000-0000-0000-000000000001',
  'Strings et méthodes',
  'Maîtrise les chaînes de caractères : méthodes, recherche, transformation.',
  'Crée un programme qui manipule des strings :
@@ -49,7 +49,7 @@ Tout doit s''afficher dans la console (F12 → Console).',
  'Toutes les méthodes de string sont utilisées correctement. L''exercice email fonctionne.',
  1, 2, '{"code","craft"}'),
 
-('ej130000-0000-0000-0000-000000000001', 'tj100000-0000-0000-0000-000000000001',
+('d0130000-0000-0000-0000-000000000001', 'c0100000-0000-0000-0000-000000000001',
  'Nombres et Math',
  'Opérations avancées, l''objet Math, génération de nombres aléatoires.',
  'Crée un programme mathématique :
@@ -69,7 +69,7 @@ Le jeu doit fonctionner dans le navigateur avec prompt/alert.',
 -- ==========================================
 
 INSERT INTO training_exercises (id, track_id, title, description, instructions, expected_result, level, sort_order, pillar_impact) VALUES
-('ej210000-0000-0000-0000-000000000001', 'tj200000-0000-0000-0000-000000000001',
+('d0210000-0000-0000-0000-000000000001', 'c0200000-0000-0000-0000-000000000001',
  'Fonctions : déclaration et paramètres',
  'Crée des fonctions, comprends les paramètres, le return, et le scope.',
  'Crée un fichier avec ces fonctions :
@@ -85,7 +85,7 @@ Utilise console.log pour tout afficher.',
  'Chaque fonction fonctionne correctement avec différents arguments. Le scope est compris.',
  1, 1, '{"code"}'),
 
-('ej220000-0000-0000-0000-000000000001', 'tj200000-0000-0000-0000-000000000001',
+('d0220000-0000-0000-0000-000000000001', 'c0200000-0000-0000-0000-000000000001',
  'Arrow functions et callbacks',
  'Fonctions fléchées, fonctions anonymes, et callbacks.',
  'Réécris et crée des fonctions :
@@ -99,7 +99,7 @@ Utilise console.log pour tout afficher.',
  'Les arrow functions sont maîtrisées. Les callbacks fonctionnent. La fonction pipe enchaîne correctement.',
  1, 2, '{"code","craft"}'),
 
-('ej230000-0000-0000-0000-000000000001', 'tj200000-0000-0000-0000-000000000001',
+('d0230000-0000-0000-0000-000000000001', 'c0200000-0000-0000-0000-000000000001',
  'Closures et fonctions avancées',
  'Comprends les closures, les IIFE, et la récursivité.',
  'Crée ces programmes :
@@ -118,7 +118,7 @@ Utilise console.log pour tout afficher.',
 -- ==========================================
 
 INSERT INTO training_exercises (id, track_id, title, description, instructions, expected_result, level, sort_order, pillar_impact) VALUES
-('ej310000-0000-0000-0000-000000000001', 'tj300000-0000-0000-0000-000000000001',
+('d0310000-0000-0000-0000-000000000001', 'c0300000-0000-0000-0000-000000000001',
  'Conditions : if, else, switch',
  'Maîtrise toutes les formes de conditions en JavaScript.',
  'Crée ces programmes :
@@ -132,7 +132,7 @@ INSERT INTO training_exercises (id, track_id, title, description, instructions, 
  'Toutes les conditions fonctionnent. Le quiz pose 5 questions et affiche le score.',
  1, 1, '{"code"}'),
 
-('ej320000-0000-0000-0000-000000000001', 'tj300000-0000-0000-0000-000000000001',
+('d0320000-0000-0000-0000-000000000001', 'c0300000-0000-0000-0000-000000000001',
  'Boucles : for, while, do-while',
  'Itère, parcours, et transforme avec les boucles.',
  'Crée ces programmes :
@@ -146,7 +146,7 @@ INSERT INTO training_exercises (id, track_id, title, description, instructions, 
  'FizzBuzz fonctionne parfaitement. Les boucles while et for sont maîtrisées.',
  1, 2, '{"code","autonomy"}'),
 
-('ej330000-0000-0000-0000-000000000001', 'tj300000-0000-0000-0000-000000000001',
+('d0330000-0000-0000-0000-000000000001', 'c0300000-0000-0000-0000-000000000001',
  'Projet : Jeu du pendu en console',
  'Combine conditions et boucles pour créer un vrai jeu.',
  'Crée un jeu du pendu dans la console :
@@ -167,7 +167,7 @@ Le jeu doit être jouable entièrement avec prompt/alert.',
 -- ==========================================
 
 INSERT INTO training_exercises (id, track_id, title, description, instructions, expected_result, level, sort_order, pillar_impact) VALUES
-('ej410000-0000-0000-0000-000000000001', 'tj400000-0000-0000-0000-000000000001',
+('d0410000-0000-0000-0000-000000000001', 'c0400000-0000-0000-0000-000000000001',
  'Tableaux : méthodes essentielles',
  'push, pop, map, filter, reduce, find, sort — toutes les méthodes arrays.',
  'Crée un fichier qui manipule des tableaux :
@@ -181,7 +181,7 @@ INSERT INTO training_exercises (id, track_id, title, description, instructions, 
  'Toutes les méthodes de tableau sont utilisées. La chaîne filter→sort→map fonctionne. La fonction unique marche.',
  2, 1, '{"code","craft"}'),
 
-('ej420000-0000-0000-0000-000000000001', 'tj400000-0000-0000-0000-000000000001',
+('d0420000-0000-0000-0000-000000000001', 'c0400000-0000-0000-0000-000000000001',
  'Objets et destructuring',
  'Objets littéraux, destructuring, spread, rest, Set, Map.',
  'Crée ces programmes :
@@ -196,7 +196,7 @@ INSERT INTO training_exercises (id, track_id, title, description, instructions, 
  'Destructuring, spread et rest sont compris. Map et Set sont utilisés correctement.',
  2, 2, '{"code","versatility"}'),
 
-('ej430000-0000-0000-0000-000000000001', 'tj400000-0000-0000-0000-000000000001',
+('d0430000-0000-0000-0000-000000000001', 'c0400000-0000-0000-0000-000000000001',
  'Projet : Gestionnaire de tâches (console)',
  'Un todo-list en console qui combine tableaux, objets, et fonctions.',
  'Crée un gestionnaire de tâches interactif :
@@ -217,7 +217,7 @@ Le programme tourne en boucle jusqu''à ce que l''utilisateur quitte.',
 -- ==========================================
 
 INSERT INTO training_exercises (id, track_id, title, description, instructions, expected_result, level, sort_order, pillar_impact) VALUES
-('ej510000-0000-0000-0000-000000000001', 'tj500000-0000-0000-0000-000000000001',
+('d0510000-0000-0000-0000-000000000001', 'c0500000-0000-0000-0000-000000000001',
  'Sélectionner et modifier le DOM',
  'querySelector, textContent, innerHTML, classList, style.',
  'Crée une page HTML avec du contenu statique, puis manipule-la avec JS :
@@ -231,7 +231,7 @@ INSERT INTO training_exercises (id, track_id, title, description, instructions, 
  'La page est manipulée dynamiquement. Le bouton change la couleur de fond.',
  2, 1, '{"code"}'),
 
-('ej520000-0000-0000-0000-000000000001', 'tj500000-0000-0000-0000-000000000001',
+('d0520000-0000-0000-0000-000000000001', 'c0500000-0000-0000-0000-000000000001',
  'Ajouter et supprimer des éléments',
  'createElement, append, remove, insertBefore. Construis le DOM dynamiquement.',
  'Crée une page où tout le contenu est généré par JavaScript :
@@ -245,7 +245,7 @@ INSERT INTO training_exercises (id, track_id, title, description, instructions, 
  'La page se construit dynamiquement. Les tweets s''ajoutent et se suppriment. Les cards sont générées depuis un tableau.',
  2, 2, '{"code","craft"}'),
 
-('ej530000-0000-0000-0000-000000000001', 'tj500000-0000-0000-0000-000000000001',
+('d0530000-0000-0000-0000-000000000001', 'c0500000-0000-0000-0000-000000000001',
  'Projet : Todo List (DOM)',
  'Reprends le gestionnaire de tâches et crée une vraie interface web.',
  'Transforme le todo-list console en une vraie app web :
@@ -267,7 +267,7 @@ Pas de framework. Vanilla JS + CSS.',
 -- ==========================================
 
 INSERT INTO training_exercises (id, track_id, title, description, instructions, expected_result, level, sort_order, pillar_impact) VALUES
-('ej610000-0000-0000-0000-000000000001', 'tj600000-0000-0000-0000-000000000001',
+('d0610000-0000-0000-0000-000000000001', 'c0600000-0000-0000-0000-000000000001',
  'addEventListener et types d''événements',
  'Click, input, submit, keydown, mouseover. Le gestionnaire d''événements.',
  'Crée une page interactive qui démontre 6 types d''événements :
@@ -283,7 +283,7 @@ Utilise addEventListener (pas onclick inline).',
  'Chaque événement fonctionne. Le formulaire ne recharge pas la page. L''Etch-a-Sketch marche.',
  2, 1, '{"code","creativity"}'),
 
-('ej620000-0000-0000-0000-000000000001', 'tj600000-0000-0000-0000-000000000001',
+('d0620000-0000-0000-0000-000000000001', 'c0600000-0000-0000-0000-000000000001',
  'Propagation et délégation',
  'Bubbling, capturing, stopPropagation, event delegation.',
  'Crée ces démos :
@@ -297,7 +297,7 @@ Utilise addEventListener (pas onclick inline).',
  'La délégation fonctionne même sur les éléments ajoutés dynamiquement. Le debounce fonctionne.',
  2, 2, '{"code","craft","autonomy"}'),
 
-('ej630000-0000-0000-0000-000000000001', 'tj600000-0000-0000-0000-000000000001',
+('d0630000-0000-0000-0000-000000000001', 'c0600000-0000-0000-0000-000000000001',
  'Projet : Chronomètre + Timer',
  'Un chronomètre avec start/stop/reset et un timer avec compte à rebours.',
  'Crée une double app chrono/timer :
@@ -323,7 +323,7 @@ Utilise addEventListener (pas onclick inline).',
 -- ==========================================
 
 INSERT INTO training_exercises (id, track_id, title, description, instructions, expected_result, level, sort_order, pillar_impact) VALUES
-('ej710000-0000-0000-0000-000000000001', 'tj700000-0000-0000-0000-000000000001',
+('d0710000-0000-0000-0000-000000000001', 'c0700000-0000-0000-0000-000000000001',
  'Classes et constructeurs',
  'Crée des classes, comprends this, les méthodes, et l''encapsulation.',
  'Crée un système de personnages de jeu :
@@ -337,7 +337,7 @@ INSERT INTO training_exercises (id, track_id, title, description, instructions, 
  'Le combat fonctionne tour par tour. Les getters et setters protègent les données. Le toString est propre.',
  3, 1, '{"code","creativity"}'),
 
-('ej720000-0000-0000-0000-000000000001', 'tj700000-0000-0000-0000-000000000001',
+('d0720000-0000-0000-0000-000000000001', 'c0700000-0000-0000-0000-000000000001',
  'Héritage et polymorphisme',
  'extends, super, surcharge de méthodes. L''héritage en pratique.',
  'Étends le système de personnages :
@@ -353,7 +353,7 @@ Chaque classe doit appeler super() dans le constructeur.',
  'L''héritage fonctionne. Chaque classe a ses capacités uniques. Le combat d''équipe tourne.',
  3, 2, '{"code","craft","creativity"}'),
 
-('ej730000-0000-0000-0000-000000000001', 'tj700000-0000-0000-0000-000000000001',
+('d0730000-0000-0000-0000-000000000001', 'c0700000-0000-0000-0000-000000000001',
  'Projet : Fight Simulator (DOM)',
  'Combine POO + DOM pour un simulateur de combat visuel.',
  'Crée un Fight Simulator avec interface web :
@@ -374,7 +374,7 @@ Design : dark theme, barres de vie colorées (vert→jaune→rouge), animations 
 -- ==========================================
 
 INSERT INTO training_exercises (id, track_id, title, description, instructions, expected_result, level, sort_order, pillar_impact) VALUES
-('ej810000-0000-0000-0000-000000000001', 'tj800000-0000-0000-0000-000000000001',
+('d0810000-0000-0000-0000-000000000001', 'c0800000-0000-0000-0000-000000000001',
  'Promises et async/await',
  'Comprends l''asynchrone : callbacks, promises, then/catch, async/await.',
  'Crée ces programmes :
@@ -388,7 +388,7 @@ INSERT INTO training_exercises (id, track_id, title, description, instructions, 
  'Les promises fonctionnent. Async/await est utilisé. Promise.all et race sont compris.',
  3, 1, '{"code","autonomy"}'),
 
-('ej820000-0000-0000-0000-000000000001', 'tj800000-0000-0000-0000-000000000001',
+('d0820000-0000-0000-0000-000000000001', 'c0800000-0000-0000-0000-000000000001',
  'Fetch et API REST',
  'Récupère et envoie des données avec fetch. Consomme une API.',
  'Utilise l''API JSONPlaceholder (jsonplaceholder.typicode.com) :
@@ -402,7 +402,7 @@ INSERT INTO training_exercises (id, track_id, title, description, instructions, 
  'Les données s''affichent. Le POST fonctionne. Le loading state est visible. La recherche filtre.',
  3, 2, '{"code","versatility"}'),
 
-('ej830000-0000-0000-0000-000000000001', 'tj800000-0000-0000-0000-000000000001',
+('d0830000-0000-0000-0000-000000000001', 'c0800000-0000-0000-0000-000000000001',
  'Projet : App Météo',
  'Crée une app météo avec une API réelle, géolocalisation, et localStorage.',
  'Crée une app météo complète :
@@ -424,7 +424,7 @@ Dark theme, icônes météo, transitions fluides.',
 -- ==========================================
 
 INSERT INTO training_exercises (id, track_id, title, description, instructions, expected_result, level, sort_order, pillar_impact) VALUES
-('ej910000-0000-0000-0000-000000000001', 'tj900000-0000-0000-0000-000000000001',
+('d0910000-0000-0000-0000-000000000001', 'c0900000-0000-0000-0000-000000000001',
  'Générateur de citations',
  'Un générateur de citations aléatoires avec catégories et partage.',
  'Crée un générateur de citations :
@@ -439,7 +439,7 @@ INSERT INTO training_exercises (id, track_id, title, description, instructions, 
  'Le générateur fonctionne avec filtres, favoris persistants, et copie clipboard.',
  3, 1, '{"code","craft","creativity"}'),
 
-('ej920000-0000-0000-0000-000000000001', 'tj900000-0000-0000-0000-000000000001',
+('d0920000-0000-0000-0000-000000000001', 'c0900000-0000-0000-0000-000000000001',
  'Thème persistant + préférences',
  'Un site avec dark/light mode, taille de texte, et préférences sauvegardées.',
  'Crée un site de blog avec des préférences utilisateur :
@@ -456,7 +456,7 @@ Le site doit avoir du vrai contenu (3 articles) pour voir l''effet des préfére
  'Toutes les préférences persistent entre les sessions. Le panel settings slide élégamment.',
  3, 2, '{"code","craft","autonomy"}'),
 
-('ej930000-0000-0000-0000-000000000001', 'tj900000-0000-0000-0000-000000000001',
+('d0930000-0000-0000-0000-000000000001', 'c0900000-0000-0000-0000-000000000001',
  'Mini e-commerce (JS complet)',
  'Le boss final JS. Un mini-store avec panier, filtres, et localStorage.',
  'Crée un mini e-commerce complet en vanilla JS :

@@ -5,22 +5,22 @@
 
 -- TRACKS
 INSERT INTO training_tracks (id, name, description, level, sort_order) VALUES
-('t1000000-0000-0000-0000-000000000001', 'HTML — Les bases', 'Structure de page, balises sémantiques, liens, images. Les fondations de tout site web.', 1, 1),
-('t2000000-0000-0000-0000-000000000001', 'CSS — Les bases', 'Couleurs, typographie, borders, box model, positions. Donne vie à ton HTML.', 1, 2),
-('t3000000-0000-0000-0000-000000000001', 'CSS — Apparences dynamiques', 'Hover, focus, pseudo-classes, pseudo-éléments, variables CSS. Le CSS interactif.', 2, 3),
-('t4000000-0000-0000-0000-000000000001', 'Layout — Flexbox', 'Aligne, distribue, ordonne. Flexbox est ton outil de mise en page quotidien.', 2, 4),
-('t5000000-0000-0000-0000-000000000001', 'Layout — CSS Grid', 'Grilles 2D puissantes. Colonnes, lignes, zones. Le layout moderne.', 2, 5),
-('t6000000-0000-0000-0000-000000000001', 'Responsive Design', 'Media queries, unités relatives, mobile-first. Ton site doit marcher partout.', 2, 6),
-('t7000000-0000-0000-0000-000000000001', 'Formulaires & Tableaux', 'Inputs, validations CSS, tables. Les composants essentiels du web.', 3, 7),
-('t8000000-0000-0000-0000-000000000001', 'Animations CSS', 'Keyframes, transitions, transforms. Donne du mouvement à tes interfaces.', 3, 8),
-('t9000000-0000-0000-0000-000000000001', 'Projets finaux', 'Sites complets multi-pages. Restaurant, blog, e-commerce, portfolio. Le boss final.', 3, 9);
+('a0100000-0000-0000-0000-000000000001', 'HTML — Les bases', 'Structure de page, balises sémantiques, liens, images. Les fondations de tout site web.', 1, 1),
+('a0200000-0000-0000-0000-000000000001', 'CSS — Les bases', 'Couleurs, typographie, borders, box model, positions. Donne vie à ton HTML.', 1, 2),
+('a0300000-0000-0000-0000-000000000001', 'CSS — Apparences dynamiques', 'Hover, focus, pseudo-classes, pseudo-éléments, variables CSS. Le CSS interactif.', 2, 3),
+('a0400000-0000-0000-0000-000000000001', 'Layout — Flexbox', 'Aligne, distribue, ordonne. Flexbox est ton outil de mise en page quotidien.', 2, 4),
+('a0500000-0000-0000-0000-000000000001', 'Layout — CSS Grid', 'Grilles 2D puissantes. Colonnes, lignes, zones. Le layout moderne.', 2, 5),
+('a0600000-0000-0000-0000-000000000001', 'Responsive Design', 'Media queries, unités relatives, mobile-first. Ton site doit marcher partout.', 2, 6),
+('a0700000-0000-0000-0000-000000000001', 'Formulaires & Tableaux', 'Inputs, validations CSS, tables. Les composants essentiels du web.', 3, 7),
+('a0800000-0000-0000-0000-000000000001', 'Animations CSS', 'Keyframes, transitions, transforms. Donne du mouvement à tes interfaces.', 3, 8),
+('a0900000-0000-0000-0000-000000000001', 'Projets finaux', 'Sites complets multi-pages. Restaurant, blog, e-commerce, portfolio. Le boss final.', 3, 9);
 
 -- ==========================================
 -- TRACK 1: HTML — Les bases (4 exercices)
 -- ==========================================
 
 INSERT INTO training_exercises (id, track_id, title, description, instructions, expected_result, level, sort_order, pillar_impact) VALUES
-('e1010000-0000-0000-0000-000000000001', 't1000000-0000-0000-0000-000000000001',
+('b0101000-0000-0000-0000-000000000001', 'a0100000-0000-0000-0000-000000000001',
  'Ma première page HTML',
  'Crée une page HTML valide avec un titre, des paragraphes et des liens.',
  'Crée un fichier index.html avec :
@@ -35,7 +35,7 @@ Pas de CSS. Juste du HTML pur et propre.',
  'Une page HTML valide qui passe le validateur W3C. Structure sémantique claire. Contenu lisible même sans style.',
  1, 1, '{"code"}'),
 
-('e1020000-0000-0000-0000-000000000001', 't1000000-0000-0000-0000-000000000001',
+('b0102000-0000-0000-0000-000000000001', 'a0100000-0000-0000-0000-000000000001',
  'Les images et les figures',
  'Maîtrise les images : formats, attributs alt, figures avec légendes.',
  'Crée une page "Galerie photo" avec :
@@ -50,7 +50,7 @@ Bonus : ajoute une image avec <picture> et <source> pour différentes tailles.',
  'Une page galerie avec des images bien décrites (alt text), des figures avec légendes, et un favicon visible.',
  1, 2, '{"code","craft"}'),
 
-('e1030000-0000-0000-0000-000000000001', 't1000000-0000-0000-0000-000000000001',
+('b0103000-0000-0000-0000-000000000001', 'a0100000-0000-0000-0000-000000000001',
  'Navigation multi-pages',
  'Crée 3 pages HTML liées entre elles avec une navigation commune.',
  'Crée un mini-site de 3 pages :
@@ -74,7 +74,7 @@ Les 3 pages doivent se lier entre elles avec des liens relatifs.',
  'Un site de 3 pages naviguable. La navigation fonctionne sur chaque page. Les liens relatifs sont corrects.',
  1, 3, '{"code","autonomy"}'),
 
-('e1040000-0000-0000-0000-000000000001', 't1000000-0000-0000-0000-000000000001',
+('b0104000-0000-0000-0000-000000000001', 'a0100000-0000-0000-0000-000000000001',
  'HTML sémantique avancé',
  'Balises sémantiques, tableaux, médias. Tout le HTML moderne.',
  'Crée une page "CV en ligne" avec :
@@ -95,7 +95,7 @@ Le HTML doit passer le validateur W3C avec 0 erreurs.',
 -- ==========================================
 
 INSERT INTO training_exercises (id, track_id, title, description, instructions, expected_result, level, sort_order, pillar_impact) VALUES
-('e2010000-0000-0000-0000-000000000001', 't2000000-0000-0000-0000-000000000001',
+('b0201000-0000-0000-0000-000000000001', 'a0200000-0000-0000-0000-000000000001',
  'Couleurs, typo et backgrounds',
  'Les fondamentaux visuels : couleurs, polices Google Fonts, arrière-plans.',
  'Reprends ta page "Mes Recettes" (Track 1) et ajoute du style :
@@ -110,7 +110,7 @@ Utilise un fichier style.css séparé, pas de style inline.',
  'Un site avec une identité visuelle cohérente. Les couleurs sont harmonieuses, la typo est lisible, les backgrounds donnent de la profondeur.',
  1, 1, '{"craft"}'),
 
-('e2020000-0000-0000-0000-000000000001', 't2000000-0000-0000-0000-000000000001',
+('b0202000-0000-0000-0000-000000000001', 'a0200000-0000-0000-0000-000000000001',
  'Borders et border-radius',
  'Maîtrise les bordures : styles, coins arrondis, outlines.',
  'Crée une page "Cartes de profil" avec 4 cartes :
@@ -126,7 +126,7 @@ Bonus : une carte avec un border gradient (border-image ou pseudo-element trick)
  'Quatre cartes avec des styles de bordures différents. Chaque carte est élégante et le hover est fluide.',
  1, 2, '{"craft","creativity"}'),
 
-('e2030000-0000-0000-0000-000000000001', 't2000000-0000-0000-0000-000000000001',
+('b0203000-0000-0000-0000-000000000001', 'a0200000-0000-0000-0000-000000000001',
  'Le Box Model : margin, padding, dimensions',
  'Comprends le modèle de boîte CSS. Margin, padding, width, height, box-sizing.',
  'Crée une page "Dashboard" avec :
@@ -142,7 +142,7 @@ Utilise la console développeur Chrome pour vérifier visuellement le box model 
  'Un layout de dashboard où chaque élément a des espacements cohérents. Aucun overflow, aucun élément qui déborde.',
  1, 3, '{"code","craft"}'),
 
-('e2040000-0000-0000-0000-000000000001', 't2000000-0000-0000-0000-000000000001',
+('b0204000-0000-0000-0000-000000000001', 'a0200000-0000-0000-0000-000000000001',
  'Positions : relative, absolute, fixed, sticky',
  'Les 4 modes de positionnement CSS. Quand utiliser lequel.',
  'Crée une page avec 4 sections qui démontrent chaque position :
@@ -162,7 +162,7 @@ Chaque section doit avoir assez de contenu pour scroller.',
 -- ==========================================
 
 INSERT INTO training_exercises (id, track_id, title, description, instructions, expected_result, level, sort_order, pillar_impact) VALUES
-('e3010000-0000-0000-0000-000000000001', 't3000000-0000-0000-0000-000000000001',
+('b0301000-0000-0000-0000-000000000001', 'a0300000-0000-0000-0000-000000000001',
  'Hover, active, focus et transitions',
  'Rends ton interface interactive avec les pseudo-classes et les transitions CSS.',
  'Crée une page "UI Kit" avec ces composants interactifs :
@@ -178,7 +178,7 @@ TOUTES les transitions doivent être fluides (transition: all 0.2s ease ou ease-
  'Un UI kit où chaque élément réagit au survol, au clic, et au focus. Tout est fluide, rien ne saute.',
  2, 1, '{"craft","creativity"}'),
 
-('e3020000-0000-0000-0000-000000000001', 't3000000-0000-0000-0000-000000000001',
+('b0302000-0000-0000-0000-000000000001', 'a0300000-0000-0000-0000-000000000001',
  'Pseudo-éléments et CSS avancé',
  'Maîtrise ::before, ::after, :nth-child, et les sélecteurs avancés.',
  'Crée une page "Timeline" (frise chronologique) :
@@ -194,7 +194,7 @@ Pas de JavaScript. Tout en CSS pur.',
  'Une timeline verticale élégante avec alternance gauche/droite, des points sur la ligne, et des dates. Tout en pseudo-éléments.',
  2, 2, '{"code","craft","creativity"}'),
 
-('e3030000-0000-0000-0000-000000000001', 't3000000-0000-0000-0000-000000000001',
+('b0303000-0000-0000-0000-000000000001', 'a0300000-0000-0000-0000-000000000001',
  'Variables CSS et thème dark/light',
  'CSS custom properties, :root, et toggle de thème sans JavaScript.',
  'Crée une page "Blog post" avec un toggle dark/light mode :
@@ -214,7 +214,7 @@ Le switch doit être fluide (transition: background 0.3s, color 0.3s sur body).'
 -- ==========================================
 
 INSERT INTO training_exercises (id, track_id, title, description, instructions, expected_result, level, sort_order, pillar_impact) VALUES
-('e4010000-0000-0000-0000-000000000001', 't4000000-0000-0000-0000-000000000001',
+('b0401000-0000-0000-0000-000000000001', 'a0400000-0000-0000-0000-000000000001',
  'Flexbox — Les fondamentaux',
  'Conteneur flex, direction, wrap, justify-content, align-items.',
  'Crée 5 mini-layouts sur la même page, chacun dans une section :
@@ -229,7 +229,7 @@ Chaque section doit avoir un titre <h2> qui explique quel concept flexbox est ut
  'Cinq layouts différents qui démontrent chacun un aspect de flexbox. Tout est aligné, distribué correctement.',
  2, 1, '{"code"}'),
 
-('e4020000-0000-0000-0000-000000000001', 't4000000-0000-0000-0000-000000000001',
+('b0402000-0000-0000-0000-000000000001', 'a0400000-0000-0000-0000-000000000001',
  'Flexbox — Navbar responsive',
  'Construis une barre de navigation professionnelle qui s''adapte au mobile.',
  'Crée une navbar complète :
@@ -250,7 +250,7 @@ CSS-only. Pas de JavaScript.',
  'Une navbar qui passe de horizontale à burger menu sur mobile. Le toggle fonctionne en CSS pur avec le checkbox hack.',
  2, 2, '{"code","craft","versatility"}'),
 
-('e4030000-0000-0000-0000-000000000001', 't4000000-0000-0000-0000-000000000001',
+('b0403000-0000-0000-0000-000000000001', 'a0400000-0000-0000-0000-000000000001',
  'Flexbox — Pricing cards',
  'Crée 3 cartes de pricing avec mise en avant de l''offre centrale.',
  'Crée une section pricing avec 3 plans :
@@ -270,7 +270,7 @@ La typographie du prix doit être impressionnante : gros chiffre + petit "/mois"
 -- ==========================================
 
 INSERT INTO training_exercises (id, track_id, title, description, instructions, expected_result, level, sort_order, pillar_impact) VALUES
-('e5010000-0000-0000-0000-000000000001', 't5000000-0000-0000-0000-000000000001',
+('b0501000-0000-0000-0000-000000000001', 'a0500000-0000-0000-0000-000000000001',
  'CSS Grid — Dashboard layout',
  'Construis un layout de dashboard avec sidebar, header, et grille de widgets.',
  'Crée un dashboard admin :
@@ -286,7 +286,7 @@ Utilise grid-template-areas avec des noms explicites.',
  'Un dashboard qui ressemble à Vercel ou Linear. Sidebar fixe, grille propre, responsive.',
  2, 1, '{"code","craft"}'),
 
-('e5020000-0000-0000-0000-000000000001', 't5000000-0000-0000-0000-000000000001',
+('b0502000-0000-0000-0000-000000000001', 'a0500000-0000-0000-0000-000000000001',
  'CSS Grid — Masonry gallery',
  'Crée une galerie photo masonry avec des images de hauteurs variées.',
  'Crée une galerie photo "Luna Studio" :
@@ -302,7 +302,7 @@ Le grid doit s''adapter naturellement à toutes les tailles d''écran.',
  'Une galerie masonry qui s''adapte à l''écran. Les overlays sont élégants. L''effet d''immersion est là.',
  2, 2, '{"code","creativity"}'),
 
-('e5030000-0000-0000-0000-000000000001', 't5000000-0000-0000-0000-000000000001',
+('b0503000-0000-0000-0000-000000000001', 'a0500000-0000-0000-0000-000000000001',
  'CSS Grid — Magazine layout',
  'Crée un layout de magazine avec des articles de tailles différentes.',
  'Crée une page d''accueil de magazine "The Byte" :
@@ -323,7 +323,7 @@ Le layout doit donner une impression de magazine premium.',
 -- ==========================================
 
 INSERT INTO training_exercises (id, track_id, title, description, instructions, expected_result, level, sort_order, pillar_impact) VALUES
-('e6010000-0000-0000-0000-000000000001', 't6000000-0000-0000-0000-000000000001',
+('b0601000-0000-0000-0000-000000000001', 'a0600000-0000-0000-0000-000000000001',
  'Media queries et mobile-first',
  'Apprends à coder mobile-first et à ajouter des media queries.',
  'Crée une page "App mobile" qui est conçue mobile-first :
@@ -339,7 +339,7 @@ Code mobile-first : le CSS de base = mobile, les @media (min-width) ajoutent les
  'Un site qui fonctionne sur mobile, tablette et desktop. Aucun scroll horizontal, aucun texte trop petit.',
  2, 1, '{"code","versatility"}'),
 
-('e6020000-0000-0000-0000-000000000001', 't6000000-0000-0000-0000-000000000001',
+('b0602000-0000-0000-0000-000000000001', 'a0600000-0000-0000-0000-000000000001',
  'Clamp, min, max et unités modernes',
  'Les fonctions CSS modernes pour un responsive sans media queries.',
  'Crée une page "Typography showcase" :
@@ -355,7 +355,7 @@ Le but : ZÉRO media query. Tout doit être responsive uniquement avec clamp(), 
  'Une page entièrement responsive sans une seule media query. Les fonctions CSS font tout le travail.',
  2, 2, '{"code","craft","autonomy"}'),
 
-('e6030000-0000-0000-0000-000000000001', 't6000000-0000-0000-0000-000000000001',
+('b0603000-0000-0000-0000-000000000001', 'a0600000-0000-0000-0000-000000000001',
  'Rendre un site existant responsive',
  'Prends un site desktop-only et rends-le responsive.',
  'Reprends ton Dashboard (Track 5) et rends-le parfaitement responsive :
@@ -376,7 +376,7 @@ Teste sur 375px (iPhone SE), 768px (iPad), 1024px (laptop), 1440px (desktop).',
 -- ==========================================
 
 INSERT INTO training_exercises (id, track_id, title, description, instructions, expected_result, level, sort_order, pillar_impact) VALUES
-('e7010000-0000-0000-0000-000000000001', 't7000000-0000-0000-0000-000000000001',
+('b0701000-0000-0000-0000-000000000001', 'a0700000-0000-0000-0000-000000000001',
  'Formulaire de contact stylé',
  'Crée un formulaire complet avec tous les types d''inputs, bien stylé.',
  'Crée un formulaire de contact pour une agence :
@@ -394,7 +394,7 @@ Pas de JavaScript. Toute l''interactivité en CSS.',
  'Un formulaire professionnel avec des inputs custom, une validation visuelle, et des labels flottants. Tout en CSS.',
  3, 1, '{"craft","code"}'),
 
-('e7020000-0000-0000-0000-000000000001', 't7000000-0000-0000-0000-000000000001',
+('b0702000-0000-0000-0000-000000000001', 'a0700000-0000-0000-0000-000000000001',
  'Tableau de données responsive',
  'Crée un tableau de données complexe qui s''adapte au mobile.',
  'Crée un tableau "Classement des joueurs" :
@@ -410,7 +410,7 @@ Technique responsive : display: block sur tous les éléments du tableau + data-
  'Un tableau qui est lisible sur desktop ET mobile. La transformation desktop→cards est fluide.',
  3, 2, '{"code","versatility"}'),
 
-('e7030000-0000-0000-0000-000000000001', 't7000000-0000-0000-0000-000000000001',
+('b0703000-0000-0000-0000-000000000001', 'a0700000-0000-0000-0000-000000000001',
  'Formulaire multi-étapes (CSS only)',
  'Crée un formulaire en 3 étapes avec une progress bar, sans JavaScript.',
  'Crée un formulaire d''inscription en 3 étapes :
@@ -434,7 +434,7 @@ Tout en CSS. Pas de JavaScript.',
 -- ==========================================
 
 INSERT INTO training_exercises (id, track_id, title, description, instructions, expected_result, level, sort_order, pillar_impact) VALUES
-('e8010000-0000-0000-0000-000000000001', 't8000000-0000-0000-0000-000000000001',
+('b0801000-0000-0000-0000-000000000001', 'a0800000-0000-0000-0000-000000000001',
  'Transitions et transforms',
  'Maîtrise les transitions CSS pour des interactions fluides.',
  'Crée une page "Interaction showcase" :
@@ -450,7 +450,7 @@ Chaque interaction doit avoir une timing function appropriée (ease, ease-out, c
  'Une showcase d''interactions où chaque élément réagit de manière fluide et naturelle.',
  3, 1, '{"craft","creativity"}'),
 
-('e8020000-0000-0000-0000-000000000001', 't8000000-0000-0000-0000-000000000001',
+('b0802000-0000-0000-0000-000000000001', 'a0800000-0000-0000-0000-000000000001',
  'Keyframes et animations complexes',
  'Crée des animations avancées avec @keyframes.',
  'Crée une page "Animation lab" :
@@ -466,7 +466,7 @@ Chaque animation doit avoir un bouton "Replay" (checkbox hack qui reset l''anima
  'Un lab d''animations qui démontre une maîtrise avancée de @keyframes. Chaque animation est smooth et intentionnelle.',
  3, 2, '{"craft","creativity","autonomy"}'),
 
-('e8030000-0000-0000-0000-000000000001', 't8000000-0000-0000-0000-000000000001',
+('b0803000-0000-0000-0000-000000000001', 'a0800000-0000-0000-0000-000000000001',
  'Landing page animée',
  'Combine tout : animations, transitions, responsive, pour une landing page impressionnante.',
  'Crée une landing page "Neon" avec des animations au chargement :
@@ -487,7 +487,7 @@ Le timing de chaque animation doit être coordonné. Le hero en premier, puis le
 -- ==========================================
 
 INSERT INTO training_exercises (id, track_id, title, description, instructions, expected_result, level, sort_order, pillar_impact) VALUES
-('e9010000-0000-0000-0000-000000000001', 't9000000-0000-0000-0000-000000000001',
+('b0901000-0000-0000-0000-000000000001', 'a0900000-0000-0000-0000-000000000001',
  'Site restaurant — 3 pages',
  'Un vrai site de restaurant avec menu, réservation, et identité visuelle forte.',
  'Construis le site de "Ember & Oak", restaurant gastronomique :
@@ -505,7 +505,7 @@ INSERT INTO training_exercises (id, track_id, title, description, instructions, 
  'Un site de restaurant que tu pourrais présenter à un vrai restaurateur. Identité visuelle cohérente, navigation fluide.',
  3, 1, '{"code","craft","autonomy","versatility"}'),
 
-('e9020000-0000-0000-0000-000000000001', 't9000000-0000-0000-0000-000000000001',
+('b0902000-0000-0000-0000-000000000001', 'a0900000-0000-0000-0000-000000000001',
  'Blog tech — 5 pages',
  'Un blog complet avec homepage, listing, article, about, contact. Dark mode inclus.',
  'Construis "ByteSize", un blog tech :
@@ -527,7 +527,7 @@ INSERT INTO training_exercises (id, track_id, title, description, instructions, 
  'Un blog indistinguable de Ghost ou Medium. Le dark mode fonctionne parfaitement. L''expérience de lecture est premium.',
  3, 2, '{"code","craft","creativity","autonomy","versatility"}'),
 
-('e9030000-0000-0000-0000-000000000001', 't9000000-0000-0000-0000-000000000001',
+('b0903000-0000-0000-0000-000000000001', 'a0900000-0000-0000-0000-000000000001',
  'E-commerce complet — 5 pages',
  'Le boss final. Un site e-commerce complet. 5 pages, CSS-only interactions, responsive, dark mode.',
  'Construis "Pixel Store", boutique tech/gadgets :
@@ -560,64 +560,64 @@ C''est l''exercice le plus difficile. Prends ton temps.',
 
 -- Track 1, Ex 1.1
 INSERT INTO training_tips (exercise_id, sort_order, content) VALUES
-('e1010000-0000-0000-0000-000000000001', 1, 'Structure de base : <!DOCTYPE html><html lang="fr"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><title>Mon site</title></head><body></body></html>'),
-('e1010000-0000-0000-0000-000000000001', 2, 'Balises sémantiques : <header> pour le haut de page, <main> pour le contenu principal, <footer> pour le bas. Pas de <div> quand une balise sémantique existe.'),
-('e1010000-0000-0000-0000-000000000001', 3, 'Liens externes : <a href="https://..." target="_blank" rel="noopener">Texte du lien</a>. Le rel="noopener" est important pour la sécurité.'),
-('e1010000-0000-0000-0000-000000000001', 4, 'Listes : <ol> pour les listes numérotées (classement), <ul> pour les listes à puces (pas d''ordre). Chaque item dans un <li>.'),
-('e1010000-0000-0000-0000-000000000001', 5, 'Validateur W3C : va sur validator.w3.org, colle ton HTML, et corrige chaque erreur. 0 erreur = HTML parfait.');
+('b0101000-0000-0000-0000-000000000001', 1, 'Structure de base : <!DOCTYPE html><html lang="fr"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><title>Mon site</title></head><body></body></html>'),
+('b0101000-0000-0000-0000-000000000001', 2, 'Balises sémantiques : <header> pour le haut de page, <main> pour le contenu principal, <footer> pour le bas. Pas de <div> quand une balise sémantique existe.'),
+('b0101000-0000-0000-0000-000000000001', 3, 'Liens externes : <a href="https://..." target="_blank" rel="noopener">Texte du lien</a>. Le rel="noopener" est important pour la sécurité.'),
+('b0101000-0000-0000-0000-000000000001', 4, 'Listes : <ol> pour les listes numérotées (classement), <ul> pour les listes à puces (pas d''ordre). Chaque item dans un <li>.'),
+('b0101000-0000-0000-0000-000000000001', 5, 'Validateur W3C : va sur validator.w3.org, colle ton HTML, et corrige chaque erreur. 0 erreur = HTML parfait.');
 
 -- Track 1, Ex 1.2
 INSERT INTO training_tips (exercise_id, sort_order, content) VALUES
-('e1020000-0000-0000-0000-000000000001', 1, 'Images avec picsum : <img src="https://picsum.photos/400/300?random=1" alt="Description de l''image" width="400" height="300" loading="lazy">'),
-('e1020000-0000-0000-0000-000000000001', 2, 'Figure : <figure><img src="..." alt="..."><figcaption>Légende de la photo</figcaption></figure>. La figcaption décrit l''image pour l''accessibilité.'),
-('e1020000-0000-0000-0000-000000000001', 3, 'Favicon : <link rel="icon" type="image/svg+xml" href="favicon.svg">. Tu peux utiliser un emoji comme favicon SVG.'),
-('e1020000-0000-0000-0000-000000000001', 4, 'Alt text : décris ce que l''image MONTRE, pas ce qu''elle EST. "Un chat roux dormant sur un canapé" > "photo de chat". Si l''image est décorative : alt="".'),
-('e1020000-0000-0000-0000-000000000001', 5, 'Picture element : <picture><source media="(min-width: 768px)" srcset="grande.jpg"><img src="petite.jpg" alt="..."></picture>. Le navigateur choisit la bonne image.');
+('b0102000-0000-0000-0000-000000000001', 1, 'Images avec picsum : <img src="https://picsum.photos/400/300?random=1" alt="Description de l''image" width="400" height="300" loading="lazy">'),
+('b0102000-0000-0000-0000-000000000001', 2, 'Figure : <figure><img src="..." alt="..."><figcaption>Légende de la photo</figcaption></figure>. La figcaption décrit l''image pour l''accessibilité.'),
+('b0102000-0000-0000-0000-000000000001', 3, 'Favicon : <link rel="icon" type="image/svg+xml" href="favicon.svg">. Tu peux utiliser un emoji comme favicon SVG.'),
+('b0102000-0000-0000-0000-000000000001', 4, 'Alt text : décris ce que l''image MONTRE, pas ce qu''elle EST. "Un chat roux dormant sur un canapé" > "photo de chat". Si l''image est décorative : alt="".'),
+('b0102000-0000-0000-0000-000000000001', 5, 'Picture element : <picture><source media="(min-width: 768px)" srcset="grande.jpg"><img src="petite.jpg" alt="..."></picture>. Le navigateur choisit la bonne image.');
 
 -- Track 1, Ex 1.3
 INSERT INTO training_tips (exercise_id, sort_order, content) VALUES
-('e1030000-0000-0000-0000-000000000001', 1, 'Liens relatifs : si tes 3 fichiers sont dans le même dossier, un lien vers recette.html est juste <a href="recette.html">. Pas besoin de / ou de chemin complet.'),
-('e1030000-0000-0000-0000-000000000001', 2, 'Navigation commune : copie le même bloc <nav> dans les 3 pages. Sur chaque page, ajoute class="active" au lien de la page courante.'),
-('e1030000-0000-0000-0000-000000000001', 3, 'Balise <address> : utilisée pour les coordonnées de contact. <address><a href="mailto:contact@site.com">contact@site.com</a></address>'),
-('e1030000-0000-0000-0000-000000000001', 4, 'Formulaire HTML basique : <form><label for="nom">Nom</label><input type="text" id="nom" name="nom" required><button type="submit">Envoyer</button></form>'),
-('e1030000-0000-0000-0000-000000000001', 5, 'Structure de dossier : garde tous les fichiers HTML à la racine. Les images dans un dossier /images/. Le CSS dans /css/style.css.');
+('b0103000-0000-0000-0000-000000000001', 1, 'Liens relatifs : si tes 3 fichiers sont dans le même dossier, un lien vers recette.html est juste <a href="recette.html">. Pas besoin de / ou de chemin complet.'),
+('b0103000-0000-0000-0000-000000000001', 2, 'Navigation commune : copie le même bloc <nav> dans les 3 pages. Sur chaque page, ajoute class="active" au lien de la page courante.'),
+('b0103000-0000-0000-0000-000000000001', 3, 'Balise <address> : utilisée pour les coordonnées de contact. <address><a href="mailto:contact@site.com">contact@site.com</a></address>'),
+('b0103000-0000-0000-0000-000000000001', 4, 'Formulaire HTML basique : <form><label for="nom">Nom</label><input type="text" id="nom" name="nom" required><button type="submit">Envoyer</button></form>'),
+('b0103000-0000-0000-0000-000000000001', 5, 'Structure de dossier : garde tous les fichiers HTML à la racine. Les images dans un dossier /images/. Le CSS dans /css/style.css.');
 
 -- Track 1, Ex 1.4
 INSERT INTO training_tips (exercise_id, sort_order, content) VALUES
-('e1040000-0000-0000-0000-000000000001', 1, 'Tableau HTML : <table><thead><tr><th>Année</th><th>Formation</th></tr></thead><tbody><tr><td>2024</td><td>DYG</td></tr></tbody></table>'),
-('e1040000-0000-0000-0000-000000000001', 2, 'Détails/Summary : <details><summary>Question fréquente</summary><p>La réponse ici</p></details>. Le navigateur gère l''ouverture/fermeture tout seul.'),
-('e1040000-0000-0000-0000-000000000001', 3, 'Open Graph : <meta property="og:title" content="Mon CV"><meta property="og:description" content="CV de ..."><meta property="og:image" content="preview.jpg">'),
-('e1040000-0000-0000-0000-000000000001', 4, 'Accessibilité : <nav aria-label="Navigation principale">. Les lecteurs d''écran utilisent aria-label pour décrire la section.'),
-('e1040000-0000-0000-0000-000000000001', 5, 'Iframe YouTube : <iframe width="560" height="315" src="https://www.youtube.com/embed/VIDEO_ID" allowfullscreen></iframe>. Remplace VIDEO_ID par l''ID de la vidéo.');
+('b0104000-0000-0000-0000-000000000001', 1, 'Tableau HTML : <table><thead><tr><th>Année</th><th>Formation</th></tr></thead><tbody><tr><td>2024</td><td>DYG</td></tr></tbody></table>'),
+('b0104000-0000-0000-0000-000000000001', 2, 'Détails/Summary : <details><summary>Question fréquente</summary><p>La réponse ici</p></details>. Le navigateur gère l''ouverture/fermeture tout seul.'),
+('b0104000-0000-0000-0000-000000000001', 3, 'Open Graph : <meta property="og:title" content="Mon CV"><meta property="og:description" content="CV de ..."><meta property="og:image" content="preview.jpg">'),
+('b0104000-0000-0000-0000-000000000001', 4, 'Accessibilité : <nav aria-label="Navigation principale">. Les lecteurs d''écran utilisent aria-label pour décrire la section.'),
+('b0104000-0000-0000-0000-000000000001', 5, 'Iframe YouTube : <iframe width="560" height="315" src="https://www.youtube.com/embed/VIDEO_ID" allowfullscreen></iframe>. Remplace VIDEO_ID par l''ID de la vidéo.');
 
 -- Track 2, Ex 2.1
 INSERT INTO training_tips (exercise_id, sort_order, content) VALUES
-('e2010000-0000-0000-0000-000000000001', 1, 'Variables CSS : :root { --color-bg: #0a0a0f; --color-text: #e2e8f0; --color-accent: #e8620a; } puis utilise : color: var(--color-text);'),
-('e2010000-0000-0000-0000-000000000001', 2, 'Google Fonts : va sur fonts.google.com, choisis 2 polices, copie le <link> dans ton <head>. Applique : font-family: "Bebas Neue", sans-serif;'),
-('e2010000-0000-0000-0000-000000000001', 3, 'Gradient : background: linear-gradient(135deg, #0a0a0f 0%, #1a1a2e 100%); Les degrés changent la direction.'),
-('e2010000-0000-0000-0000-000000000001', 4, 'Liens stylés : a { color: var(--color-accent); text-decoration: none; } a:hover { text-decoration: underline; }'),
-('e2010000-0000-0000-0000-000000000001', 5, 'Fichier CSS séparé : <link rel="stylesheet" href="css/style.css"> dans le <head>. JAMAIS de style inline (style="...") en production.');
+('b0201000-0000-0000-0000-000000000001', 1, 'Variables CSS : :root { --color-bg: #0a0a0f; --color-text: #e2e8f0; --color-accent: #e8620a; } puis utilise : color: var(--color-text);'),
+('b0201000-0000-0000-0000-000000000001', 2, 'Google Fonts : va sur fonts.google.com, choisis 2 polices, copie le <link> dans ton <head>. Applique : font-family: "Bebas Neue", sans-serif;'),
+('b0201000-0000-0000-0000-000000000001', 3, 'Gradient : background: linear-gradient(135deg, #0a0a0f 0%, #1a1a2e 100%); Les degrés changent la direction.'),
+('b0201000-0000-0000-0000-000000000001', 4, 'Liens stylés : a { color: var(--color-accent); text-decoration: none; } a:hover { text-decoration: underline; }'),
+('b0201000-0000-0000-0000-000000000001', 5, 'Fichier CSS séparé : <link rel="stylesheet" href="css/style.css"> dans le <head>. JAMAIS de style inline (style="...") en production.');
 
 -- Track 2, Ex 2.2
 INSERT INTO training_tips (exercise_id, sort_order, content) VALUES
-('e2020000-0000-0000-0000-000000000001', 1, 'Border simple : border: 1px solid rgba(255,255,255,0.1); border-radius: 8px; Utilise rgba pour des bordures subtiles.'),
-('e2020000-0000-0000-0000-000000000001', 2, 'Barre latérale : border-left: 4px solid var(--color-accent); padding-left: 16px; C''est un pattern très utilisé pour les citations et les highlights.'),
-('e2020000-0000-0000-0000-000000000001', 3, 'Avatar circulaire : width: 80px; height: 80px; border-radius: 50%; object-fit: cover; border: 3px solid var(--color-accent);'),
-('e2020000-0000-0000-0000-000000000001', 4, 'Box-shadow au lieu de border : box-shadow: 0 4px 16px rgba(0,0,0,0.1); C''est plus élégant qu''une bordure pour les cards.'),
-('e2020000-0000-0000-0000-000000000001', 5, 'Border gradient trick : background: linear-gradient(var(--bg), var(--bg)) padding-box, linear-gradient(135deg, #e8620a, #f5c542) border-box; border: 2px solid transparent;');
+('b0202000-0000-0000-0000-000000000001', 1, 'Border simple : border: 1px solid rgba(255,255,255,0.1); border-radius: 8px; Utilise rgba pour des bordures subtiles.'),
+('b0202000-0000-0000-0000-000000000001', 2, 'Barre latérale : border-left: 4px solid var(--color-accent); padding-left: 16px; C''est un pattern très utilisé pour les citations et les highlights.'),
+('b0202000-0000-0000-0000-000000000001', 3, 'Avatar circulaire : width: 80px; height: 80px; border-radius: 50%; object-fit: cover; border: 3px solid var(--color-accent);'),
+('b0202000-0000-0000-0000-000000000001', 4, 'Box-shadow au lieu de border : box-shadow: 0 4px 16px rgba(0,0,0,0.1); C''est plus élégant qu''une bordure pour les cards.'),
+('b0202000-0000-0000-0000-000000000001', 5, 'Border gradient trick : background: linear-gradient(var(--bg), var(--bg)) padding-box, linear-gradient(135deg, #e8620a, #f5c542) border-box; border: 2px solid transparent;');
 
 -- Track 2, Ex 2.3
 INSERT INTO training_tips (exercise_id, sort_order, content) VALUES
-('e2030000-0000-0000-0000-000000000001', 1, 'Box-sizing global : *, *::before, *::after { box-sizing: border-box; } TOUJOURS en première ligne de ton CSS. Sans ça, padding ajoute à la largeur.'),
-('e2030000-0000-0000-0000-000000000001', 2, 'Container : .container { max-width: 1200px; margin: 0 auto; padding: 0 24px; } Centre le contenu et ajoute des marges latérales sur mobile.'),
-('e2030000-0000-0000-0000-000000000001', 3, 'Margin collapse : deux éléments verticaux avec margin-bottom: 16px et margin-top: 16px n''auront que 16px entre eux (pas 32px). C''est le "margin collapsing".'),
-('e2030000-0000-0000-0000-000000000001', 4, 'Console développeur : F12 → Elements → sélectionne un élément → regarde le box model en bas à droite. Tu vois margin, border, padding visuellement.'),
-('e2030000-0000-0000-0000-000000000001', 5, 'Gap vs Margin : si tu utilises flex ou grid, préfère gap: 16px sur le parent plutôt que margin sur chaque enfant. Plus propre, pas de marge en trop sur le dernier élément.');
+('b0203000-0000-0000-0000-000000000001', 1, 'Box-sizing global : *, *::before, *::after { box-sizing: border-box; } TOUJOURS en première ligne de ton CSS. Sans ça, padding ajoute à la largeur.'),
+('b0203000-0000-0000-0000-000000000001', 2, 'Container : .container { max-width: 1200px; margin: 0 auto; padding: 0 24px; } Centre le contenu et ajoute des marges latérales sur mobile.'),
+('b0203000-0000-0000-0000-000000000001', 3, 'Margin collapse : deux éléments verticaux avec margin-bottom: 16px et margin-top: 16px n''auront que 16px entre eux (pas 32px). C''est le "margin collapsing".'),
+('b0203000-0000-0000-0000-000000000001', 4, 'Console développeur : F12 → Elements → sélectionne un élément → regarde le box model en bas à droite. Tu vois margin, border, padding visuellement.'),
+('b0203000-0000-0000-0000-000000000001', 5, 'Gap vs Margin : si tu utilises flex ou grid, préfère gap: 16px sur le parent plutôt que margin sur chaque enfant. Plus propre, pas de marge en trop sur le dernier élément.');
 
 -- Track 2, Ex 2.4
 INSERT INTO training_tips (exercise_id, sort_order, content) VALUES
-('e2040000-0000-0000-0000-000000000001', 1, 'Position relative : l''élément reste dans le flux normal mais tu peux le décaler avec top/left. Utile pour les badges : parent relative, badge absolute.'),
-('e2040000-0000-0000-0000-000000000001', 2, 'Position absolute : l''élément sort du flux et se positionne par rapport au parent position:relative le plus proche. Pas de parent relative = positionné par rapport au body.'),
-('e2040000-0000-0000-0000-000000000001', 3, 'Position fixed : reste fixe même quand on scroll. Parfait pour les boutons "retour en haut" : position: fixed; bottom: 24px; right: 24px; z-index: 100;'),
-('e2040000-0000-0000-0000-000000000001', 4, 'Position sticky : position: sticky; top: 0; L''élément se comporte comme relative jusqu''à ce qu''il atteigne le seuil (top: 0), puis il "colle". Le parent doit avoir assez de hauteur.'),
-('e2040000-0000-0000-0000-000000000001', 5, 'Z-index : ne fonctionne que sur les éléments positionnés (relative, absolute, fixed, sticky). Commence par z-index: 1, monte à 10 pour les overlays, 100 pour les modals, 1000 pour les toasts.');
+('b0204000-0000-0000-0000-000000000001', 1, 'Position relative : l''élément reste dans le flux normal mais tu peux le décaler avec top/left. Utile pour les badges : parent relative, badge absolute.'),
+('b0204000-0000-0000-0000-000000000001', 2, 'Position absolute : l''élément sort du flux et se positionne par rapport au parent position:relative le plus proche. Pas de parent relative = positionné par rapport au body.'),
+('b0204000-0000-0000-0000-000000000001', 3, 'Position fixed : reste fixe même quand on scroll. Parfait pour les boutons "retour en haut" : position: fixed; bottom: 24px; right: 24px; z-index: 100;'),
+('b0204000-0000-0000-0000-000000000001', 4, 'Position sticky : position: sticky; top: 0; L''élément se comporte comme relative jusqu''à ce qu''il atteigne le seuil (top: 0), puis il "colle". Le parent doit avoir assez de hauteur.'),
+('b0204000-0000-0000-0000-000000000001', 5, 'Z-index : ne fonctionne que sur les éléments positionnés (relative, absolute, fixed, sticky). Commence par z-index: 1, monte à 10 pour les overlays, 100 pour les modals, 1000 pour les toasts.');
