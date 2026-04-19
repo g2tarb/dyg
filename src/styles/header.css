@@ -34,16 +34,14 @@
 }
 
 .header-logo {
-  font-family: var(--font-display);
-  font-size: 1.875rem;
-  color: var(--color-primary);
+  display: flex;
+  align-items: center;
   text-decoration: none;
-  letter-spacing: 0.12em;
-  transition: text-shadow var(--duration-fast) ease;
+  flex-shrink: 0;
 }
 
-.header-logo:hover {
-  text-shadow: 0 0 30px rgba(232, 98, 10, 0.6);
+.header-logo:hover .dyg-logo-svg text {
+  filter: drop-shadow(0 0 10px rgba(250, 250, 250, 0.3));
 }
 
 .header-links {
@@ -260,8 +258,12 @@
   .header-nav::-webkit-scrollbar { display: none; }
 
   .header-logo {
-    font-size: 1.25rem;
     flex-shrink: 0;
+  }
+
+  .header-logo .dyg-logo-svg {
+    width: 48px;
+    height: auto;
   }
 
   .header-links {

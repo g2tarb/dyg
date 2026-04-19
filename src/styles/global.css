@@ -152,6 +152,14 @@ img {
     animation-iteration-count: 1 !important;
     transition-duration: 0.01ms !important;
   }
+  .dyg-logo-svg animateMotion {
+    dur: 0.01ms;
+  }
+}
+
+/* Logo SVG — ensure orbits don't clip */
+.dyg-logo-svg {
+  overflow: visible;
 }
 
 /* Scrollbar — minimal modern */
@@ -219,10 +227,8 @@ img {
 }
 
 .footer-brand {
-  font-family: var(--font-display);
-  font-size: 1.25rem;
-  color: var(--color-primary);
-  letter-spacing: 0.1em;
+  display: flex;
+  align-items: center;
 }
 
 .footer-copy {

@@ -5,6 +5,7 @@ import { escapeHTML } from '../utils/sanitize.js';
 import { getState, checkAuth } from '../store.js';
 
 import { t } from '../i18n/index.js';
+import { createLogoSVG } from '../components/logo.js';
 
 function getScanSteps() {
   return [
@@ -60,7 +61,7 @@ function renderOnboarding(container) {
                   <!-- Back (hidden face) -->
                   <div class="card-flip__back">
                     <div class="card-back-content">
-                      <span class="card-back-logo">DYG</span>
+                      <span class="card-back-logo">${createLogoSVG('lg')}</span>
                       <span class="card-back-sub">DO YOUR GAME</span>
                     </div>
                   </div>

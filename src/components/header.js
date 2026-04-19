@@ -2,6 +2,7 @@ import { subscribe, getState, logout } from '../store.js';
 import { escapeHTML } from '../utils/sanitize.js';
 import { showToast } from '../components/toast.js';
 import { t, getLocale, setLocale } from '../i18n/index.js';
+import { createLogoSVG } from './logo.js';
 
 let unreadPoll = null;
 
@@ -15,7 +16,7 @@ function createHeader() {
 
     header.innerHTML = `
       <nav class="header-nav container">
-        <a href="#/" class="header-logo">DYG</a>
+        <a href="#/" class="header-logo">${createLogoSVG('sm')}</a>
         <div class="header-links">
           <a href="#/about" class="header-link">${t('header.about')}</a>
           <a href="#/search" class="header-link">${t('header.explore')}</a>

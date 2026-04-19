@@ -1,4 +1,5 @@
-import { loadTeamFromServer, checkAuth } from './store.js';
+import { loadTeamFromServer, checkAuth, subscribe } from './store.js';
+import { startIdleCoach, stopIdleCoach } from './components/idleCoach.js';
 import { registerRoute, initRouter, setNotFoundHandler } from './router.js';
 import { createHeader } from './components/header.js';
 import { renderLanding } from './pages/landing.js';
@@ -58,3 +59,12 @@ initRouter();
 // Restore state from server
 checkAuth();
 loadTeamFromServer();
+
+// Idle coach — starts when developer profile is available
+subscribe('developer', (dev) => {
+  if (dev && dev.scores && dev.scores.length > 0) {
+    startIdleCoach();
+  } else {
+    stopIdleCoach();
+  }
+});
