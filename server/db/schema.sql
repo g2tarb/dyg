@@ -2,6 +2,7 @@ DROP TABLE IF EXISTS training_submissions CASCADE;
 DROP TABLE IF EXISTS training_tips CASCADE;
 DROP TABLE IF EXISTS training_exercises CASCADE;
 DROP TABLE IF EXISTS training_tracks CASCADE;
+DROP TABLE IF EXISTS badges CASCADE;
 DROP TABLE IF EXISTS project_brief_tips CASCADE;
 DROP TABLE IF EXISTS project_briefs CASCADE;
 DROP TABLE IF EXISTS reports CASCADE;
@@ -240,6 +241,17 @@ CREATE TABLE project_brief_tips (
 
 CREATE INDEX idx_project_briefs_level ON project_briefs(level);
 CREATE INDEX idx_project_brief_tips_brief ON project_brief_tips(brief_id);
+
+-- Badges
+CREATE TABLE badges (
+  id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
+  user_id UUID NOT NULL REFERENCES users(id) ON DELETE CASCADE,
+  badge_key VARCHAR(50) NOT NULL,
+  earned_at TIMESTAMPTZ DEFAULT NOW(),
+  UNIQUE(user_id, badge_key)
+);
+
+CREATE INDEX idx_badges_user ON badges(user_id);
 
 -- Reports (moderation)
 CREATE TABLE reports (

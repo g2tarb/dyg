@@ -1,6 +1,7 @@
 import pool from '../db/connection.js';
 import { UnauthorizedError } from '../utils/errors.js';
 import { reviewSubmission } from '../services/reviewer.js';
+import { checkAndAwardBadges } from '../services/badges.js';
 
 async function trainingRoutes(fastify) {
   // GET /api/training/tracks — list all tracks with progress
@@ -235,6 +236,7 @@ async function trainingRoutes(fastify) {
       WHERE exercise_id = $3 AND user_id = $4
     `, [repo_url || null, goldStars, exerciseId, userId]);
 
+    checkAndAwardBadges(userId, 'training_submit').catch(() => {});
     return { ok: true, status: 'reviewed', gold_stars: goldStars, feedback };
   });
 

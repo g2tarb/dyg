@@ -50,6 +50,18 @@ async function recordAbandon(userId, projectId) {
   return { banned: false, abandon_count, warning: abandon_count === 2 };
 }
 
+async function decayAbandons() {
+  // Reset abandon_count for users who haven't abandoned in 12 months
+  await pool.query(`
+    UPDATE users SET abandon_count = GREATEST(0, abandon_count - 1), updated_at = NOW()
+    WHERE abandon_count > 0
+    AND id NOT IN (
+      SELECT user_id FROM ban_history
+      WHERE created_at > NOW() - INTERVAL '12 months'
+    )
+  `);
+}
+
 async function isUserBanned(userId) {
   const result = await pool.query(
     'SELECT banned_until FROM users WHERE id = $1',
@@ -69,4 +81,4 @@ async function isUserBanned(userId) {
   return { banned: false };
 }
 
-export { recordAbandon, isUserBanned, getBanDuration };
+export { recordAbandon, isUserBanned, getBanDuration, decayAbandons };

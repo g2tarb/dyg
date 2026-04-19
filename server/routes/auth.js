@@ -4,6 +4,8 @@ import { determineArchetype } from '../services/scoring.js';
 import { encrypt } from '../utils/crypto.js';
 import { SaveProfileSchema } from '../schemas/validation.js';
 import { UnauthorizedError } from '../utils/errors.js';
+import { checkAndAwardBadges, getUserBadges } from '../services/badges.js';
+import { getRecommendations } from '../services/recommend.js';
 import env from '../config/env.js';
 
 async function authRoutes(fastify) {
@@ -100,10 +102,55 @@ async function authRoutes(fastify) {
       GROUP BY d.id
     `, [id]);
 
+    const badges = await getUserBadges(id);
+
     return {
       user: userResult.rows[0],
-      developer: devResult.rows[0] || null
+      developer: devResult.rows[0] || null,
+      badges
     };
+  });
+
+  // GET /api/auth/recommendations — recommended teammates
+  fastify.get('/api/auth/recommendations', async (request, reply) => {
+    try { await request.jwtVerify(); } catch { throw new UnauthorizedError(); }
+    const recs = await getRecommendations(request.user.id);
+    return recs;
+  });
+
+  // GET /api/auth/my-data-export — RGPD data export (ZIP JSON)
+  fastify.get('/api/auth/my-data-export', async (request, reply) => {
+    try { await request.jwtVerify(); } catch { throw new UnauthorizedError(); }
+    const userId = request.user.id;
+
+    const [user, dev, scores, projects, messages, reviews, badges, training, samples] = await Promise.all([
+      pool.query('SELECT id, github_login, email, name, created_at FROM users WHERE id = $1', [userId]),
+      pool.query('SELECT * FROM developers WHERE user_id = $1', [userId]),
+      pool.query('SELECT ds.* FROM developer_scores ds JOIN developers d ON d.id = ds.developer_id WHERE d.user_id = $1', [userId]),
+      pool.query("SELECT p.* FROM projects p JOIN project_members pm ON pm.project_id = p.id WHERE pm.user_id = $1", [userId]),
+      pool.query('SELECT m.body, m.created_at FROM messages m WHERE m.sender_id = $1 ORDER BY m.created_at DESC LIMIT 100', [userId]),
+      pool.query('SELECT * FROM peer_reviews WHERE reviewer_id = $1 OR reviewee_id = $1', [userId]),
+      pool.query('SELECT * FROM badges WHERE user_id = $1', [userId]),
+      pool.query('SELECT ts.*, te.title FROM training_submissions ts JOIN training_exercises te ON te.id = ts.exercise_id WHERE ts.user_id = $1', [userId]),
+      pool.query('SELECT sample_type, language, created_at FROM code_samples WHERE user_id = $1', [userId])
+    ]);
+
+    const exportData = {
+      exported_at: new Date().toISOString(),
+      user: user.rows[0] || null,
+      developer_profile: dev.rows[0] || null,
+      scores: scores.rows,
+      projects: projects.rows,
+      messages_sent: messages.rows,
+      peer_reviews: reviews.rows,
+      badges: badges.rows,
+      training_progress: training.rows,
+      code_samples_metadata: samples.rows
+    };
+
+    reply.header('Content-Type', 'application/json');
+    reply.header('Content-Disposition', 'attachment; filename="dyg-data-export.json"');
+    return exportData;
   });
 
   // POST /api/auth/logout
@@ -198,7 +245,10 @@ async function authRoutes(fastify) {
       VALUES ($1, 'profile_save', 'developer', $2, $3)
     `, [userId, devId, JSON.stringify({ archetype: parsed.archetype })]);
 
-    return { ok: true, developer_id: devId };
+    // Award badges
+    const awarded = await checkAndAwardBadges(userId, 'scan', { dev_style: primary });
+
+    return { ok: true, developer_id: devId, badges_earned: awarded };
   });
 }
 

@@ -24,7 +24,7 @@ import messageRoutes from './routes/messages.js';
 import dataRoutes from './routes/data.js';
 import reputationRoutes from './routes/reputation.js';
 import trainingRoutes from './routes/training.js';
-// ban check is done at auth level, not IP level
+import { decayAbandons } from './services/ban.js';
 
 const __dirname = dirname(fileURLToPath(import.meta.url));
 const isProd = env.NODE_ENV === 'production';
@@ -241,6 +241,8 @@ const gcInterval = setInterval(() => {
   for (const [ip, expiry] of bannedIPs) {
     if (now > expiry) bannedIPs.delete(ip);
   }
+  // Decay abandon counts (12 months without abandon → -1)
+  decayAbandons().catch(err => fastify.log.error(err, 'Abandon decay failed'));
 }, 60 * 60 * 1000);
 gcInterval.unref();
 

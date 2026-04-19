@@ -3,6 +3,7 @@ import { closeProject } from '../services/closing.js';
 import { CreateProjectSchema, UpdateProjectSchema, SubmitReviewsSchema, REVIEW_PILLARS } from '../schemas/validation.js';
 import { UnauthorizedError, NotFoundError, ForbiddenError } from '../utils/errors.js';
 import { recordAbandon, isUserBanned } from '../services/ban.js';
+import { checkAndAwardBadges } from '../services/badges.js';
 
 async function getProjectWithMembers(projectId) {
   const projResult = await pool.query('SELECT * FROM projects WHERE id = $1', [projectId]);
@@ -216,6 +217,7 @@ async function projectRoutes(fastify) {
     }
 
     const full = await getProjectWithMembers(id);
+    checkAndAwardBadges(userId, 'project_join').catch(() => {});
     return full;
   });
 

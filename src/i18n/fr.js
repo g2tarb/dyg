@@ -208,6 +208,24 @@ export default {
   'availability.filter_available': 'Disponibles',
   'availability.filter_in_project': 'En projet',
 
+  // Badges
+  'badge.first-scan': 'Premier Scan',
+  'badge.first-project': 'Premier Projet',
+  'badge.first-ship': 'Premier Ship',
+  'badge.five-shipped': '5 Projets Livrés',
+  'badge.perfect-review': 'Review Parfaite',
+  'badge.dual-archetype': 'Double Archétype',
+  'badge.triple-archetype': 'Triple Archétype',
+  'badge.training-10': '10 Exercices',
+  'badge.ia-architect': 'IA Architect',
+  'badge.earned': 'Badge débloqué !',
+
+  // Recommendations
+  'recommend.title': 'Coéquipiers recommandés',
+  'recommend.complements': 'Complémente tes lacunes',
+  'recommend.different': 'Archétype différent',
+  'recommend.balanced': 'Profil équilibré',
+
   // Training
   'training.title': 'Entraînement',
   'training.sub': 'Progresse à ton rythme. Chaque exercice te rapproche de ton prochain archétype.',

@@ -2,6 +2,7 @@ import pool from '../db/connection.js';
 import { ARCHETYPES, PILLARS } from '../constants/archetypes.js';
 import { determineArchetype } from './scoring.js';
 import { collectProjectContributions } from './collector.js';
+import { checkAndAwardBadges } from './badges.js';
 
 const REVIEW_PILLARS = ['collaboration', 'craft', 'velocity'];
 
@@ -20,6 +21,7 @@ async function closeProject(projectId) {
     collectProjectContributions(projectId, userId).catch(err =>
       console.error(`[collector] Background collection failed:`, err.message)
     );
+    checkAndAwardBadges(userId, 'project_ship').catch(() => {});
   }
 }
 
