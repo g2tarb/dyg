@@ -221,10 +221,11 @@ async function fetchGitHubProfile(username) {
   const hasHugePushes = commitSizes.some(s => s > 20); // 20+ commits in one push = suspicious
 
   // Language depth analysis
+  const totalBytesAll = Object.values(languageBytes).reduce((s, v) => s + v, 0);
   const langArray = Object.entries(languageBytes).sort((a, b) => b[1] - a[1]);
   const primaryLangBytes = langArray[0]?.[1] || 0;
   const primaryLangName = langArray[0]?.[0] || 'unknown';
-  const primaryLangRatio = totalBytes > 0 ? primaryLangBytes / totalBytes : 1;
+  const primaryLangRatio = totalBytesAll > 0 ? primaryLangBytes / totalBytesAll : 1;
 
   // Depth indicators: using advanced/niche languages
   const NICHE_LANGS = new Set(['Rust', 'Haskell', 'Elixir', 'Clojure', 'OCaml', 'Zig', 'Nim', 'Crystal', 'Erlang']);
