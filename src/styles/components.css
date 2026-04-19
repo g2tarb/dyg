@@ -2,7 +2,11 @@
    Buttons
    ========================================== */
 
+/* Conic gradient border button — archetype colors rotate on hover */
 .btn-primary {
+  --btn-radius: 12px;
+  --btn-border: 3px;
+  appearance: none;
   display: inline-flex;
   align-items: center;
   justify-content: center;
@@ -13,37 +17,64 @@
   font-weight: 600;
   letter-spacing: 0.01em;
   color: #fff;
-  background: var(--color-primary);
+  background-color: var(--color-surface);
   border: none;
-  border-radius: var(--radius-md);
+  border-radius: var(--btn-radius);
   cursor: pointer;
   text-decoration: none;
   position: relative;
-  overflow: hidden;
-  transition: all var(--duration-md) var(--ease-smooth);
+  z-index: 2;
+  transition: transform var(--duration-md) var(--ease-smooth);
   min-height: 44px;
+  box-sizing: border-box;
 }
 
-.btn-primary::before {
+.btn-primary::after {
+  --m-i: linear-gradient(#000, #000);
+  --m-o: content-box, padding-box;
   content: '';
   position: absolute;
+  left: 0;
   top: 0;
-  left: -100%;
-  width: 60%;
+  width: 100%;
   height: 100%;
-  background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.15), transparent);
-  transition: none;
+  padding: var(--btn-border);
+  border-radius: var(--btn-radius);
+  background-image: conic-gradient(
+    #3B82F6,
+    #22C55E,
+    #F5C542,
+    #A855F7,
+    #06B6D4,
+    #EF4444,
+    #F97316,
+    #3B82F6
+  );
+  -webkit-mask-image: var(--m-i), var(--m-i);
+  mask-image: var(--m-i), var(--m-i);
+  -webkit-mask-origin: var(--m-o);
+  mask-origin: var(--m-o);
+  -webkit-mask-clip: var(--m-o);
+  mask-clip: var(--m-o);
+  mask-composite: exclude;
+  -webkit-mask-composite: destination-out;
+  filter: hue-rotate(0);
+  animation: btn-hue-rotate linear 500ms infinite;
+  animation-play-state: paused;
+  z-index: -1;
 }
 
-.btn-primary:hover::before {
-  left: 150%;
-  transition: left 0.4s ease;
+.btn-primary:hover::after {
+  animation-play-state: running;
 }
 
 .btn-primary:hover {
   transform: translateY(-1px);
-  box-shadow: var(--color-active-glow);
-  filter: brightness(1.1);
+}
+
+.btn-primary:active {
+  --btn-border: 4px;
+  transform: translateY(0);
 }
 
 .btn-primary:focus-visible {
@@ -55,18 +86,30 @@
 .btn-primary--disabled {
   opacity: 0.4;
   cursor: not-allowed;
-  filter: none;
+}
+
+.btn-primary:disabled::after,
+.btn-primary--disabled::after {
+  animation-play-state: paused;
+  opacity: 0.3;
 }
 
 .btn-primary--sm {
   padding: var(--space-xs) var(--space-md);
   font-size: 0.875rem;
+  --btn-radius: 10px;
+  --btn-border: 2px;
 }
 
 .btn-primary--lg {
   padding: 14px 36px;
   font-size: 1rem;
-  border-radius: var(--radius-lg);
+  --btn-radius: 16px;
+  --btn-border: 3px;
+}
+
+@keyframes btn-hue-rotate {
+  to { filter: hue-rotate(1turn); }
 }
 
 .btn-secondary {
