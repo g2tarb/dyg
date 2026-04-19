@@ -348,6 +348,67 @@ async function projectRoutes(fastify) {
     return { reviewerIds, myReviews };
   });
 
+  // GET /api/project-briefs — list available project briefs by level
+  fastify.get('/api/project-briefs', async (request, reply) => {
+    const { level } = request.query;
+    let query = 'SELECT * FROM project_briefs';
+    const params = [];
+
+    if (level) {
+      params.push(parseInt(level));
+      query += ' WHERE level = $1';
+    }
+
+    query += ' ORDER BY level, sort_order';
+    const result = await pool.query(query, params);
+    return result.rows;
+  });
+
+  // GET /api/project-briefs/:id — get brief detail with tips
+  fastify.get('/api/project-briefs/:id', async (request, reply) => {
+    const brief = await pool.query('SELECT * FROM project_briefs WHERE id = $1', [request.params.id]);
+    if (brief.rows.length === 0) return reply.code(404).send({ error: 'NOT_FOUND' });
+
+    const tips = await pool.query(
+      'SELECT sort_order, content FROM project_brief_tips WHERE brief_id = $1 ORDER BY sort_order',
+      [request.params.id]
+    );
+
+    return { ...brief.rows[0], tips: tips.rows };
+  });
+
+  // POST /api/project-briefs/:id/launch — create a project from a brief
+  fastify.post('/api/project-briefs/:id/launch', async (request, reply) => {
+    try { await request.jwtVerify(); } catch { throw new UnauthorizedError(); }
+
+    const briefId = request.params.id;
+    const userId = request.user.id;
+
+    const brief = await pool.query('SELECT * FROM project_briefs WHERE id = $1', [briefId]);
+    if (brief.rows.length === 0) return reply.code(404).send({ error: 'NOT_FOUND' });
+
+    const b = brief.rows[0];
+    const deadline = new Date();
+    deadline.setDate(deadline.getDate() + b.deadline_days);
+
+    const result = await pool.query(`
+      INSERT INTO projects (name, description, repo_url, creator_id, max_members, status)
+      VALUES ($1, $2, NULL, $3, $4, 'staffing')
+      RETURNING *
+    `, [b.title, b.brief, userId, b.max_members]);
+
+    const project = result.rows[0];
+
+    // Creator auto-joins
+    await pool.query(
+      'INSERT INTO project_members (project_id, user_id, role) VALUES ($1, $2, $3)',
+      [project.id, userId, 'lead']
+    );
+
+    const full = await getProjectWithMembers(project.id);
+    return reply.code(201).send({ ...full, brief: b, deadline: deadline.toISOString() });
+  });
+
   // GET /api/users/:login/portfolio — public portfolio
   fastify.get('/api/users/:login/portfolio', async (request, reply) => {
     const { login } = request.params;

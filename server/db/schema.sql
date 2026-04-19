@@ -2,6 +2,8 @@ DROP TABLE IF EXISTS training_submissions CASCADE;
 DROP TABLE IF EXISTS training_tips CASCADE;
 DROP TABLE IF EXISTS training_exercises CASCADE;
 DROP TABLE IF EXISTS training_tracks CASCADE;
+DROP TABLE IF EXISTS project_brief_tips CASCADE;
+DROP TABLE IF EXISTS project_briefs CASCADE;
 DROP TABLE IF EXISTS reports CASCADE;
 DROP TABLE IF EXISTS ban_history CASCADE;
 DROP TABLE IF EXISTS reputation CASCADE;
@@ -213,6 +215,31 @@ CREATE TABLE training_submissions (
 
 CREATE INDEX idx_training_submissions_user ON training_submissions(user_id);
 CREATE INDEX idx_training_exercises_track ON training_exercises(track_id);
+
+-- Project briefs (templates for team projects by level)
+CREATE TABLE project_briefs (
+  id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
+  title VARCHAR(100) NOT NULL,
+  description TEXT NOT NULL,
+  brief TEXT NOT NULL,
+  stack VARCHAR(50) NOT NULL DEFAULT 'html-css',
+  level SMALLINT NOT NULL CHECK (level >= 1 AND level <= 10),
+  deadline_days SMALLINT NOT NULL DEFAULT 14,
+  max_members SMALLINT DEFAULT 4,
+  theme VARCHAR(50),
+  sort_order SMALLINT DEFAULT 0,
+  created_at TIMESTAMPTZ DEFAULT NOW()
+);
+
+CREATE TABLE project_brief_tips (
+  id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
+  brief_id UUID NOT NULL REFERENCES project_briefs(id) ON DELETE CASCADE,
+  sort_order SMALLINT NOT NULL,
+  content TEXT NOT NULL
+);
+
+CREATE INDEX idx_project_briefs_level ON project_briefs(level);
+CREATE INDEX idx_project_brief_tips_brief ON project_brief_tips(brief_id);
 
 -- Reports (moderation)
 CREATE TABLE reports (
