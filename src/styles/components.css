@@ -52,33 +52,37 @@
   padding: 1rem 0;
 }
 
+/* From Uiverse.io by biswacpcode — double line expand */
 .btn-secondary {
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
-  gap: var(--space-sm);
-  padding: 10px 24px;
-  font-family: var(--font-body);
-  font-size: 0.875rem;
-  font-weight: 500;
-  color: var(--color-text);
-  background: var(--color-surface);
-  border: 1px solid var(--color-border);
-  border-radius: var(--radius-md);
-  cursor: pointer;
+  color: #fff;
   text-decoration: none;
-  transition: all var(--duration-md) var(--ease-smooth);
-  min-height: 44px;
+  font-size: 0.875rem;
+  border: none;
+  background: none;
+  font-weight: 600;
+  font-family: var(--font-body);
+  cursor: pointer;
+  display: inline-block;
+  padding: 0.5rem 0;
 }
 
-.btn-secondary:hover {
-  background: var(--color-surface-hover);
-  border-color: var(--color-border-hover);
+.btn-secondary::before {
+  margin-left: auto;
 }
 
-.btn-secondary:focus-visible {
-  outline: 2px solid var(--color-accent);
-  outline-offset: 2px;
+.btn-secondary::after,
+.btn-secondary::before {
+  content: '';
+  width: 0%;
+  height: 2px;
+  background: var(--color-error);
+  display: block;
+  transition: 0.5s;
+}
+
+.btn-secondary:hover::after,
+.btn-secondary:hover::before {
+  width: 100%;
 }
 
 /* ==========================================
