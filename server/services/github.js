@@ -33,7 +33,12 @@ async function fetchGitHubProfile(username) {
 
   if (!userRes.ok) {
     console.error(`GitHub API error for ${username}: ${userRes.status} ${userRes.statusText}`);
-    throw new Error('GitHub user not found');
+    if (userRes.status === 403 || userRes.status === 429) {
+      const remaining = userRes.headers.get('x-ratelimit-remaining');
+      if (remaining === '0') throw new Error('GitHub rate limit exceeded');
+    }
+    if (userRes.status === 404) throw new Error('GitHub user not found');
+    throw new Error(`GitHub API error: ${userRes.status}`);
   }
 
   const user = await userRes.json();
@@ -321,8 +326,8 @@ async function fetchGitHubProfile(username) {
   const productivityRate = Math.min(1, (repoCount / Math.max(6, accountAgeMonths)) * 1.5);
   const prDelivery = Math.min(1.5, prMergedEvents / 5);
   const commitDensity = Math.min(1.5, pushEvents / 20);
-  // Penalize huge single pushes (vibe coder pattern: dump 50 files at once)
-  const pushGranularity = hasHugePushes ? -0.5 : (avgCommitsPerPush <= 5 ? 0.5 : 0);
+  // Bonus for small frequent commits. No malus on big pushes: offline work then push = normal.
+  const pushGranularity = avgCommitsPerPush > 0 && avgCommitsPerPush <= 5 ? 0.5 : 0;
   const velocity = Math.min(10, Math.round(1 + recentScore + burstScore + pushConsistency + productivityRate + prDelivery + commitDensity + pushGranularity));
 
   // --- CRAFT: Code quality, polish, documentation, professionalism ---
