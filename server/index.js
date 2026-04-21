@@ -162,11 +162,10 @@ if (hasOAuth) {
     callbackUri: env.BASE_URL + '/auth/github/callback'
   });
 } else {
-  // Fallback: redirect to homepage with error if OAuth not configured
+  // OAuth disabled: redirect the start path to a friendly error.
+  // The /auth/github/callback route is declared unconditionally in
+  // routes/auth.js, so we do NOT re-declare it here (would FST_ERR_DUPLICATED_ROUTE).
   fastify.get('/auth/github', async (request, reply) => {
-    return reply.redirect('/#/?auth=not_configured');
-  });
-  fastify.get('/auth/github/callback', async (request, reply) => {
     return reply.redirect('/#/?auth=not_configured');
   });
 }
