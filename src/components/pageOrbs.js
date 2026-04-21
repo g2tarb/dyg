@@ -148,6 +148,7 @@ export function initPageOrbs(canvas) {
   // --- Button magnetism: 8 orbs get pulled into orbit around hovered .btn-primary ---
   let activeBtn = null;
   let captureTarget = null;
+  let lastCaptureTarget = null; // kept during fade-out so orbs lerp back smoothly
   let captureStrength = 0;
   const hasHover = window.matchMedia('(hover: hover)').matches;
 
@@ -161,6 +162,7 @@ export function initPageOrbs(canvas) {
         rx: rect.width / 2 + pad + 10,
         ry: rect.height / 2 + pad
       };
+      lastCaptureTarget = captureTarget;
     } else {
       captureTarget = null;
     }
@@ -188,6 +190,7 @@ export function initPageOrbs(canvas) {
 
   // --- Archetype hover: tint all background orbs + pulse ---
   let archetypeOverride = null; // [r, g, b] or null
+  let lastArchetypeOverride = null; // kept during fade-out so color lerps back
   let overrideStrength = 0;
 
   function hexToRgb(hex) {
@@ -201,7 +204,9 @@ export function initPageOrbs(canvas) {
 
   function onArchetypeHover(e) {
     const color = e.detail?.color;
-    archetypeOverride = color ? hexToRgb(color) : null;
+    const rgb = color ? hexToRgb(color) : null;
+    archetypeOverride = rgb;
+    if (rgb) lastArchetypeOverride = rgb;
   }
   window.addEventListener('dyg:archetype-hover', onArchetypeHover);
 
@@ -244,6 +249,10 @@ export function initPageOrbs(canvas) {
     captureStrength = lerp(captureStrength, captureTarget ? 1 : 0, 0.08);
     overrideStrength = lerp(overrideStrength, archetypeOverride ? 1 : 0, 0.09);
 
+    // Active targets survive a pending fade-out so orbs glide back instead of popping.
+    const activeTarget = captureTarget || lastCaptureTarget;
+    const activeOverride = archetypeOverride || lastArchetypeOverride;
+
     const now = performance.now();
 
     for (const orb of orbs) {
@@ -254,11 +263,11 @@ export function initPageOrbs(canvas) {
       let y = natural.y;
 
       let captureT = 0;
-      if (orb.capturable && captureTarget && captureStrength > 0.005) {
+      if (orb.capturable && activeTarget && captureStrength > 0.005) {
         captureT = captureStrength;
         const capAngle = orb.captureSlot + orb.angle * 2;
-        const capX = captureTarget.cx + Math.cos(capAngle) * captureTarget.rx;
-        const capY = captureTarget.cy + Math.sin(capAngle) * captureTarget.ry;
+        const capX = activeTarget.cx + Math.cos(capAngle) * activeTarget.rx;
+        const capY = activeTarget.cy + Math.sin(capAngle) * activeTarget.ry;
         x = lerp(natural.x, capX, captureT);
         y = lerp(natural.y, capY, captureT);
       }
@@ -275,11 +284,10 @@ export function initPageOrbs(canvas) {
 
       // Color: native → override (archetype tint) → white (scroll)
       let baseR = orb.color[0], baseG = orb.color[1], baseB = orb.color[2];
-      if (archetypeOverride || overrideStrength > 0.01) {
-        const tgt = archetypeOverride || orb.color;
-        baseR = lerp(orb.color[0], tgt[0], overrideStrength);
-        baseG = lerp(orb.color[1], tgt[1], overrideStrength);
-        baseB = lerp(orb.color[2], tgt[2], overrideStrength);
+      if (activeOverride && overrideStrength > 0.005) {
+        baseR = lerp(orb.color[0], activeOverride[0], overrideStrength);
+        baseG = lerp(orb.color[1], activeOverride[1], overrideStrength);
+        baseB = lerp(orb.color[2], activeOverride[2], overrideStrength);
       }
 
       const r = Math.round(lerp(baseR, 255, white));
@@ -302,6 +310,10 @@ export function initPageOrbs(canvas) {
       ctx.fillStyle = `rgba(${r},${g},${b},${alpha.toFixed(2)})`;
       ctx.fill();
     }
+
+    // Release cached targets once fade-out is fully complete (avoids retaining stale rects).
+    if (!captureTarget && captureStrength < 0.005) lastCaptureTarget = null;
+    if (!archetypeOverride && overrideStrength < 0.005) lastArchetypeOverride = null;
 
     animFrame = requestAnimationFrame(animate);
   }
