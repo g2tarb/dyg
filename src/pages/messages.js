@@ -182,18 +182,22 @@ async function loadChat(container, user, target) {
   const convId = conv.id || postKey.fallbackId;
   currentConvKey = convId;
   const isCommunity = conv.type === 'global' || conv.type === 'archetype';
+  const policy = data.dm_policy || null;
 
   const headerHtml = buildChatHeader(conv, data.other_user);
+  const bannerHtml = renderPolicyBanner(policy);
+  const inputLocked = policy && !policy.allowed;
 
   chatEl.innerHTML = `
     <header class="msg-chat__header">
       <a href="#/messages" class="msg-chat__back" aria-label="Back">&larr;</a>
       ${headerHtml}
     </header>
+    ${bannerHtml}
     <div class="msg-chat__messages" id="msg-chat-msgs"></div>
     <form class="msg-chat__form" id="msg-form">
-      <input type="text" class="msg-chat__input" id="msg-input" placeholder="${t('messages.placeholder')}" maxlength="2000" autocomplete="off">
-      <button type="submit" class="btn-primary msg-chat__send" id="msg-send">${t('common.send')}</button>
+      <input type="text" class="msg-chat__input" id="msg-input" placeholder="${escapeHTML(inputLocked ? t('messages.input_locked') : t('messages.placeholder'))}" maxlength="2000" autocomplete="off" ${inputLocked ? 'disabled' : ''}>
+      <button type="submit" class="btn-primary msg-chat__send" id="msg-send" ${inputLocked ? 'disabled' : ''}>${t('common.send')}</button>
       <span class="msg-chat__rate" id="msg-rate" style="display:none;"></span>
     </form>
   `;
@@ -247,6 +251,13 @@ async function loadChat(container, user, target) {
         showToast(`Attends ${sec}s`, 'error');
         lastSentAt.set(convId, Date.now() - (COMMUNITY_RATE_SECONDS - sec) * 1000);
         updateRateState();
+        return;
+      }
+      if (res.status === 403) {
+        const data = await res.json().catch(() => ({}));
+        showToast(data.message || t('messages.banner_locked'), 'error');
+        // Reload the chat to show the updated policy banner.
+        loadChat(container, user, target);
         return;
       }
       if (!res.ok) throw new Error();
@@ -347,6 +358,28 @@ function buildChatHeader(conv, otherUser) {
       </div>
     </a>
   `;
+}
+
+function renderPolicyBanner(policy) {
+  if (!policy) return '';
+  if (policy.reason === 'friends' || policy.reason === 'replied') return '';
+
+  if (policy.allowed && policy.reason === 'invitation') {
+    const remaining = policy.remaining;
+    return `
+      <div class="msg-chat__banner msg-chat__banner--info">
+        ${t('messages.banner_invitation', { remaining })}
+      </div>
+    `;
+  }
+
+  const key = {
+    invitation_cap: 'messages.banner_invitation_cap',
+    blocked: 'messages.banner_blocked',
+    declined: 'messages.banner_declined'
+  }[policy.reason] || 'messages.banner_locked';
+
+  return `<div class="msg-chat__banner msg-chat__banner--warn">${t(key)}</div>`;
 }
 
 function renderBubble(m, myId, showSenderMeta) {

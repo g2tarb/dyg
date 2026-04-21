@@ -208,6 +208,12 @@ export default {
   'messages.project_sub': 'Project team chat.',
   'messages.division_locked': 'Scan GitHub to unlock',
   'messages.not_found': 'Conversation not found.',
+  'messages.input_locked': 'Conversation locked',
+  'messages.banner_invitation': 'Invitation — you have {remaining} message(s) left before the recipient replies or accepts your friend request.',
+  'messages.banner_invitation_cap': 'Cap reached. Wait for a reply or for your friend request to be accepted.',
+  'messages.banner_blocked': 'This user blocked you. Cannot send.',
+  'messages.banner_declined': 'Your friend request was declined. Conversation locked.',
+  'messages.banner_locked': 'Conversation locked.',
 
   // Team builder
   'team.title': 'Your Team',

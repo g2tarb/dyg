@@ -8,7 +8,10 @@ import {
   getSystemConversation,
   getConversationForArchetype,
   isRateLimitedInCommunity,
-  COMMUNITY_RATE_LIMIT_SECONDS
+  canSendDM,
+  getDmPolicy,
+  COMMUNITY_RATE_LIMIT_SECONDS,
+  INVITATION_CAP
 } from '../services/chat.js';
 
 function isCommunityType(type) {
@@ -50,6 +53,9 @@ async function fetchConversationView(conv, viewerId, limit = 50, offset = 0) {
     `, [conv.id, viewerId]);
     view.other_user = otherResult.rows[0] || null;
 
+    // Attach the invitation / friendship policy so the UI can render a banner.
+    view.dm_policy = await getDmPolicy(viewerId, conv.id);
+
     // Mark DM as read on fetch.
     await pool.query(
       'UPDATE conversation_participants SET last_read_at = NOW() WHERE conversation_id = $1 AND user_id = $2',
@@ -79,6 +85,21 @@ async function messageRoutes(fastify) {
     const userCheck = await pool.query('SELECT id FROM users WHERE id = $1', [to]);
     if (userCheck.rows.length === 0) {
       return reply.code(404).send({ error: 'Recipient not found' });
+    }
+
+    // Enforce cold-DM rules (blocks, declined friendship, 2-msg invitation cap).
+    const policy = await canSendDM(senderId, to);
+    if (!policy.allowed) {
+      return reply.code(403).send({
+        error: 'DM_FORBIDDEN',
+        reason: policy.reason,
+        cap: policy.cap,
+        message: policy.reason === 'invitation_cap'
+          ? `Already sent ${policy.sent}/${policy.cap} messages. Wait for a reply or a friend accept.`
+          : policy.reason === 'blocked' ? 'This user has blocked you.'
+          : policy.reason === 'declined' ? 'This user declined your friend request.'
+          : 'Cannot send a DM here.'
+      });
     }
 
     // Find existing DM conversation between these 2 users
@@ -220,6 +241,22 @@ async function messageRoutes(fastify) {
 
     const conv = await getConversation(request.params.conversationId);
     await assertAccess(senderId, conv);
+
+    if (conv.type === 'dm') {
+      const policy = await getDmPolicy(senderId, conv.id);
+      if (policy && !policy.allowed) {
+        return reply.code(403).send({
+          error: 'DM_FORBIDDEN',
+          reason: policy.reason,
+          cap: policy.cap,
+          message: policy.reason === 'invitation_cap'
+            ? `Already sent ${policy.sent}/${policy.cap} messages. Wait for a reply or a friend accept.`
+            : policy.reason === 'blocked' ? 'This user has blocked you.'
+            : policy.reason === 'declined' ? 'This user declined your friend request.'
+            : 'Cannot send a DM here.'
+        });
+      }
+    }
 
     if (isCommunityType(conv.type)) {
       const rate = await isRateLimitedInCommunity(senderId, conv.id);

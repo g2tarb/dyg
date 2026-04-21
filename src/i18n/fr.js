@@ -208,6 +208,12 @@ export default {
   'messages.project_sub': 'Chat équipe projet.',
   'messages.division_locked': 'Scan GitHub pour débloquer',
   'messages.not_found': 'Conversation introuvable.',
+  'messages.input_locked': 'Conversation verrouillée',
+  'messages.banner_invitation': 'Invitation — il te reste {remaining} message(s) avant que la personne n\'ait répondu ou accepté ton ami.',
+  'messages.banner_invitation_cap': 'Cap atteint. Attends une réponse ou une acceptation de ta demande d\'amitié pour continuer.',
+  'messages.banner_blocked': 'Cette personne t\'a bloqué. Impossible d\'envoyer.',
+  'messages.banner_declined': 'Ta demande d\'amitié a été refusée. Conversation verrouillée.',
+  'messages.banner_locked': 'Conversation verrouillée.',
 
   // Team builder
   'team.title': 'Ta Team',

@@ -123,3 +123,89 @@ export async function assertAccess(userId, conv) {
 }
 
 export { COMMUNITY_RATE_LIMIT_SECONDS };
+
+/**
+ * Cold DM cap: you can send up to INVITATION_CAP messages to a non-friend.
+ * After that, you're locked until the recipient either replies or accepts
+ * the friend request.
+ */
+export const INVITATION_CAP = 2;
+
+/**
+ * Tells whether userId can send a DM to otherId *right now*.
+ * Returns:
+ *   { allowed: true,  reason: 'friends' }
+ *   { allowed: true,  reason: 'replied' }
+ *   { allowed: true,  reason: 'invitation', remaining: 2 | 1 }
+ *   { allowed: false, reason: 'self' | 'blocked' | 'declined' | 'invitation_cap' }
+ */
+export async function canSendDM(userId, otherId) {
+  if (userId === otherId) return { allowed: false, reason: 'self' };
+
+  // Block from either side closes the door (recipient blocked sender or vice-versa).
+  const block = await pool.query(
+    `SELECT 1 FROM user_blocks
+     WHERE (blocker_id = $1 AND blocked_id = $2) OR (blocker_id = $2 AND blocked_id = $1)
+     LIMIT 1`,
+    [userId, otherId]
+  );
+  if (block.rows.length > 0) return { allowed: false, reason: 'blocked' };
+
+  // Friendship state.
+  const fr = await pool.query(
+    `SELECT status FROM friendships
+     WHERE (requester_id = $1 AND addressee_id = $2) OR (requester_id = $2 AND addressee_id = $1)
+     LIMIT 1`,
+    [userId, otherId]
+  );
+  const status = fr.rows[0]?.status;
+  if (status === 'accepted') return { allowed: true, reason: 'friends' };
+  if (status === 'declined') return { allowed: false, reason: 'declined' };
+
+  // No friendship (or pending). Check invitation cap.
+  // Find the existing 1-to-1 DM conversation between these two, if any.
+  const conv = await pool.query(
+    `SELECT cp1.conversation_id
+     FROM conversation_participants cp1
+     JOIN conversation_participants cp2 ON cp1.conversation_id = cp2.conversation_id
+     JOIN conversations c ON c.id = cp1.conversation_id
+     WHERE c.type = 'dm' AND cp1.user_id = $1 AND cp2.user_id = $2
+       AND (SELECT COUNT(*) FROM conversation_participants cp3
+            WHERE cp3.conversation_id = cp1.conversation_id) = 2
+     LIMIT 1`,
+    [userId, otherId]
+  );
+  if (conv.rows.length === 0) {
+    return { allowed: true, reason: 'invitation', remaining: INVITATION_CAP };
+  }
+
+  const convId = conv.rows[0].conversation_id;
+  const counts = await pool.query(
+    `SELECT sender_id, COUNT(*)::int AS n FROM messages
+     WHERE conversation_id = $1 GROUP BY sender_id`,
+    [convId]
+  );
+  const mine = counts.rows.find(r => r.sender_id === userId)?.n || 0;
+  const theirReply = counts.rows.some(r => r.sender_id === otherId);
+
+  if (theirReply) return { allowed: true, reason: 'replied' };
+  if (mine >= INVITATION_CAP) {
+    return { allowed: false, reason: 'invitation_cap', cap: INVITATION_CAP, sent: mine };
+  }
+  return { allowed: true, reason: 'invitation', remaining: INVITATION_CAP - mine };
+}
+
+/**
+ * For a DM conversation, figure out the policy vs each participant from the
+ * viewer's perspective. Used to render UI banners and compute remaining quota.
+ */
+export async function getDmPolicy(viewerId, conversationId) {
+  const other = await pool.query(
+    `SELECT cp.user_id FROM conversation_participants cp
+     WHERE cp.conversation_id = $1 AND cp.user_id != $2
+     LIMIT 1`,
+    [conversationId, viewerId]
+  );
+  if (other.rows.length === 0) return null;
+  return await canSendDM(viewerId, other.rows[0].user_id);
+}
