@@ -26,8 +26,10 @@ import reputationRoutes from './routes/reputation.js';
 import trainingRoutes from './routes/training.js';
 import seasonRoutes from './routes/seasons.js';
 import friendshipRoutes from './routes/friendships.js';
+import notificationRoutes from './routes/notifications.js';
 import { decayAbandons } from './services/ban.js';
 import { syncGithubPointsAllEnrolled } from './services/githubPoints.js';
+import { runProjectReminders } from './services/projectReminders.js';
 
 const __dirname = dirname(fileURLToPath(import.meta.url));
 const isProd = env.NODE_ENV === 'production';
@@ -218,6 +220,7 @@ fastify.register(reputationRoutes);
 fastify.register(trainingRoutes);
 fastify.register(seasonRoutes);
 fastify.register(friendshipRoutes);
+fastify.register(notificationRoutes);
 
 // --- Robots.txt ---
 fastify.get('/robots.txt', async (request, reply) => {
@@ -281,6 +284,15 @@ const githubSyncInterval = setInterval(() => {
     .catch(err => fastify.log.error(err, 'GitHub points batch failed'));
 }, 6 * 60 * 60 * 1000);
 githubSyncInterval.unref();
+
+// --- Project deadline reminders (every hour) ---
+const reminderInterval = setInterval(() => {
+  runProjectReminders(fastify.log)
+    .catch(err => fastify.log.error(err, 'Project reminders failed'));
+}, 60 * 60 * 1000);
+reminderInterval.unref();
+// Run once at startup so missed windows (server restart) get caught up.
+runProjectReminders(fastify.log).catch(err => fastify.log.error(err, 'Initial reminders run failed'));
 
 // --- Production: serve built frontend ---
 if (isProd) {

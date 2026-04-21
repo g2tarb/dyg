@@ -33,14 +33,16 @@ export const CreateProjectSchema = z.object({
   name: z.string().trim().min(1).max(100),
   description: z.string().trim().max(1000).optional().nullable(),
   repo_url: z.string().url().max(500).optional().nullable(),
-  max_members: z.number().int().min(2).max(10).default(5)
+  max_members: z.number().int().min(2).max(10).default(5),
+  deadline_at: z.string().datetime().optional().nullable()
 }).strip();
 
 export const UpdateProjectSchema = z.object({
   name: z.string().trim().min(1).max(100).optional(),
   description: z.string().trim().max(1000).optional().nullable(),
   repo_url: z.string().url().max(500).optional().nullable(),
-  status: z.enum(VALID_STATUSES).optional()
+  status: z.enum(VALID_STATUSES).optional(),
+  deadline_at: z.string().datetime().optional().nullable()
 }).strip();
 
 // --- Reviews ---

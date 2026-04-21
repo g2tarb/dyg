@@ -32,6 +32,10 @@ function createHeader() {
       </nav>
       ${user ? `
         <div class="header-menu" id="header-menu">
+          <a href="#/notifications" class="header-menu__item">
+            ${t('header.notifications')}
+            <span class="header-menu__badge" id="notif-badge" style="display:none;">0</span>
+          </a>
           <a href="#/messages" class="header-menu__item">
             ${t('header.messages')}
             <span class="header-menu__badge" id="msg-badge" style="display:none;">0</span>
@@ -154,9 +158,10 @@ function createHeader() {
 
   async function fetchUnread() {
     try {
-      const [msgRes, frRes] = await Promise.all([
+      const [msgRes, frRes, notifRes] = await Promise.all([
         fetch('/api/messages/unread'),
-        fetch('/api/friends/pending')
+        fetch('/api/friends/pending'),
+        fetch('/api/notifications/unread-count')
       ]);
       if (msgRes.ok) {
         const { unread } = await msgRes.json();
@@ -171,6 +176,14 @@ function createHeader() {
         const badge = header.querySelector('#fr-badge');
         if (badge) {
           if (pending.length > 0) { badge.textContent = pending.length; badge.style.display = ''; }
+          else { badge.style.display = 'none'; }
+        }
+      }
+      if (notifRes.ok) {
+        const { count } = await notifRes.json();
+        const badge = header.querySelector('#notif-badge');
+        if (badge) {
+          if (count > 0) { badge.textContent = count; badge.style.display = ''; }
           else { badge.style.display = 'none'; }
         }
       }

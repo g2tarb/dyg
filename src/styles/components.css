@@ -243,6 +243,26 @@
   color: #EC4899;
 }
 
+.projects-create__deadline {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+.projects-create__deadline-label {
+  font-size: 0.75rem;
+  color: var(--color-text-dim);
+  font-weight: 600;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+}
+
+.projects-create__deadline-hint {
+  font-size: 0.6875rem;
+  color: var(--color-text-muted);
+  font-style: italic;
+}
+
 /* Toggle version for filters */
 .badge-toggle {
   cursor: pointer;

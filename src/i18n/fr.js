@@ -21,6 +21,7 @@ export default {
   'header.messages': 'Messages',
   'header.leaderboard': 'Classement',
   'header.friends': 'Amis',
+  'header.notifications': 'Notifications',
 
   // Landing
   'landing.hero_title': 'S\'entraîner. Se connecter. Livrer ensemble.',
@@ -312,6 +313,14 @@ export default {
   'friends.confirm_remove': 'Retirer ce dev de tes amis ?',
   'portfolio.dm_sent': 'Message envoyé',
   'portfolio.message': 'Message',
+
+  // Notifications
+  'notifications.title': 'Notifications',
+  'notifications.empty': 'Rien pour l\'instant. Tu verras ici les rappels projets, demandes d\'amis et annonces DYG.',
+  'notifications.read_all': 'Tout marquer lu',
+  'notifications.login_required': 'Connecte-toi pour voir tes notifications.',
+  'projects.deadline_label': 'Deadline (facultatif)',
+  'projects.deadline_hint': 'Active les rappels J-7, J-3, J-1, J-0 et en cas de retard.',
 
   // Training
   'training.title': 'Entraînement',

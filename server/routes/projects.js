@@ -33,9 +33,9 @@ async function projectRoutes(fastify) {
     const creatorId = request.user.id;
 
     const result = await pool.query(`
-      INSERT INTO projects (name, description, repo_url, creator_id, max_members)
-      VALUES ($1, $2, $3, $4, $5) RETURNING *
-    `, [parsed.name, parsed.description, parsed.repo_url, creatorId, parsed.max_members]);
+      INSERT INTO projects (name, description, repo_url, creator_id, max_members, deadline_at)
+      VALUES ($1, $2, $3, $4, $5, $6) RETURNING *
+    `, [parsed.name, parsed.description, parsed.repo_url, creatorId, parsed.max_members, parsed.deadline_at || null]);
 
     const project = result.rows[0];
 
@@ -110,7 +110,7 @@ async function projectRoutes(fastify) {
     if (projCheck.rows[0].creator_id !== userId) return reply.code(403).send({ error: 'Only the creator can update this project' });
 
     const parsed = UpdateProjectSchema.parse(request.body);
-    const { name, description, repo_url, status } = parsed;
+    const { name, description, repo_url, status, deadline_at } = parsed;
     const current = projCheck.rows[0];
 
     // Validate status transitions (no skipping)
@@ -133,7 +133,8 @@ async function projectRoutes(fastify) {
       name: name || current.name,
       description: description !== undefined ? description : current.description,
       repo_url: repo_url !== undefined ? repo_url : current.repo_url,
-      status: status || current.status
+      status: status || current.status,
+      deadline_at: deadline_at !== undefined ? deadline_at : current.deadline_at
     };
 
     // Set timestamps on status transitions
@@ -144,8 +145,8 @@ async function projectRoutes(fastify) {
 
     await pool.query(`
       UPDATE projects SET name = $1, description = $2, repo_url = $3, status = $4,
-             started_at = $5, ended_at = $6 WHERE id = $7
-    `, [updates.name, updates.description, updates.repo_url, updates.status, startedAt, endedAt, id]);
+             started_at = $5, ended_at = $6, deadline_at = $7 WHERE id = $8
+    `, [updates.name, updates.description, updates.repo_url, updates.status, startedAt, endedAt, updates.deadline_at, id]);
 
     // Closing ritual: calculate scores when project ships (idempotent)
     if (status === 'shipped' && current.status !== 'shipped') {

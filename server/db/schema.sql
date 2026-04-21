@@ -1,3 +1,4 @@
+DROP TABLE IF EXISTS notifications CASCADE;
 DROP TABLE IF EXISTS user_blocks CASCADE;
 DROP TABLE IF EXISTS friendships CASCADE;
 DROP TABLE IF EXISTS point_events CASCADE;
@@ -104,6 +105,7 @@ CREATE TABLE projects (
   max_members SMALLINT DEFAULT 5,
   started_at TIMESTAMPTZ,
   ended_at TIMESTAMPTZ,
+  deadline_at TIMESTAMPTZ,
   created_at TIMESTAMPTZ DEFAULT NOW()
 );
 
@@ -428,3 +430,26 @@ CREATE TABLE user_blocks (
 );
 
 CREATE INDEX idx_user_blocks_blocked ON user_blocks(blocked_id);
+
+-- ==========================================
+-- Notifications (universal)
+-- ==========================================
+
+CREATE TABLE notifications (
+  id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
+  user_id UUID NOT NULL REFERENCES users(id) ON DELETE CASCADE,
+  type VARCHAR(40) NOT NULL,
+  title VARCHAR(200) NOT NULL,
+  body TEXT,
+  link VARCHAR(500),
+  payload JSONB DEFAULT '{}',
+  dedup_key VARCHAR(180),
+  read_at TIMESTAMPTZ,
+  created_at TIMESTAMPTZ DEFAULT NOW(),
+  UNIQUE (user_id, dedup_key)
+);
+
+CREATE INDEX idx_notifications_user_unread
+  ON notifications(user_id, created_at DESC) WHERE read_at IS NULL;
+CREATE INDEX idx_notifications_user_created
+  ON notifications(user_id, created_at DESC);

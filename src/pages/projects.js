@@ -59,6 +59,11 @@ function renderProjects(container) {
             <input type="text" class="input" id="proj-name" placeholder="${t('projects.name_placeholder')}" maxlength="100">
             <textarea class="input projects-create__textarea" id="proj-desc" placeholder="${t('projects.desc_placeholder')}" rows="3"></textarea>
             <input type="text" class="input" id="proj-repo" placeholder="${t('projects.repo_placeholder')}">
+            <label class="projects-create__deadline">
+              <span class="projects-create__deadline-label">${t('projects.deadline_label')}</span>
+              <input type="date" class="input" id="proj-deadline">
+              <span class="projects-create__deadline-hint">${t('projects.deadline_hint')}</span>
+            </label>
           </div>
           <div class="projects-create__actions">
             <button class="btn-primary" id="btn-create-submit">${t('projects.launch')}</button>
@@ -110,6 +115,7 @@ function renderProjects(container) {
       const name = container.querySelector('#proj-name').value.trim();
       const description = container.querySelector('#proj-desc').value.trim();
       const repo_url = container.querySelector('#proj-repo').value.trim();
+      const deadlineRaw = container.querySelector('#proj-deadline').value;
       const errorEl = container.querySelector('#create-error');
 
       if (!name) {
@@ -121,11 +127,14 @@ function renderProjects(container) {
       errorEl.style.display = 'none';
       btnSubmit.disabled = true;
 
+      // Convert HTML date input (YYYY-MM-DD) to ISO datetime at end-of-day UTC.
+      const deadline_at = deadlineRaw ? new Date(`${deadlineRaw}T23:59:59Z`).toISOString() : null;
+
       try {
         const res = await fetch('/api/projects', {
           method: 'POST',
           headers: { 'Content-Type': 'application/json' },
-          body: JSON.stringify({ name, description: description || null, repo_url: repo_url || null })
+          body: JSON.stringify({ name, description: description || null, repo_url: repo_url || null, deadline_at })
         });
         if (!res.ok) {
           const err = await res.json();

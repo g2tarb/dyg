@@ -21,6 +21,7 @@ export default {
   'header.messages': 'Messages',
   'header.leaderboard': 'Leaderboard',
   'header.friends': 'Friends',
+  'header.notifications': 'Notifications',
 
   // Landing
   'landing.hero_title': 'Train. Connect. Ship together.',
@@ -312,6 +313,14 @@ export default {
   'friends.confirm_remove': 'Remove this dev from your friends?',
   'portfolio.dm_sent': 'Message sent',
   'portfolio.message': 'Message',
+
+  // Notifications
+  'notifications.title': 'Notifications',
+  'notifications.empty': 'Nothing yet. You\'ll see project reminders, friend requests, and DYG announcements here.',
+  'notifications.read_all': 'Mark all read',
+  'notifications.login_required': 'Log in to see your notifications.',
+  'projects.deadline_label': 'Deadline (optional)',
+  'projects.deadline_hint': 'Enables D-7, D-3, D-1, D-day and overdue reminders.',
 
   // Training
   'training.title': 'Training',

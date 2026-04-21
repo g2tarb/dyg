@@ -1,5 +1,6 @@
 import pool from '../db/connection.js';
 import { DygError, NotFoundError, ForbiddenError, ConflictError } from '../utils/errors.js';
+import { createNotification } from './notifications.js';
 
 /**
  * Friendship model:
@@ -66,7 +67,20 @@ export async function sendFriendRequest(requesterId, addresseeId) {
      VALUES ($1, $2, 'pending') RETURNING *`,
     [requesterId, addresseeId]
   );
-  return inserted.rows[0];
+  const row = inserted.rows[0];
+
+  // Notify the addressee.
+  const requester = await pool.query('SELECT name, github_login FROM users WHERE id = $1', [requesterId]);
+  const name = requester.rows[0]?.name || requester.rows[0]?.github_login || 'Un dev';
+  createNotification(addresseeId, 'friend_request', {
+    title: `${name} veut t'ajouter en ami`,
+    body: 'Accepte ou refuse depuis la page Amis.',
+    link: '#/friends',
+    dedupKey: `friend_request:${row.id}`,
+    payload: { friendship_id: row.id, requester_id: requesterId }
+  }).catch(() => {});
+
+  return row;
 }
 
 export async function respondToRequest(friendshipId, userId, action) {
@@ -90,6 +104,19 @@ export async function respondToRequest(friendshipId, userId, action) {
     `UPDATE friendships SET status = $1, responded_at = NOW() WHERE id = $2 RETURNING *`,
     [newStatus, friendshipId]
   );
+
+  if (newStatus === 'accepted') {
+    const addressee = await pool.query('SELECT name, github_login FROM users WHERE id = $1', [userId]);
+    const name = addressee.rows[0]?.name || addressee.rows[0]?.github_login || 'Un dev';
+    createNotification(row.requester_id, 'friend_accepted', {
+      title: `${name} a accepté ta demande`,
+      body: 'Vous êtes amis. Envoie-lui un message.',
+      link: '#/friends',
+      dedupKey: `friend_accepted:${friendshipId}`,
+      payload: { friendship_id: friendshipId, accepter_id: userId }
+    }).catch(() => {});
+  }
+
   return updated.rows[0];
 }
 
