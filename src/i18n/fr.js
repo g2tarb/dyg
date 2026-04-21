@@ -20,6 +20,7 @@ export default {
   'header.team': 'Ma team',
   'header.messages': 'Messages',
   'header.leaderboard': 'Classement',
+  'header.friends': 'Amis',
 
   // Landing
   'landing.hero_title': 'S\'entraîner. Se connecter. Livrer ensemble.',
@@ -276,6 +277,31 @@ export default {
   'leaderboard.login_required': 'Connecte-toi pour voir le classement de ta division.',
   'leaderboard.days_left': 'jours restants',
   'leaderboard.note': 'Seuls les devs de ta division voient ce classement. Chaque division a le sien.',
+
+  // Friends
+  'friends.title': 'Mes amis',
+  'friends.sub': 'Les devs avec qui tu peux discuter librement. Les autres ont droit à 2 messages tant que tu n\'as pas répondu.',
+  'friends.tab_friends': 'Amis',
+  'friends.tab_pending': 'Demandes',
+  'friends.tab_sent': 'Envoyées',
+  'friends.tab_blocked': 'Bloqués',
+  'friends.empty_friends': 'Tu n\'as encore aucun ami. Va explorer des devs et lance une demande.',
+  'friends.empty_pending': 'Aucune demande en attente.',
+  'friends.empty_sent': 'Aucune demande envoyée en attente.',
+  'friends.empty_blocked': 'Tu n\'as bloqué personne.',
+  'friends.accept': 'Accepter',
+  'friends.decline': 'Refuser',
+  'friends.remove': 'Retirer',
+  'friends.unblock': 'Débloquer',
+  'friends.add': 'Ajouter en ami',
+  'friends.message': 'Message',
+  'friends.waiting': 'En attente',
+  'friends.done': 'Fait',
+  'friends.login_required': 'Connecte-toi pour gérer tes amis.',
+  'friends.request_sent': 'Demande envoyée',
+  'friends.confirm_remove': 'Retirer ce dev de tes amis ?',
+  'portfolio.dm_sent': 'Message envoyé',
+  'portfolio.message': 'Message',
 
   // Training
   'training.title': 'Entraînement',

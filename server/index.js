@@ -25,6 +25,7 @@ import dataRoutes from './routes/data.js';
 import reputationRoutes from './routes/reputation.js';
 import trainingRoutes from './routes/training.js';
 import seasonRoutes from './routes/seasons.js';
+import friendshipRoutes from './routes/friendships.js';
 import { decayAbandons } from './services/ban.js';
 import { syncGithubPointsAllEnrolled } from './services/githubPoints.js';
 
@@ -216,6 +217,7 @@ fastify.register(dataRoutes);
 fastify.register(reputationRoutes);
 fastify.register(trainingRoutes);
 fastify.register(seasonRoutes);
+fastify.register(friendshipRoutes);
 
 // --- Robots.txt ---
 fastify.get('/robots.txt', async (request, reply) => {

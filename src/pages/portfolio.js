@@ -153,29 +153,91 @@ async function loadPortfolio(container, login) {
     </section>
   `;
 
-  // Contact button
+  // Contact + Friend action
   const actionsEl = container.querySelector('#portfolio-actions');
   const currentUser = getState('user');
-  if (currentUser && currentUser.id !== user.id) {
-    actionsEl.innerHTML = `<button class="btn-primary btn-primary--sm" id="btn-contact">Contact</button>`;
-    actionsEl.querySelector('#btn-contact').addEventListener('click', async () => {
-      const btn = actionsEl.querySelector('#btn-contact');
-      btn.disabled = true;
-      try {
-        const res = await fetch('/api/messages/send', {
-          method: 'POST',
-          headers: { 'Content-Type': 'application/json' },
-          body: JSON.stringify({ to: user.id, body: 'Hey! I found you on DYG.' })
-        });
-        if (!res.ok) throw new Error();
-        const data = await res.json();
-        showToast('Message sent');
-        window.location.hash = `#/messages/${data.conversation_id}`;
-      } catch {
-        showToast('Failed to send', 'error');
-        btn.disabled = false;
+
+  async function sendDM() {
+    try {
+      const res = await fetch('/api/messages/send', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ to: user.id, body: 'Hey! I found you on DYG.' })
+      });
+      if (!res.ok) throw new Error();
+      const data = await res.json();
+      showToast(t('portfolio.dm_sent'));
+      window.location.hash = `#/messages/${data.conversation_id}`;
+    } catch {
+      showToast(t('common.error'), 'error');
+    }
+  }
+
+  async function renderRelationActions() {
+    try {
+      const res = await fetch(`/api/friends/status/${user.id}`);
+      const rel = res.ok ? await res.json() : { state: 'none' };
+      let html = '';
+
+      if (rel.state === 'friends') {
+        html = `<button class="btn-primary btn-primary--sm" id="btn-dm">${t('portfolio.message')}</button>
+                <button class="btn-ghost btn-ghost--sm" id="btn-unfriend">${t('friends.remove')}</button>`;
+      } else if (rel.state === 'pending_out') {
+        html = `<button class="btn-secondary btn-secondary--sm" disabled>${t('friends.waiting')}</button>
+                <button class="btn-secondary btn-secondary--sm" id="btn-dm">${t('portfolio.message')}</button>`;
+      } else if (rel.state === 'pending_in') {
+        html = `<button class="btn-primary btn-primary--sm" data-fid="${rel.friendshipId}" id="btn-accept">${t('friends.accept')}</button>
+                <button class="btn-ghost btn-ghost--sm" data-fid="${rel.friendshipId}" id="btn-decline">${t('friends.decline')}</button>`;
+      } else {
+        html = `<button class="btn-primary btn-primary--sm" id="btn-add-friend">${t('friends.add')}</button>
+                <button class="btn-secondary btn-secondary--sm" id="btn-dm">${t('portfolio.message')}</button>`;
       }
-    });
+      actionsEl.innerHTML = html;
+
+      actionsEl.querySelector('#btn-dm')?.addEventListener('click', sendDM);
+      actionsEl.querySelector('#btn-add-friend')?.addEventListener('click', async (e) => {
+        e.target.disabled = true;
+        try {
+          await fetch('/api/friends/request', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ user_id: user.id })
+          });
+          showToast(t('friends.request_sent'));
+          renderRelationActions();
+        } catch { showToast(t('common.error'), 'error'); }
+      });
+      actionsEl.querySelector('#btn-unfriend')?.addEventListener('click', async () => {
+        if (!confirm(t('friends.confirm_remove'))) return;
+        try {
+          await fetch(`/api/friends/${user.id}`, { method: 'DELETE' });
+          showToast(t('friends.done'));
+          renderRelationActions();
+        } catch { showToast(t('common.error'), 'error'); }
+      });
+      actionsEl.querySelector('#btn-accept')?.addEventListener('click', async (e) => {
+        const fid = e.target.dataset.fid;
+        try {
+          await fetch(`/api/friends/${fid}/accept`, { method: 'POST' });
+          showToast(t('friends.done'));
+          renderRelationActions();
+        } catch { showToast(t('common.error'), 'error'); }
+      });
+      actionsEl.querySelector('#btn-decline')?.addEventListener('click', async (e) => {
+        const fid = e.target.dataset.fid;
+        try {
+          await fetch(`/api/friends/${fid}/decline`, { method: 'POST' });
+          showToast(t('friends.done'));
+          renderRelationActions();
+        } catch { showToast(t('common.error'), 'error'); }
+      });
+    } catch {
+      actionsEl.innerHTML = '';
+    }
+  }
+
+  if (currentUser && currentUser.id !== user.id) {
+    renderRelationActions();
   } else if (!currentUser) {
     actionsEl.innerHTML = `<a href="/auth/github" class="btn-primary btn-primary--sm">${t('portfolio.contact_login')}</a>`;
   }

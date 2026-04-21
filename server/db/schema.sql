@@ -1,3 +1,5 @@
+DROP TABLE IF EXISTS user_blocks CASCADE;
+DROP TABLE IF EXISTS friendships CASCADE;
 DROP TABLE IF EXISTS point_events CASCADE;
 DROP TABLE IF EXISTS season_enrollments CASCADE;
 DROP TABLE IF EXISTS seasons CASCADE;
@@ -388,3 +390,32 @@ CREATE TABLE point_events (
 
 CREATE INDEX idx_point_events_enrollment ON point_events(enrollment_id, occurred_at DESC);
 CREATE INDEX idx_point_events_source ON point_events(enrollment_id, source);
+
+-- ==========================================
+-- Friendships & blocks
+-- ==========================================
+
+CREATE TABLE friendships (
+  id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
+  requester_id UUID NOT NULL REFERENCES users(id) ON DELETE CASCADE,
+  addressee_id UUID NOT NULL REFERENCES users(id) ON DELETE CASCADE,
+  status VARCHAR(20) NOT NULL DEFAULT 'pending'
+    CHECK (status IN ('pending', 'accepted', 'declined')),
+  created_at TIMESTAMPTZ DEFAULT NOW(),
+  responded_at TIMESTAMPTZ,
+  UNIQUE(requester_id, addressee_id),
+  CHECK (requester_id != addressee_id)
+);
+
+CREATE INDEX idx_friendships_requester ON friendships(requester_id, status);
+CREATE INDEX idx_friendships_addressee ON friendships(addressee_id, status);
+
+CREATE TABLE user_blocks (
+  blocker_id UUID NOT NULL REFERENCES users(id) ON DELETE CASCADE,
+  blocked_id UUID NOT NULL REFERENCES users(id) ON DELETE CASCADE,
+  created_at TIMESTAMPTZ DEFAULT NOW(),
+  PRIMARY KEY (blocker_id, blocked_id),
+  CHECK (blocker_id != blocked_id)
+);
+
+CREATE INDEX idx_user_blocks_blocked ON user_blocks(blocked_id);

@@ -20,6 +20,7 @@ export default {
   'header.team': 'My team',
   'header.messages': 'Messages',
   'header.leaderboard': 'Leaderboard',
+  'header.friends': 'Friends',
 
   // Landing
   'landing.hero_title': 'Train. Connect. Ship together.',
@@ -276,6 +277,31 @@ export default {
   'leaderboard.login_required': 'Log in to see your division leaderboard.',
   'leaderboard.days_left': 'days left',
   'leaderboard.note': 'Only devs in your division see this leaderboard. Each division has its own.',
+
+  // Friends
+  'friends.title': 'My friends',
+  'friends.sub': 'Devs you can freely DM. Non-friends are capped at 2 messages until you reply.',
+  'friends.tab_friends': 'Friends',
+  'friends.tab_pending': 'Requests',
+  'friends.tab_sent': 'Sent',
+  'friends.tab_blocked': 'Blocked',
+  'friends.empty_friends': 'No friends yet. Explore devs and send a request.',
+  'friends.empty_pending': 'No pending requests.',
+  'friends.empty_sent': 'No outgoing requests.',
+  'friends.empty_blocked': 'No one blocked.',
+  'friends.accept': 'Accept',
+  'friends.decline': 'Decline',
+  'friends.remove': 'Remove',
+  'friends.unblock': 'Unblock',
+  'friends.add': 'Add friend',
+  'friends.message': 'Message',
+  'friends.waiting': 'Pending',
+  'friends.done': 'Done',
+  'friends.login_required': 'Log in to manage your friends.',
+  'friends.request_sent': 'Request sent',
+  'friends.confirm_remove': 'Remove this dev from your friends?',
+  'portfolio.dm_sent': 'Message sent',
+  'portfolio.message': 'Message',
 
   // Training
   'training.title': 'Training',

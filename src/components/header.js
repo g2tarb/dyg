@@ -36,6 +36,10 @@ function createHeader() {
             ${t('header.messages')}
             <span class="header-menu__badge" id="msg-badge" style="display:none;">0</span>
           </a>
+          <a href="#/friends" class="header-menu__item">
+            ${t('header.friends')}
+            <span class="header-menu__badge" id="fr-badge" style="display:none;">0</span>
+          </a>
           <a href="#/team" class="header-menu__item">
             ${t('header.team')}
             <span class="header-menu__badge" id="team-badge">0</span>
@@ -150,16 +154,25 @@ function createHeader() {
 
   async function fetchUnread() {
     try {
-      const res = await fetch('/api/messages/unread');
-      if (!res.ok) return;
-      const { unread } = await res.json();
-      const badge = header.querySelector('#msg-badge');
-      if (!badge) return;
-      if (unread > 0) {
-        badge.textContent = unread;
-        badge.style.display = '';
-      } else {
-        badge.style.display = 'none';
+      const [msgRes, frRes] = await Promise.all([
+        fetch('/api/messages/unread'),
+        fetch('/api/friends/pending')
+      ]);
+      if (msgRes.ok) {
+        const { unread } = await msgRes.json();
+        const badge = header.querySelector('#msg-badge');
+        if (badge) {
+          if (unread > 0) { badge.textContent = unread; badge.style.display = ''; }
+          else { badge.style.display = 'none'; }
+        }
+      }
+      if (frRes.ok) {
+        const pending = await frRes.json();
+        const badge = header.querySelector('#fr-badge');
+        if (badge) {
+          if (pending.length > 0) { badge.textContent = pending.length; badge.style.display = ''; }
+          else { badge.style.display = 'none'; }
+        }
       }
     } catch { /* silent */ }
   }

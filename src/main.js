@@ -18,6 +18,7 @@ import { renderSettings } from './pages/settings.js';
 import { renderArchetypePage } from './pages/archetypePage.js';
 import { renderTraining } from './pages/training.js';
 import { renderLeaderboard } from './pages/leaderboard.js';
+import { renderFriends } from './pages/friends.js';
 import { renderNotFound } from './pages/notFound.js';
 import { createFooter } from './components/footer.js';
 
@@ -55,6 +56,7 @@ registerRoute('/archetype/:key', renderArchetypePage);
 registerRoute('/training', renderTraining);
 registerRoute('/training/:exerciseId', (c, p) => renderTraining(c, { exerciseId: p.exerciseId }));
 registerRoute('/leaderboard', renderLeaderboard);
+registerRoute('/friends', renderFriends);
 
 // 404 handler
 setNotFoundHandler(renderNotFound);
