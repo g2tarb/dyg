@@ -27,9 +27,11 @@ import trainingRoutes from './routes/training.js';
 import seasonRoutes from './routes/seasons.js';
 import friendshipRoutes from './routes/friendships.js';
 import notificationRoutes from './routes/notifications.js';
+import warsRoutes from './routes/wars.js';
 import { decayAbandons } from './services/ban.js';
 import { syncGithubPointsAllEnrolled } from './services/githubPoints.js';
 import { runProjectReminders } from './services/projectReminders.js';
+import { runWarScheduler } from './services/warScheduler.js';
 
 const __dirname = dirname(fileURLToPath(import.meta.url));
 const isProd = env.NODE_ENV === 'production';
@@ -220,6 +222,7 @@ fastify.register(trainingRoutes);
 fastify.register(seasonRoutes);
 fastify.register(friendshipRoutes);
 fastify.register(notificationRoutes);
+fastify.register(warsRoutes);
 
 // --- Robots.txt ---
 fastify.get('/robots.txt', async (request, reply) => {
@@ -292,6 +295,14 @@ const reminderInterval = setInterval(() => {
 reminderInterval.unref();
 // Run once at startup so missed windows (server restart) get caught up.
 runProjectReminders(fastify.log).catch(err => fastify.log.error(err, 'Initial reminders run failed'));
+
+// --- Inter-Division War scheduler (every hour, ensures current war + drives states) ---
+const warInterval = setInterval(() => {
+  runWarScheduler(fastify.log)
+    .catch(err => fastify.log.error(err, 'War scheduler failed'));
+}, 60 * 60 * 1000);
+warInterval.unref();
+runWarScheduler(fastify.log).catch(err => fastify.log.error(err, 'Initial war scheduler run failed'));
 
 // --- Production: serve built frontend ---
 if (isProd) {

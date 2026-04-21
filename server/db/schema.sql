@@ -1,3 +1,8 @@
+DROP TABLE IF EXISTS war_ratings CASCADE;
+DROP TABLE IF EXISTS war_judges CASCADE;
+DROP TABLE IF EXISTS war_members CASCADE;
+DROP TABLE IF EXISTS war_teams CASCADE;
+DROP TABLE IF EXISTS wars CASCADE;
 DROP TABLE IF EXISTS notifications CASCADE;
 DROP TABLE IF EXISTS user_blocks CASCADE;
 DROP TABLE IF EXISTS friendships CASCADE;
@@ -453,3 +458,98 @@ CREATE INDEX idx_notifications_user_unread
   ON notifications(user_id, created_at DESC) WHERE read_at IS NULL;
 CREATE INDEX idx_notifications_user_created
   ON notifications(user_id, created_at DESC);
+
+-- ==========================================
+-- Wars (inter-division mensuelles + scaffolding DYG wars 5v5)
+-- ==========================================
+
+CREATE TABLE wars (
+  id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
+  type VARCHAR(20) NOT NULL DEFAULT 'inter_division'
+    CHECK (type IN ('inter_division', 'dyg_war')),
+  title VARCHAR(100) NOT NULL,
+  brief TEXT NOT NULL,
+  theme VARCHAR(50),
+  state VARCHAR(20) NOT NULL DEFAULT 'upcoming'
+    CHECK (state IN ('upcoming', 'staffing', 'running', 'judging', 'closed')),
+  ai_allowed BOOLEAN NOT NULL DEFAULT true,
+  season_id UUID REFERENCES seasons(id) ON DELETE SET NULL,
+  starts_at TIMESTAMPTZ NOT NULL,
+  build_starts_at TIMESTAMPTZ NOT NULL,
+  deadline_at TIMESTAMPTZ NOT NULL,
+  judging_ends_at TIMESTAMPTZ NOT NULL,
+  winner_team_id UUID,
+  created_at TIMESTAMPTZ DEFAULT NOW()
+);
+
+CREATE INDEX idx_wars_state ON wars(state);
+CREATE INDEX idx_wars_deadline ON wars(deadline_at);
+CREATE INDEX idx_wars_type ON wars(type);
+
+CREATE TABLE war_teams (
+  id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
+  war_id UUID NOT NULL REFERENCES wars(id) ON DELETE CASCADE,
+  division VARCHAR(20)
+    CHECK (division IS NULL OR division IN (
+      'architect', 'shipper', 'artisan', 'creative', 'explorer', 'commando', 'mentor', 'synth'
+    )),
+  name VARCHAR(100) NOT NULL,
+  repo_url TEXT,
+  deliverable_url TEXT,
+  synergy_multiplier NUMERIC(3,2) NOT NULL DEFAULT 1.0
+    CHECK (synergy_multiplier > 0 AND synergy_multiplier <= 2.0),
+  raw_score NUMERIC(5,2),
+  ia_penalty NUMERIC(3,2) NOT NULL DEFAULT 0.0
+    CHECK (ia_penalty >= 0 AND ia_penalty <= 1.0),
+  final_score NUMERIC(5,2),
+  is_winner BOOLEAN NOT NULL DEFAULT FALSE,
+  created_at TIMESTAMPTZ DEFAULT NOW(),
+  UNIQUE (war_id, division)
+);
+
+CREATE INDEX idx_war_teams_war ON war_teams(war_id);
+CREATE INDEX idx_war_teams_division ON war_teams(division);
+
+ALTER TABLE wars
+  ADD CONSTRAINT wars_winner_team_id_fkey
+  FOREIGN KEY (winner_team_id) REFERENCES war_teams(id) ON DELETE SET NULL;
+
+CREATE TABLE war_members (
+  id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
+  war_team_id UUID NOT NULL REFERENCES war_teams(id) ON DELETE CASCADE,
+  user_id UUID NOT NULL REFERENCES users(id) ON DELETE CASCADE,
+  role VARCHAR(20) NOT NULL DEFAULT 'member'
+    CHECK (role IN ('lead', 'member')),
+  joined_at TIMESTAMPTZ DEFAULT NOW(),
+  UNIQUE (war_team_id, user_id)
+);
+
+CREATE INDEX idx_war_members_user ON war_members(user_id);
+CREATE INDEX idx_war_members_team ON war_members(war_team_id);
+
+CREATE TABLE war_judges (
+  id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
+  war_id UUID NOT NULL REFERENCES wars(id) ON DELETE CASCADE,
+  user_id UUID NOT NULL REFERENCES users(id) ON DELETE CASCADE,
+  invited_at TIMESTAMPTZ DEFAULT NOW(),
+  accepted_at TIMESTAMPTZ,
+  declined_at TIMESTAMPTZ,
+  revealed BOOLEAN NOT NULL DEFAULT FALSE,
+  UNIQUE (war_id, user_id)
+);
+
+CREATE INDEX idx_war_judges_war ON war_judges(war_id);
+CREATE INDEX idx_war_judges_user ON war_judges(user_id);
+
+CREATE TABLE war_ratings (
+  id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
+  war_team_id UUID NOT NULL REFERENCES war_teams(id) ON DELETE CASCADE,
+  judge_user_id UUID NOT NULL REFERENCES users(id) ON DELETE CASCADE,
+  score NUMERIC(4,1) NOT NULL CHECK (score >= 0 AND score <= 10),
+  comment TEXT CHECK (comment IS NULL OR char_length(comment) <= 1000),
+  submitted_at TIMESTAMPTZ DEFAULT NOW(),
+  UNIQUE (war_team_id, judge_user_id)
+);
+
+CREATE INDEX idx_war_ratings_team ON war_ratings(war_team_id);
+CREATE INDEX idx_war_ratings_judge ON war_ratings(judge_user_id);
