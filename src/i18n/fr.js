@@ -74,6 +74,7 @@ export default {
   'archetype.explorer': 'Explorateur',
   'archetype.commando': 'Commando',
   'archetype.mentor': 'Mentor',
+  'archetype.synth': 'Synth',
 
   // Pillars
   'pillar.code': 'Code',
@@ -239,7 +240,7 @@ export default {
   'badge.dual-archetype': 'Double Archétype',
   'badge.triple-archetype': 'Triple Archétype',
   'badge.training-10': '10 Exercices',
-  'badge.ia-architect': 'IA Architect',
+  'badge.ia-architect': 'Style IA',
   'badge.earned': 'Badge débloqué !',
 
   // Recommendations
@@ -491,7 +492,7 @@ export default {
   'archetype.explorer.desc': 'L\'Explorateur touche à tout et apprend vite. 6 langages, 4 frameworks, 3 domaines différents. Là où les autres creusent en profondeur, lui tisse en largeur. C\'est le premier à tester une nouvelle techno et le dernier à dire "c\'est pas mon scope".',
   'archetype.explorer.ideal': 'Équipes pluridisciplinaires, migrations technologiques, projets full-stack.',
   'archetype.explorer.dom1': 'Polyvalence',
-  'archetype.explorer.dom2': 'Créativité',
+  'archetype.explorer.dom2': 'Vélocité',
   'archetype.commando.name': 'Commando',
   'archetype.commando.tagline': 'Rapide. Collectif. Létal.',
   'archetype.commando.desc': 'Le Commando combine vitesse et esprit d\'équipe. Il livre vite ET il embarque les autres. En game jam, c\'est le coéquipier que tout le monde veut. Il ne brille pas seul \u2014 il fait briller l\'équipe entière.',
@@ -504,6 +505,12 @@ export default {
   'archetype.mentor.ideal': 'Lead d\'équipe, onboarding, code reviews, pair programming senior.',
   'archetype.mentor.dom1': 'Collaboration',
   'archetype.mentor.dom2': 'Craft',
+  'archetype.synth.name': 'Synth',
+  'archetype.synth.tagline': 'Il dirige l\'IA. Il ne la colle pas.',
+  'archetype.synth.desc': 'Le Synth utilise l\'IA comme un maître utilise son outil. Il prompte avec précision, relit chaque ligne, corrige l\'architecture. Ses commits sont descriptifs, ses repos documentés. Là où le vibe coder balance, lui orchestre.',
+  'archetype.synth.ideal': 'Shippers solos, workflows agentiques, équipes IA-augmentées, du prototype à la prod.',
+  'archetype.synth.dom1': 'IA',
+  'archetype.synth.dom2': 'Craft',
 
   // Archetype page section titles
   'archepage.strengths_title': 'Forces',
@@ -554,6 +561,12 @@ export default {
   'archetype.mentor.strengths': 'Transmission de savoir, code reviews qui élèvent, patience, pédagogie, vision long terme de la croissance d\'une équipe.',
   'archetype.mentor.weaknesses': 'Peut coder moins vite parce qu\'il enseigne. Risque de trop encadrer et pas assez produire. Parfois perçu comme trop senior pour les tâches "sales".',
   'archetype.mentor.team_role': 'Il est le multiplicateur de force. Une équipe avec un Mentor a un turnover plus bas, un onboarding plus rapide, et un code de meilleure qualité sur le long terme.',
+
+  'archetype.synth.long': 'Le Synth a grandi avec les LLMs — et a appris à les diriger plutôt qu\'à être dirigé par eux. Contrairement au vibe coder, il lit chaque ligne que l\'IA produit. Il corrige l\'architecture, ajoute les tests que le modèle a oubliés, réécrit les nommages qui ne collent pas à la codebase. Son historique Git n\'est pas un dump — c\'est une narration. Claude est son binôme, Copilot son autocomplete, Cursor son IDE. Il livre 10x plus vite parce qu\'il dirige, pas parce qu\'il colle. Il est le nouveau senior : celui qui prompte avec intention.',
+  'archetype.synth.examples': 'Armin Ronacher (Flask — utilise intensivement les LLMs sans sacrifier la rigueur), Simon Willison (publie ses workflows IA, a livré des dizaines d\'outils avec des LLMs), la nouvelle génération chez Anthropic, Vercel, Replit qui mélange IA et craft. Le senior qui dirige les agents comme d\'autres dirigent des juniors.',
+  'archetype.synth.strengths': 'Vitesse de livraison avec l\'IA, direction architecturale, précision des prompts, orchestration humain-agent, adaptabilité aux nouveaux modèles, historique Git propre malgré une vélocité élevée.',
+  'archetype.synth.weaknesses': 'Dépendance à l\'outillage. Peut perdre en profondeur s\'il arrête de relire ce que l\'IA produit. Risque de livrer du code "plausible-mais-faux" s\'il saute la revue. Pérennité incertaine — ses skills sont liés à des modèles qui évoluent vite.',
+  'archetype.synth.team_role': 'Il est le directeur IA. Il fixe les conventions d\'usage de l\'IA dans l\'équipe, empêche la dérive vibe-coder, et transforme les LLMs en force multiplicatrice plutôt qu\'en passif. Sans Synth, l\'output IA de l\'équipe est bruité.',
 
   // Profile page
   'profile.back_search': 'Retour à la recherche',

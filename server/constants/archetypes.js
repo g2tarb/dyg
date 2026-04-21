@@ -25,7 +25,7 @@ const ARCHETYPES = {
   },
   explorer: {
     name: 'Explorer',
-    dominants: ['versatility', 'creativity'],
+    dominants: ['versatility', 'velocity'],
     description: 'Touches everything, learns fast. Where others specialize, they connect.',
     color: '#06B6D4'
   },
@@ -40,6 +40,12 @@ const ARCHETYPES = {
     dominants: ['collaboration', 'craft'],
     description: 'Raises the team\'s level. Their code reviews are worth gold.',
     color: '#F97316'
+  },
+  synth: {
+    name: 'Synth',
+    dominants: ['ia', 'craft'],
+    description: 'Directs AI like a senior directs juniors. Ships fast without losing rigor.',
+    color: '#EC4899'
   }
 };
 

@@ -1,6 +1,6 @@
 import { ARCHETYPE_NAMES } from './devCard.js';
 
-const ARCHETYPES_LIST = ['architect', 'shipper', 'artisan', 'creative', 'explorer', 'commando', 'mentor'];
+const ARCHETYPES_LIST = ['architect', 'shipper', 'artisan', 'creative', 'explorer', 'commando', 'mentor', 'synth'];
 const PILLARS_LIST = [
   { key: 'code', label: 'Code' },
   { key: 'velocity', label: 'Velocity' },

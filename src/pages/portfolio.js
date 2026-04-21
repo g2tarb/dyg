@@ -8,7 +8,7 @@ import { setArchetypeTheme } from '../utils/theme.js';
 function archName(k) { return t(`archetype.${k}`); }
 const ARCHETYPE_COLORS = {
   architect: '#3B82F6', shipper: '#22C55E', artisan: '#F5C542',
-  creative: '#A855F7', explorer: '#06B6D4', commando: '#EF4444', mentor: '#F97316'
+  creative: '#A855F7', explorer: '#06B6D4', commando: '#EF4444', mentor: '#F97316', synth: '#EC4899'
 };
 function sl(s) { return t(`status.${s}`); }
 

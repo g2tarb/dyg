@@ -7,9 +7,10 @@ const ARCHETYPE_DATA = {
   shipper: { color: '#22C55E', dominants: ['velocity', 'autonomy'], image: '/assets/archetypes/shipper.png' },
   artisan: { color: '#F5C542', dominants: ['craft', 'code'], image: '/assets/archetypes/artisan.png' },
   creative: { color: '#A855F7', dominants: ['creativity', 'versatility'], image: '/assets/archetypes/creative.png' },
-  explorer: { color: '#06B6D4', dominants: ['versatility', 'creativity'], image: '/assets/archetypes/explorer.png' },
+  explorer: { color: '#06B6D4', dominants: ['versatility', 'velocity'], image: '/assets/archetypes/explorer.png' },
   commando: { color: '#EF4444', dominants: ['velocity', 'collaboration'], image: '/assets/archetypes/commando.png' },
-  mentor: { color: '#F97316', dominants: ['collaboration', 'craft'], image: '/assets/archetypes/mentor.png' }
+  mentor: { color: '#F97316', dominants: ['collaboration', 'craft'], image: '/assets/archetypes/mentor.png' },
+  synth: { color: '#EC4899', dominants: ['ia', 'craft'], image: '/assets/archetypes/synth.png' }
 };
 
 async function renderArchetypePage(container, params = {}) {

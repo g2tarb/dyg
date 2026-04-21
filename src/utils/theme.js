@@ -10,10 +10,11 @@ const ARCHETYPE_COLORS = {
   creative: '#A855F7',
   explorer: '#06B6D4',
   commando: '#EF4444',
-  mentor: '#F97316'
+  mentor: '#F97316',
+  synth: '#EC4899'
 };
 
-// Scroll palette — cycles through all 7 archetype colors
+// Scroll palette — cycles through all 8 archetype colors
 const SCROLL_PALETTE = [
   [59, 130, 246],   // architect  #3B82F6
   [34, 197, 94],    // shipper    #22C55E
@@ -21,7 +22,8 @@ const SCROLL_PALETTE = [
   [168, 85, 247],   // creative   #A855F7
   [6, 182, 212],    // explorer   #06B6D4
   [239, 68, 68],    // commando   #EF4444
-  [249, 115, 22]    // mentor     #F97316
+  [249, 115, 22],   // mentor     #F97316
+  [236, 72, 153]    // synth      #EC4899
 ];
 
 let locked = false;       // true when on archetype/profile page

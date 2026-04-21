@@ -11,7 +11,8 @@ const ARCHETYPE_COLORS = {
   creative: '#A855F7',
   explorer: '#06B6D4',
   commando: '#EF4444',
-  mentor: '#F97316'
+  mentor: '#F97316',
+  synth: '#EC4899'
 };
 
 function createDevCard(dev) {

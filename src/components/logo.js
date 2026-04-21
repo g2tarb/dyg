@@ -3,13 +3,14 @@
  */
 
 const ORBS = [
-  { color: '#3B82F6', delay: 0 },      // Architect
-  { color: '#22C55E', delay: 0.9 },     // Shipper
-  { color: '#F5C542', delay: 1.8 },     // Artisan
-  { color: '#A855F7', delay: 2.7 },     // Creative
-  { color: '#06B6D4', delay: 3.6 },     // Explorer
-  { color: '#EF4444', delay: 4.5 },     // Commando
-  { color: '#F97316', delay: 5.4 }      // Mentor
+  { color: '#3B82F6', delay: 0 },       // Architect
+  { color: '#22C55E', delay: 0.7875 },  // Shipper
+  { color: '#F5C542', delay: 1.575 },   // Artisan
+  { color: '#A855F7', delay: 2.3625 },  // Creative
+  { color: '#06B6D4', delay: 3.15 },    // Explorer
+  { color: '#EF4444', delay: 3.9375 },  // Commando
+  { color: '#F97316', delay: 4.725 },   // Mentor
+  { color: '#EC4899', delay: 5.5125 }   // Synth
 ];
 
 function createLogoSVG(size = 'md') {
@@ -68,7 +69,8 @@ function createLogoSVG(size = 'md') {
  */
 const ORB_COLORS_RGB = [
   [59, 130, 246], [34, 197, 94], [245, 197, 66],
-  [168, 85, 247], [6, 182, 212], [239, 68, 68], [249, 115, 22]
+  [168, 85, 247], [6, 182, 212], [239, 68, 68], [249, 115, 22],
+  [236, 72, 153]
 ];
 
 function setupLogoAnimation(svgElement) {
@@ -87,8 +89,8 @@ function setupLogoAnimation(svgElement) {
     orbPairs.push({
       solid: circles[i],
       glow: circles[i + 1],
-      baseColor: ORB_COLORS_RGB[Math.floor(i / 2) % 7],
-      angle: (Math.PI * 2 / 7) * Math.floor(i / 2)
+      baseColor: ORB_COLORS_RGB[Math.floor(i / 2) % 8],
+      angle: (Math.PI * 2 / 8) * Math.floor(i / 2)
     });
   }
 

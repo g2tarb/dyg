@@ -238,6 +238,11 @@
   color: #F97316;
 }
 
+.badge--synth {
+  background: rgba(236, 72, 153, 0.15);
+  color: #EC4899;
+}
+
 /* Toggle version for filters */
 .badge-toggle {
   cursor: pointer;
@@ -286,6 +291,7 @@
 .avatar--explorer { border-color: #06B6D4; }
 .avatar--commando { border-color: #EF4444; }
 .avatar--mentor { border-color: #F97316; }
+.avatar--synth { border-color: #EC4899; }
 
 /* ==========================================
    Score Pill

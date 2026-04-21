@@ -1,11 +1,11 @@
 import { escapeHTML } from '../utils/sanitize.js';
 import { t } from '../i18n/index.js';
 
-const PILLARS_KEYS = ['code', 'velocity', 'craft', 'collaboration', 'versatility', 'creativity', 'autonomy'];
-const PILLARS_ICONS = { code: '{ }', velocity: '>>', craft: '\u25C6', collaboration: '\u26A1', versatility: '\u25CE', creativity: '\u2726', autonomy: '\u25C9' };
+const PILLARS_KEYS = ['code', 'velocity', 'craft', 'collaboration', 'versatility', 'creativity', 'autonomy', 'ia'];
+const PILLARS_ICONS = { code: '{ }', velocity: '>>', craft: '\u25C6', collaboration: '\u26A1', versatility: '\u25CE', creativity: '\u2726', autonomy: '\u25C9', ia: '\u25B3' };
 
-const ARCHETYPES_KEYS = ['architect', 'shipper', 'artisan', 'creative', 'explorer', 'commando', 'mentor'];
-const ARCHETYPES_COLORS = { architect: '#3B82F6', shipper: '#22C55E', artisan: '#F5C542', creative: '#A855F7', explorer: '#06B6D4', commando: '#EF4444', mentor: '#F97316' };
+const ARCHETYPES_KEYS = ['architect', 'shipper', 'artisan', 'creative', 'explorer', 'commando', 'mentor', 'synth'];
+const ARCHETYPES_COLORS = { architect: '#3B82F6', shipper: '#22C55E', artisan: '#F5C542', creative: '#A855F7', explorer: '#06B6D4', commando: '#EF4444', mentor: '#F97316', synth: '#EC4899' };
 
 function renderAbout(container) {
   container.innerHTML = `

@@ -74,6 +74,7 @@ export default {
   'archetype.explorer': 'Explorer',
   'archetype.commando': 'Commando',
   'archetype.mentor': 'Mentor',
+  'archetype.synth': 'Synth',
 
   // Pillars
   'pillar.code': 'Code',
@@ -239,7 +240,7 @@ export default {
   'badge.dual-archetype': 'Dual Archetype',
   'badge.triple-archetype': 'Triple Archetype',
   'badge.training-10': '10 Exercises',
-  'badge.ia-architect': 'IA Architect',
+  'badge.ia-architect': 'AI-Driven',
   'badge.earned': 'Badge unlocked!',
 
   // Recommendations
@@ -491,7 +492,7 @@ export default {
   'archetype.explorer.desc': 'The Explorer touches everything and learns fast. 6 languages, 4 frameworks, 3 different domains. Where others dig deep, he weaves wide. He\'s the first to try a new tech and the last to say "not my scope".',
   'archetype.explorer.ideal': 'Cross-functional teams, tech migrations, full-stack projects.',
   'archetype.explorer.dom1': 'Versatility',
-  'archetype.explorer.dom2': 'Creativity',
+  'archetype.explorer.dom2': 'Velocity',
   'archetype.commando.name': 'Commando',
   'archetype.commando.tagline': 'Fast. Collective. Lethal.',
   'archetype.commando.desc': 'The Commando combines speed and team spirit. He ships fast AND brings others along. In a game jam, he\'s the teammate everyone wants. He doesn\'t shine alone \u2014 he makes the whole team shine.',
@@ -504,6 +505,12 @@ export default {
   'archetype.mentor.ideal': 'Team lead, onboarding, code reviews, senior pair programming.',
   'archetype.mentor.dom1': 'Collaboration',
   'archetype.mentor.dom2': 'Craft',
+  'archetype.synth.name': 'Synth',
+  'archetype.synth.tagline': 'He directs AI. He doesn\'t paste it.',
+  'archetype.synth.desc': 'The Synth uses AI like a master uses a tool. He prompts with precision, reads every line, corrects the architecture. His commits are descriptive, his repos documented. Where the vibe coder dumps, he orchestrates.',
+  'archetype.synth.ideal': 'Solo shippers, agentic workflows, AI-augmented teams, prototype to production.',
+  'archetype.synth.dom1': 'AI',
+  'archetype.synth.dom2': 'Craft',
 
   // Archetype page section titles
   'archepage.strengths_title': 'Strengths',
@@ -554,6 +561,12 @@ export default {
   'archetype.mentor.strengths': 'Knowledge transfer, code reviews that elevate, patience, pedagogy, long-term vision for team growth.',
   'archetype.mentor.weaknesses': 'May code slower because he teaches. Risk of over-mentoring and under-producing. Sometimes perceived as too senior for "dirty" tasks.',
   'archetype.mentor.team_role': 'The force multiplier. A team with a Mentor has lower turnover, faster onboarding, and better code quality long-term.',
+
+  'archetype.synth.long': 'The Synth grew up with LLMs — and learned to lead them instead of being led. Unlike the vibe coder, he reads every line AI writes. He corrects the architecture, adds the tests the model forgot, rewrites naming that doesn\'t fit the codebase. His Git history isn\'t a dump — it\'s a narrative. Claude is his pair, Copilot his autocomplete, Cursor his IDE. He ships 10x faster because he directs, not because he pastes. He\'s the new senior: the one who prompts with intent.',
+  'archetype.synth.examples': 'Armin Ronacher (Flask — heavy LLM usage without losing engineering rigor), Simon Willison (publishes his AI workflows, shipped dozens of tools with LLMs), the new breed of devs at Anthropic, Vercel, Replit who blend AI and craft. The senior who leads agents like others lead juniors.',
+  'archetype.synth.strengths': 'Delivery speed with AI, architectural direction, prompt precision, human-agent orchestration, adaptability to new models, clean Git history despite high velocity.',
+  'archetype.synth.weaknesses': 'Dependence on tooling. Can lose depth if he stops reading AI output. Risk of shipping plausible-but-wrong code if he skips review. Future-proofing is uncertain — skills bound to models that evolve.',
+  'archetype.synth.team_role': 'The AI director. He sets the conventions for team-wide AI usage, prevents vibe-coding drift, and turns LLMs into a force multiplier instead of a liability. Without a Synth, the team\'s AI output is noisy.',
 
   // Profile page
   'profile.back_search': 'Back to search',

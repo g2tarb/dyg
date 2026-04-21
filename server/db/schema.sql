@@ -51,11 +51,11 @@ CREATE TABLE developers (
   avatar_url TEXT,
   bio TEXT,
   archetype VARCHAR(20) NOT NULL
-    CHECK (archetype IN ('architect', 'shipper', 'artisan', 'creative', 'explorer', 'commando', 'mentor')),
+    CHECK (archetype IN ('architect', 'shipper', 'artisan', 'creative', 'explorer', 'commando', 'mentor', 'synth')),
   secondary_archetype VARCHAR(20)
-    CHECK (secondary_archetype IS NULL OR secondary_archetype IN ('architect', 'shipper', 'artisan', 'creative', 'explorer', 'commando', 'mentor')),
+    CHECK (secondary_archetype IS NULL OR secondary_archetype IN ('architect', 'shipper', 'artisan', 'creative', 'explorer', 'commando', 'mentor', 'synth')),
   tertiary_archetype VARCHAR(20)
-    CHECK (tertiary_archetype IS NULL OR tertiary_archetype IN ('architect', 'shipper', 'artisan', 'creative', 'explorer', 'commando', 'mentor')),
+    CHECK (tertiary_archetype IS NULL OR tertiary_archetype IN ('architect', 'shipper', 'artisan', 'creative', 'explorer', 'commando', 'mentor', 'synth')),
   tagline VARCHAR(100),
   price_range VARCHAR(20) NOT NULL DEFAULT 'medium',
   github_username VARCHAR(100),
@@ -283,7 +283,7 @@ CREATE TABLE code_samples (
   user_id UUID NOT NULL REFERENCES users(id) ON DELETE CASCADE,
   project_id UUID REFERENCES projects(id) ON DELETE SET NULL,
   archetype VARCHAR(20) NOT NULL
-    CHECK (archetype IN ('architect', 'shipper', 'artisan', 'creative', 'explorer', 'commando', 'mentor')),
+    CHECK (archetype IN ('architect', 'shipper', 'artisan', 'creative', 'explorer', 'commando', 'mentor', 'synth')),
   sample_type VARCHAR(30) NOT NULL
     CHECK (sample_type IN ('commit_diff', 'commit_message', 'pr_description', 'code_review', 'file_structure')),
   content TEXT NOT NULL,

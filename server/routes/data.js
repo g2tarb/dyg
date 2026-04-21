@@ -94,7 +94,7 @@ async function dataRoutes(fastify) {
     await requireAdmin(request);
 
     const { archetype } = request.params;
-    const validArchetypes = ['architect', 'shipper', 'artisan', 'creative', 'explorer', 'commando', 'mentor'];
+    const validArchetypes = ['architect', 'shipper', 'artisan', 'creative', 'explorer', 'commando', 'mentor', 'synth'];
     if (!validArchetypes.includes(archetype)) {
       return reply.code(400).send({ error: 'Invalid archetype' });
     }
