@@ -259,6 +259,13 @@ INSERT INTO developer_scores (developer_id, pillar, score) VALUES
 ('a8000000-0000-0000-0000-000000000002', 'ia', 9);
 
 -- ==========================================
+-- SEASONS (Sept → Sept, 1 par an)
+-- ==========================================
+
+INSERT INTO seasons (slug, name, starts_at, ends_at, status) VALUES
+  ('2025-2026', 'Saison 2025-2026', '2025-09-01 00:00:00+00', '2026-09-01 00:00:00+00', 'active');
+
+-- ==========================================
 -- DEMO USERS (fake, for portfolio showcase)
 -- ==========================================
 

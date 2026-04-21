@@ -24,6 +24,7 @@ import messageRoutes from './routes/messages.js';
 import dataRoutes from './routes/data.js';
 import reputationRoutes from './routes/reputation.js';
 import trainingRoutes from './routes/training.js';
+import seasonRoutes from './routes/seasons.js';
 import { decayAbandons } from './services/ban.js';
 
 const __dirname = dirname(fileURLToPath(import.meta.url));
@@ -213,6 +214,7 @@ fastify.register(messageRoutes);
 fastify.register(dataRoutes);
 fastify.register(reputationRoutes);
 fastify.register(trainingRoutes);
+fastify.register(seasonRoutes);
 
 // --- Robots.txt ---
 fastify.get('/robots.txt', async (request, reply) => {

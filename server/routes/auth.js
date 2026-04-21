@@ -6,6 +6,7 @@ import { SaveProfileSchema } from '../schemas/validation.js';
 import { UnauthorizedError } from '../utils/errors.js';
 import { checkAndAwardBadges, getUserBadges } from '../services/badges.js';
 import { getRecommendations } from '../services/recommend.js';
+import { enrollUserInActiveSeason } from '../services/seasons.js';
 import env from '../config/env.js';
 
 async function authRoutes(fastify) {
@@ -254,6 +255,14 @@ async function authRoutes(fastify) {
 
     // Award badges
     const awarded = await checkAndAwardBadges(userId, 'scan', { dev_style: primary });
+
+    // Enroll in active season — division frozen at primary archetype.
+    // No-op if the user is already enrolled (division stays).
+    try {
+      await enrollUserInActiveSeason(userId, primary);
+    } catch (err) {
+      request.log.warn({ err, userId, division: primary }, 'Season enrollment failed (non-fatal)');
+    }
 
     return { ok: true, developer_id: devId, badges_earned: awarded };
   });

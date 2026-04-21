@@ -1,3 +1,6 @@
+DROP TABLE IF EXISTS point_events CASCADE;
+DROP TABLE IF EXISTS season_enrollments CASCADE;
+DROP TABLE IF EXISTS seasons CASCADE;
 DROP TABLE IF EXISTS training_submissions CASCADE;
 DROP TABLE IF EXISTS training_tips CASCADE;
 DROP TABLE IF EXISTS training_exercises CASCADE;
@@ -337,3 +340,51 @@ CREATE INDEX idx_peer_reviews_project ON peer_reviews(project_id);
 CREATE INDEX idx_peer_reviews_reviewee ON peer_reviews(reviewee_id);
 CREATE INDEX idx_messages_conversation ON messages(conversation_id, created_at DESC);
 CREATE INDEX idx_conv_participants_user ON conversation_participants(user_id);
+
+-- ==========================================
+-- Seasons & division rankings
+-- ==========================================
+
+CREATE TABLE seasons (
+  id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
+  slug VARCHAR(30) UNIQUE NOT NULL,
+  name VARCHAR(60) NOT NULL,
+  starts_at TIMESTAMPTZ NOT NULL,
+  ends_at TIMESTAMPTZ NOT NULL,
+  status VARCHAR(20) NOT NULL DEFAULT 'upcoming'
+    CHECK (status IN ('upcoming', 'active', 'ended')),
+  created_at TIMESTAMPTZ DEFAULT NOW()
+);
+
+CREATE INDEX idx_seasons_status ON seasons(status);
+
+CREATE TABLE season_enrollments (
+  id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
+  season_id UUID NOT NULL REFERENCES seasons(id) ON DELETE CASCADE,
+  user_id UUID NOT NULL REFERENCES users(id) ON DELETE CASCADE,
+  division VARCHAR(20) NOT NULL
+    CHECK (division IN ('architect', 'shipper', 'artisan', 'creative', 'explorer', 'commando', 'mentor', 'synth')),
+  github_points NUMERIC(6,1) NOT NULL DEFAULT 0
+    CHECK (github_points >= 0 AND github_points <= 50),
+  dyg_points NUMERIC(6,1) NOT NULL DEFAULT 0
+    CHECK (dyg_points >= 0 AND dyg_points <= 50),
+  total_points NUMERIC(6,1) GENERATED ALWAYS AS (github_points + dyg_points) STORED,
+  joined_at TIMESTAMPTZ DEFAULT NOW(),
+  UNIQUE(season_id, user_id)
+);
+
+CREATE INDEX idx_enrollments_ranking ON season_enrollments(season_id, division, total_points DESC);
+CREATE INDEX idx_enrollments_user ON season_enrollments(user_id);
+
+CREATE TABLE point_events (
+  id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
+  enrollment_id UUID NOT NULL REFERENCES season_enrollments(id) ON DELETE CASCADE,
+  source VARCHAR(20) NOT NULL CHECK (source IN ('github', 'dyg')),
+  event_type VARCHAR(40) NOT NULL,
+  points NUMERIC(5,1) NOT NULL,
+  details JSONB DEFAULT '{}',
+  occurred_at TIMESTAMPTZ DEFAULT NOW()
+);
+
+CREATE INDEX idx_point_events_enrollment ON point_events(enrollment_id, occurred_at DESC);
+CREATE INDEX idx_point_events_source ON point_events(enrollment_id, source);
