@@ -368,7 +368,7 @@ INSERT INTO project_briefs (id, title, description, brief, stack, level, deadlin
 
 **Fonctionnalités :**
 - Commande : dyg-scan <username> → affiche les stats du profil
-- Output : tableau formaté avec les 7 piliers + archétype
+- Output : tableau formaté avec les 8 piliers + archétype
 - Options : --json (output JSON), --verbose (détails), --compare <user2>
 - Cache : sauvegarde les résultats pendant 1h (SQLite)
 - Couleurs : output coloré dans le terminal (ANSI codes)

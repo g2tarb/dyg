@@ -18,9 +18,9 @@ Self-taught developers have skills but no proof. GitHub is unreadable. LinkedIn 
 
 DYG scans a developer's GitHub profile and generates a complete developer identity in 10 seconds:
 
-- **7-pillar scoring** — Code, Velocity, Craft, Collaboration, Versatility, Creativity, Autonomy (1-10 scale)
-- **7 archetypes** — Architect, Shipper, Artisan, Creative, Explorer, Commando, Mentor
-- **Dev style detection** — Traditional, Vibe Coder, or IA Architect
+- **8-pillar scoring** — Code, Velocity, Craft, Collaboration, Versatility, Creativity, Autonomy, IA Mastery (1-10 scale)
+- **8 archetypes** — Architect, Shipper, Artisan, Creative, Explorer, Commando, Mentor, Synth
+- **Dev style detection** — Traditional, Vibe Coder, or AI-Driven
 - **AI-generated bio** — Based on actual code patterns, not self-declaration
 
 ---
@@ -59,7 +59,7 @@ DYG scans a developer's GitHub profile and generates a complete developer identi
 - 150+ training exercises
 - 11 team project briefs
 - 420+ i18n keys (EN/FR)
-- 7-pillar scoring algorithm (V4.3)
+- 8-pillar scoring algorithm (V4.4)
 
 ---
 

@@ -10,7 +10,8 @@ const ARCHETYPES = [
   { key: 'creative', name: 'Creative', color: '#A855F7', image: '/assets/archetypes/creative.png' },
   { key: 'explorer', name: 'Explorer', color: '#06B6D4', image: '/assets/archetypes/explorer.png' },
   { key: 'commando', name: 'Commando', color: '#EF4444', image: '/assets/archetypes/commando.png' },
-  { key: 'mentor', name: 'Mentor', color: '#F97316', image: '/assets/archetypes/mentor.png' }
+  { key: 'mentor', name: 'Mentor', color: '#F97316', image: '/assets/archetypes/mentor.png' },
+  { key: 'synth', name: 'Synth', color: '#EC4899', image: '/assets/archetypes/synth.png' }
 ];
 
 function renderLanding(container) {
@@ -19,7 +20,7 @@ function renderLanding(container) {
     <section class="tj-hero">
       <div class="tj-hero__overlay"></div>
       <div class="tj-hero__center">
-        <h1 class="tj-hero__title">DYG <span class="tj-hero__alpha">alpha</span></h1>
+        <h1 class="tj-hero__title">DYG<span class="tj-hero__alpha" aria-label="alpha"><span>a</span><span>l</span><span>p</span><span>h</span><span>a</span></span></h1>
         <p class="tj-hero__subtitle">${t('landing.hero_title')}</p>
         <p class="tj-hero__desc">${t('landing.hero_sub')}</p>
 
@@ -29,7 +30,6 @@ function renderLanding(container) {
             <input type="text" class="tj-hero__input" id="hero-github-input" placeholder="${t('landing.scan_placeholder')}" autocomplete="off" spellcheck="false">
             <button class="btn-primary btn-primary--lg tj-hero__scan-btn" id="hero-scan-btn">${t('landing.scan_btn')}</button>
           </div>
-          <a href="/auth/github" class="btn-secondary tj-hero__login">${t('common.login')}</a>
           <p class="tj-hero__error" id="hero-scan-error" style="display:none;"></p>
           <div class="tj-hero__progress" id="hero-scan-progress" style="display:none;">
             <div class="tj-hero__bar"><div class="tj-hero__bar-fill" id="hero-scan-bar"></div></div>
@@ -64,7 +64,7 @@ function renderLanding(container) {
           <span class="tj-stat__label">${t('landing.stat_exercises')}</span>
         </div>
         <div class="tj-stat">
-          <span class="tj-stat__number">7</span>
+          <span class="tj-stat__number">8</span>
           <span class="tj-stat__label">${t('landing.stat_archetypes')}</span>
         </div>
         <div class="tj-stat">
@@ -90,7 +90,7 @@ function renderLanding(container) {
           </div>
           <div class="tj-feature-card">
             <div class="tj-feature-card__icon" style="background: rgba(232, 98, 10, 0.1); color: #E8620A;">&#9733;</div>
-            <h3 class="tj-feature-card__title">7 Archetypes</h3>
+            <h3 class="tj-feature-card__title">8 Archetypes</h3>
             <p class="tj-feature-card__desc">${t('landing.archetypes_sub')}</p>
           </div>
           <div class="tj-feature-card">

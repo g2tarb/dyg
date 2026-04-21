@@ -80,8 +80,9 @@ INSERT INTO developers (id, name, avatar_url, bio, archetype, price_range, githu
  '["C#", "Unity", "GDScript", "Godot"]');
 
 -- ==========================================
--- SCORES (7 piliers × 14 devs = 98 rows)
--- Pillars: code, velocity, craft, collaboration, versatility, creativity, autonomy
+-- SCORES (14 legacy devs × 7 piliers + 2 synth devs × 8 piliers)
+-- Legacy pillars: code, velocity, craft, collaboration, versatility, creativity, autonomy
+-- Synth devs also score the 8th pillar: ia
 -- ==========================================
 
 -- Kael Andersen (Architect) — code:9, autonomy:9

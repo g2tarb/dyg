@@ -39,8 +39,8 @@ export default {
   'landing.step2_desc': 'Trouve des devs qui complètent tes forces. Formez une équipe. Lancez un vrai projet avec des rôles et des deadlines. Fini le code solo.',
   'landing.step3_title': 'Prouver',
   'landing.step3_desc': 'Chaque projet livré enrichit ton portfolio. Tes coéquipiers te notent, tes scores évoluent. Tu vises une école ? Ton profil DYG parle pour toi.',
-  'landing.archetypes_title': '7 archétypes. Lequel es-tu ?',
-  'landing.archetypes_sub': 'Architecte, Shipper, Artisan, Créatif, Explorateur, Commando, Mentor. Ton style de dev définit ton rôle dans une équipe.',
+  'landing.archetypes_title': '8 archétypes. Lequel es-tu ?',
+  'landing.archetypes_sub': 'Architecte, Shipper, Artisan, Créatif, Explorateur, Commando, Mentor, Synth. Ton style de dev définit ton rôle dans une équipe.',
   'landing.cta_bottom_title': 'Rejoins la communauté.',
   'landing.cta_bottom_sub': 'Booste tes skills. Rencontre des devs. Livre des projets. Construis un portfolio vivant. Gratuit.',
   'landing.scan_prompt': 'Découvre ton archétype en 10 secondes',
@@ -345,8 +345,8 @@ export default {
   'about.pillars_sub': 'Chaque pilier est un muscle. Plus tu l\'utilises, plus il se développe. Le scoring initial vient de ton GitHub. Ensuite, chaque projet le fait évoluer.',
 
   'about.archetypes_num': '04',
-  'about.archetypes_label': 'Les 7 Archétypes',
-  'about.archetypes_title': '7 façons de coder.\n7 identités de dev.',
+  'about.archetypes_label': 'Les 8 Archétypes',
+  'about.archetypes_title': '8 façons de coder.\n8 identités de dev.',
   'about.archetypes_sub': 'Chaque développeur est unique. L\'archétype capture son ADN : ses 2 piliers dominants définissent son style, sa force, son rôle naturel dans une équipe. Et il peut évoluer \u2014 un Shipper qui polit son craft peut devenir Artisan.',
 
   'about.synergy_num': '05',
