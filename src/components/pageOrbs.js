@@ -6,7 +6,8 @@
 
 const ORB_COLORS = [
   [59, 130, 246], [34, 197, 94], [245, 197, 66],
-  [168, 85, 247], [6, 182, 212], [239, 68, 68], [249, 115, 22]
+  [168, 85, 247], [6, 182, 212], [239, 68, 68], [249, 115, 22],
+  [236, 72, 153]
 ];
 
 // Movement patterns — each returns {x, y} from orb state + canvas size
@@ -126,19 +127,83 @@ export function initPageOrbs(canvas) {
   let scrollSpeed = 0;
   let lastScrollY = window.scrollY;
 
+  const CAPTURE_COUNT = 8;
   const orbs = [];
   for (let i = 0; i < 21; i++) {
     const phase = (Math.PI * 2 / 21) * i;
+    const captured = i < CAPTURE_COUNT;
     orbs.push({
-      color: ORB_COLORS[i % 7],
+      color: ORB_COLORS[i % ORB_COLORS.length],
       angle: phase + Math.random() * 0.5,
       rx: 90 + Math.random() * 320,
       ry: 30 + Math.random() * 120,
       speed: 0.1 + Math.random() * 0.2,
       size: 1.5 + Math.random() * 3.5,
-      phase: Math.random()
+      phase: Math.random(),
+      captureSlot: captured ? (Math.PI * 2 / CAPTURE_COUNT) * i : 0,
+      capturable: captured
     });
   }
+
+  // --- Button magnetism: 8 orbs get pulled into orbit around hovered .btn-primary ---
+  let activeBtn = null;
+  let captureTarget = null;
+  let captureStrength = 0;
+  const hasHover = window.matchMedia('(hover: hover)').matches;
+
+  function refreshTarget() {
+    if (activeBtn && document.body.contains(activeBtn)) {
+      const rect = activeBtn.getBoundingClientRect();
+      const pad = 22;
+      captureTarget = {
+        cx: rect.left + rect.width / 2,
+        cy: rect.top + rect.height / 2,
+        rx: rect.width / 2 + pad + 10,
+        ry: rect.height / 2 + pad
+      };
+    } else {
+      captureTarget = null;
+    }
+  }
+
+  function onBtnOver(e) {
+    const btn = e.target.closest('.btn-primary');
+    if (btn && btn !== activeBtn) {
+      activeBtn = btn;
+      refreshTarget();
+    }
+  }
+
+  function onBtnOut(e) {
+    if (!activeBtn) return;
+    const next = e.relatedTarget;
+    if (next && activeBtn.contains(next)) return;
+    activeBtn = null;
+  }
+
+  if (hasHover) {
+    document.addEventListener('mouseover', onBtnOver, true);
+    document.addEventListener('mouseout', onBtnOut, true);
+  }
+
+  // --- Archetype hover: tint all background orbs + pulse ---
+  let archetypeOverride = null; // [r, g, b] or null
+  let overrideStrength = 0;
+
+  function hexToRgb(hex) {
+    if (!hex || hex[0] !== '#') return null;
+    return [
+      parseInt(hex.slice(1, 3), 16),
+      parseInt(hex.slice(3, 5), 16),
+      parseInt(hex.slice(5, 7), 16)
+    ];
+  }
+
+  function onArchetypeHover(e) {
+    const color = e.detail?.color;
+    archetypeOverride = color ? hexToRgb(color) : null;
+  }
+  window.addEventListener('dyg:archetype-hover', onArchetypeHover);
 
   function onScroll() {
     const delta = window.scrollY - lastScrollY;
@@ -174,18 +239,52 @@ export function initPageOrbs(canvas) {
     const white = Math.min(scrollSpeed / 3, 1);
     const dir = window.__dygScrollDir || 1;
 
+    // Capture target tracks the hovered button every frame (handles scroll).
+    refreshTarget();
+    captureStrength = lerp(captureStrength, captureTarget ? 1 : 0, 0.08);
+    overrideStrength = lerp(overrideStrength, archetypeOverride ? 1 : 0, 0.09);
+
+    const now = performance.now();
+
     for (const orb of orbs) {
       orb.angle += orb.speed * speedMul * 0.01 * dir;
 
-      const { x, y } = patternFn(orb, cx, cy, w, h);
+      const natural = patternFn(orb, cx, cy, w, h);
+      let x = natural.x;
+      let y = natural.y;
+
+      let captureT = 0;
+      if (orb.capturable && captureTarget && captureStrength > 0.005) {
+        captureT = captureStrength;
+        const capAngle = orb.captureSlot + orb.angle * 2;
+        const capX = captureTarget.cx + Math.cos(capAngle) * captureTarget.rx;
+        const capY = captureTarget.cy + Math.sin(capAngle) * captureTarget.ry;
+        x = lerp(natural.x, capX, captureT);
+        y = lerp(natural.y, capY, captureT);
+      }
 
       const depth = (Math.sin(orb.angle) + 1) / 2;
-      const scale = 0.35 + depth * 0.65;
-      const alpha = 0.2 + depth * 0.65;
+      const baseScale = 0.35 + depth * 0.65;
+      const baseAlpha = 0.2 + depth * 0.65;
 
-      const r = Math.round(lerp(orb.color[0], 255, white));
-      const g = Math.round(lerp(orb.color[1], 255, white));
-      const b = Math.round(lerp(orb.color[2], 255, white));
+      // Pulse (only active when archetype override is engaged)
+      const pulseBeat = (Math.sin(now * 0.004 + orb.phase * 6.28) + 1) / 2; // 0..1
+      const pulseBoost = overrideStrength * pulseBeat;
+      const scale = lerp(baseScale, 1, captureT) * (1 + pulseBoost * 0.7);
+      const alpha = Math.min(1, lerp(baseAlpha, 0.95, captureT) * (1 + pulseBoost * 0.5));
+
+      // Color: native → override (archetype tint) → white (scroll)
+      let baseR = orb.color[0], baseG = orb.color[1], baseB = orb.color[2];
+      if (archetypeOverride || overrideStrength > 0.01) {
+        const tgt = archetypeOverride || orb.color;
+        baseR = lerp(orb.color[0], tgt[0], overrideStrength);
+        baseG = lerp(orb.color[1], tgt[1], overrideStrength);
+        baseB = lerp(orb.color[2], tgt[2], overrideStrength);
+      }
+
+      const r = Math.round(lerp(baseR, 255, white));
+      const g = Math.round(lerp(baseG, 255, white));
+      const b = Math.round(lerp(baseB, 255, white));
 
       const sz = orb.size * scale;
       const gr = sz * 6;
@@ -217,6 +316,11 @@ export function initPageOrbs(canvas) {
     cancelAnimationFrame(animFrame);
     window.removeEventListener('scroll', onScroll);
     window.removeEventListener('resize', resize);
+    if (hasHover) {
+      document.removeEventListener('mouseover', onBtnOver, true);
+      document.removeEventListener('mouseout', onBtnOut, true);
+    }
+    window.removeEventListener('dyg:archetype-hover', onArchetypeHover);
     window.__dygScrollSpeed = 0;
   };
 }
