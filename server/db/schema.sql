@@ -306,8 +306,17 @@ CREATE INDEX idx_code_samples_lang ON code_samples(language);
 -- Messagerie
 CREATE TABLE conversations (
   id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
+  type VARCHAR(20) NOT NULL DEFAULT 'dm'
+    CHECK (type IN ('dm', 'global', 'archetype', 'project')),
+  scope VARCHAR(64),
+  name VARCHAR(100),
   created_at TIMESTAMPTZ DEFAULT NOW()
 );
+
+CREATE UNIQUE INDEX idx_conversations_system
+  ON conversations(type, scope)
+  WHERE type IN ('global', 'archetype', 'project');
+CREATE INDEX idx_conversations_type ON conversations(type);
 
 CREATE TABLE conversation_participants (
   conversation_id UUID NOT NULL REFERENCES conversations(id) ON DELETE CASCADE,

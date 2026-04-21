@@ -266,6 +266,21 @@ INSERT INTO seasons (slug, name, starts_at, ends_at, status) VALUES
   ('2025-2026', 'Saison 2025-2026', '2025-09-01 00:00:00+00', '2026-09-01 00:00:00+00', 'active');
 
 -- ==========================================
+-- SYSTEM CONVERSATIONS (1 global + 8 archetype)
+-- ==========================================
+
+INSERT INTO conversations (type, scope, name) VALUES
+  ('global',    NULL,         'Global Community'),
+  ('archetype', 'architect',  'Architect Division'),
+  ('archetype', 'shipper',    'Shipper Division'),
+  ('archetype', 'artisan',    'Artisan Division'),
+  ('archetype', 'creative',   'Creative Division'),
+  ('archetype', 'explorer',   'Explorer Division'),
+  ('archetype', 'commando',   'Commando Division'),
+  ('archetype', 'mentor',     'Mentor Division'),
+  ('archetype', 'synth',      'Synth Division');
+
+-- ==========================================
 -- DEMO USERS (fake, for portfolio showcase)
 -- ==========================================
 
