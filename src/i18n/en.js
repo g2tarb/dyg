@@ -21,10 +21,11 @@ export default {
   'header.messages': 'Messages',
 
   // Landing
-  'landing.hero_title': 'Become the dev you want to be.',
-  'landing.hero_sub': 'Train on 150+ exercises. Meet devs. Ship real team projects. Everything you do builds your portfolio — visible, measurable, provable.',
+  'landing.hero_title': 'Train. Connect. Ship together.',
+  'landing.hero_sub': 'Self-taught, students, seniors — the platform connecting devs who want to level up together. Scan your GitHub, train on 150+ exercises, form a team and ship real projects. Your skills become living proof. And if you\'re aiming for 42, Epitech or HETIC, show up with an edge. 100% free.',
+  'landing.free_badge': '100% free · no credit card',
   'landing.tagline': 'Progress. Meet. Prove.',
-  'landing.pitch': 'The free platform where self-taught devs boost their skills, code together, and build a portfolio no one can ignore.',
+  'landing.pitch': 'An open platform for all devs — beginners, self-taught, seniors. To train, meet, code together, ship real projects and build a living proof of what you can do.',
   'landing.pitch_bold': 'Scan your GitHub to discover your profile. Join a community of devs who want to level up. Form teams. Ship real projects. And if you\'re aiming for 42, Epitech, or HETIC — show up with an advantage others don\'t have.',
   'landing.cta_find': 'Scan my GitHub',
   'landing.cta_discover': 'Discover DYG',
@@ -42,15 +43,20 @@ export default {
   'landing.archetypes_title': '8 archetypes. Which one are you?',
   'landing.archetypes_sub': 'Architect, Shipper, Artisan, Creative, Explorer, Commando, Mentor, Synth. Your coding style defines your role in a team.',
   'landing.cta_bottom_title': 'Join the community.',
-  'landing.cta_bottom_sub': 'Boost your skills. Meet devs. Ship projects. Build a living portfolio. Free.',
+  'landing.cta_bottom_sub': 'Every level. Every profile. One rule: we level up together.',
   'landing.scan_prompt': 'Discover your archetype in 10 seconds',
   'landing.scan_placeholder': 'Your GitHub username',
   'landing.scan_btn': 'Scan',
   'landing.scan_full': 'See full profile →',
 
   // Feature cards (landing)
-  'landing.feature_scan': 'DYG analyzes your repos, commits, languages, and GitHub activity. In 10 seconds, you get an 8-axis score and your complete dev profile.',
-  'landing.feature_dual': 'Every exercise is graded on 2 dimensions: code quality (gold stars) and independence (gray stars). Requesting a hint costs you independence.',
+  'landing.feature_scan_title': 'GitHub Scan',
+  'landing.feature_scan': 'DYG analyzes your repos, commits, languages, and GitHub activity. In 10 seconds, you get an 8-axis score and your dev archetype.',
+  'landing.feature_train_title': 'Train',
+  'landing.feature_train': '150+ exercises across 7 languages. Dual rating: code quality (gold stars) + independence (gray stars). Requesting a hint costs you independence.',
+  'landing.feature_team_title': 'Code as a team',
+  'landing.feature_team': 'Form a complementary team with other devs. Ship a real project with deadlines. Your teammates rate you at project close, and your scores evolve.',
+  'landing.feature_portfolio_title': 'Living portfolio',
   'landing.feature_portfolio': 'A public profile with your scores, shipped projects, and progression history. Shareable with a jury, recruiter, or school. Not self-declared — proven.',
 
   // Stats bar (landing)

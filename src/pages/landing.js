@@ -30,6 +30,7 @@ function renderLanding(container) {
             <input type="text" class="tj-hero__input" id="hero-github-input" placeholder="${t('landing.scan_placeholder')}" autocomplete="off" spellcheck="false">
             <button class="btn-primary btn-primary--lg tj-hero__scan-btn" id="hero-scan-btn">${t('landing.scan_btn')}</button>
           </div>
+          <span class="tj-hero__free-badge">${t('landing.free_badge')}</span>
           <p class="tj-hero__error" id="hero-scan-error" style="display:none;"></p>
           <div class="tj-hero__progress" id="hero-scan-progress" style="display:none;">
             <div class="tj-hero__bar"><div class="tj-hero__bar-fill" id="hero-scan-bar"></div></div>
@@ -74,6 +75,34 @@ function renderLanding(container) {
       </div>
     </section>
 
+    <!-- HOW IT WORKS — 3 pôles -->
+    <section class="tj-how">
+      <div class="container">
+        <div class="tj-section-header">
+          <span class="tj-section-label">Parcours</span>
+          <h2 class="tj-section-title">${t('landing.how_title')}</h2>
+          <p class="tj-section-sub">${t('landing.how_sub')}</p>
+        </div>
+        <div class="tj-how__steps">
+          <div class="tj-how__step" id="step-1">
+            <div class="tj-how__step-num">01</div>
+            <h3 class="tj-how__step-title">${t('landing.step1_title')}</h3>
+            <p class="tj-how__step-desc">${t('landing.step1_desc')}</p>
+          </div>
+          <div class="tj-how__step" id="step-2">
+            <div class="tj-how__step-num">02</div>
+            <h3 class="tj-how__step-title">${t('landing.step2_title')}</h3>
+            <p class="tj-how__step-desc">${t('landing.step2_desc')}</p>
+          </div>
+          <div class="tj-how__step" id="step-3">
+            <div class="tj-how__step-num">03</div>
+            <h3 class="tj-how__step-title">${t('landing.step3_title')}</h3>
+            <p class="tj-how__step-desc">${t('landing.step3_desc')}</p>
+          </div>
+        </div>
+      </div>
+    </section>
+
     <!-- FEATURES GRID -->
     <section class="tj-features" id="section-features">
       <div class="container">
@@ -82,35 +111,25 @@ function renderLanding(container) {
           <h2 class="tj-section-title">${t('landing.tagline')}</h2>
           <p class="tj-section-sub">${t('landing.pitch')}</p>
         </div>
-        <div class="tj-features__grid">
+        <div class="tj-features__grid tj-features__grid--4">
           <div class="tj-feature-card">
             <div class="tj-feature-card__icon" style="background: rgba(59, 130, 246, 0.1); color: #3B82F6;">&#9781;</div>
-            <h3 class="tj-feature-card__title">GitHub Scan</h3>
+            <h3 class="tj-feature-card__title">${t('landing.feature_scan_title')}</h3>
             <p class="tj-feature-card__desc">${t('landing.feature_scan')}</p>
           </div>
           <div class="tj-feature-card">
-            <div class="tj-feature-card__icon" style="background: rgba(232, 98, 10, 0.1); color: #E8620A;">&#9733;</div>
-            <h3 class="tj-feature-card__title">8 Archetypes</h3>
-            <p class="tj-feature-card__desc">${t('landing.archetypes_sub')}</p>
-          </div>
-          <div class="tj-feature-card">
             <div class="tj-feature-card__icon" style="background: rgba(245, 197, 66, 0.1); color: #F5C542;">&#9881;</div>
-            <h3 class="tj-feature-card__title">Dual Rating</h3>
-            <p class="tj-feature-card__desc">${t('landing.feature_dual')}</p>
+            <h3 class="tj-feature-card__title">${t('landing.feature_train_title')}</h3>
+            <p class="tj-feature-card__desc">${t('landing.feature_train')}</p>
           </div>
           <div class="tj-feature-card">
             <div class="tj-feature-card__icon" style="background: rgba(34, 197, 94, 0.1); color: #22C55E;">&#9776;</div>
-            <h3 class="tj-feature-card__title">Team Projects</h3>
-            <p class="tj-feature-card__desc">${t('landing.step2_desc')}</p>
+            <h3 class="tj-feature-card__title">${t('landing.feature_team_title')}</h3>
+            <p class="tj-feature-card__desc">${t('landing.feature_team')}</p>
           </div>
           <div class="tj-feature-card">
-            <div class="tj-feature-card__icon" style="background: rgba(168, 85, 247, 0.1); color: #A855F7;">&#10003;</div>
-            <h3 class="tj-feature-card__title">Peer Review</h3>
-            <p class="tj-feature-card__desc">${t('landing.step3_desc')}</p>
-          </div>
-          <div class="tj-feature-card">
-            <div class="tj-feature-card__icon" style="background: rgba(6, 182, 212, 0.1); color: #06B6D4;">&#9670;</div>
-            <h3 class="tj-feature-card__title">Public Portfolio</h3>
+            <div class="tj-feature-card__icon" style="background: rgba(236, 72, 153, 0.1); color: #EC4899;">&#9670;</div>
+            <h3 class="tj-feature-card__title">${t('landing.feature_portfolio_title')}</h3>
             <p class="tj-feature-card__desc">${t('landing.feature_portfolio')}</p>
           </div>
         </div>
@@ -305,7 +324,7 @@ function renderLanding(container) {
     });
   }, { threshold: 0.15 });
 
-  container.querySelectorAll('.tj-feature-card, .tj-archetype, .tj-stat').forEach(el => observer.observe(el));
+  container.querySelectorAll('.tj-feature-card, .tj-archetype, .tj-stat, .tj-how__step').forEach(el => observer.observe(el));
 
   // ===== ARCHETYPE HOVER → NAV LOGO COLOR SYNC =====
   container.querySelectorAll('.tj-archetype').forEach(el => {
