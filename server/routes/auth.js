@@ -7,6 +7,7 @@ import { UnauthorizedError } from '../utils/errors.js';
 import { checkAndAwardBadges, getUserBadges } from '../services/badges.js';
 import { getRecommendations } from '../services/recommend.js';
 import { enrollUserInActiveSeason } from '../services/seasons.js';
+import { syncGithubPointsForUser } from '../services/githubPoints.js';
 import env from '../config/env.js';
 
 async function authRoutes(fastify) {
@@ -263,6 +264,10 @@ async function authRoutes(fastify) {
     } catch (err) {
       request.log.warn({ err, userId, division: primary }, 'Season enrollment failed (non-fatal)');
     }
+
+    // Fire-and-forget initial GitHub points sync (activity + substance).
+    syncGithubPointsForUser(userId)
+      .catch(err => request.log.warn({ err, userId }, 'Initial GitHub points sync failed'));
 
     return { ok: true, developer_id: devId, badges_earned: awarded };
   });

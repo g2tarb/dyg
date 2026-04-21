@@ -2,6 +2,7 @@ import pool from '../db/connection.js';
 import { UnauthorizedError } from '../utils/errors.js';
 import { reviewSubmission } from '../services/reviewer.js';
 import { checkAndAwardBadges } from '../services/badges.js';
+import { awardPoints } from '../services/seasons.js';
 
 async function trainingRoutes(fastify) {
   // GET /api/training/tracks — list all tracks with progress
@@ -237,6 +238,11 @@ async function trainingRoutes(fastify) {
     `, [repo_url || null, goldStars, exerciseId, userId]);
 
     checkAndAwardBadges(userId, 'training_submit').catch(() => {});
+    awardPoints(userId, 'dyg', 'exercise_completed', 0.5, {
+      exercise_id: exerciseId,
+      gold_stars: goldStars
+    }).catch(err => request.log.warn({ err }, 'awardPoints(exercise_completed) failed'));
+
     return { ok: true, status: 'reviewed', gold_stars: goldStars, feedback };
   });
 

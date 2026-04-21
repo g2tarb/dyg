@@ -26,6 +26,7 @@ import reputationRoutes from './routes/reputation.js';
 import trainingRoutes from './routes/training.js';
 import seasonRoutes from './routes/seasons.js';
 import { decayAbandons } from './services/ban.js';
+import { syncGithubPointsAllEnrolled } from './services/githubPoints.js';
 
 const __dirname = dirname(fileURLToPath(import.meta.url));
 const isProd = env.NODE_ENV === 'production';
@@ -271,6 +272,13 @@ const gcInterval = setInterval(() => {
   decayAbandons().catch(err => fastify.log.error(err, 'Abandon decay failed'));
 }, 60 * 60 * 1000);
 gcInterval.unref();
+
+// --- GitHub points batch sync (every 6 hours) ---
+const githubSyncInterval = setInterval(() => {
+  syncGithubPointsAllEnrolled(fastify.log)
+    .catch(err => fastify.log.error(err, 'GitHub points batch failed'));
+}, 6 * 60 * 60 * 1000);
+githubSyncInterval.unref();
 
 // --- Production: serve built frontend ---
 if (isProd) {

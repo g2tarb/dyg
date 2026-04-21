@@ -19,6 +19,7 @@ export default {
   'header.projects': 'Projets',
   'header.team': 'Ma team',
   'header.messages': 'Messages',
+  'header.leaderboard': 'Classement',
 
   // Landing
   'landing.hero_title': 'S\'entraîner. Se connecter. Livrer ensemble.',
@@ -254,6 +255,27 @@ export default {
   'recommend.complements': 'Complémente tes lacunes',
   'recommend.different': 'Archétype différent',
   'recommend.balanced': 'Profil équilibré',
+
+  // Leaderboard
+  'leaderboard.title': 'Classement de ma division',
+  'leaderboard.season': 'Saison active',
+  'leaderboard.division': 'Division',
+  'leaderboard.my_rank': 'Mon rang',
+  'leaderboard.of': 'sur',
+  'leaderboard.total': 'Total',
+  'leaderboard.github_pts': 'Points GitHub',
+  'leaderboard.dyg_pts': 'Points DYG',
+  'leaderboard.ranking': 'Classement',
+  'leaderboard.col_dev': 'Dev',
+  'leaderboard.col_gh': 'GH',
+  'leaderboard.col_dyg': 'DYG',
+  'leaderboard.col_total': 'Total',
+  'leaderboard.you': 'toi',
+  'leaderboard.empty': 'Personne d\'autre dans ta division pour l\'instant. Tu es pionnier.',
+  'leaderboard.not_enrolled': 'Complète ton onboarding et scan ton GitHub pour rejoindre la saison.',
+  'leaderboard.login_required': 'Connecte-toi pour voir le classement de ta division.',
+  'leaderboard.days_left': 'jours restants',
+  'leaderboard.note': 'Seuls les devs de ta division voient ce classement. Chaque division a le sien.',
 
   // Training
   'training.title': 'Entraînement',

@@ -19,6 +19,7 @@ export default {
   'header.projects': 'Projects',
   'header.team': 'My team',
   'header.messages': 'Messages',
+  'header.leaderboard': 'Leaderboard',
 
   // Landing
   'landing.hero_title': 'Train. Connect. Ship together.',
@@ -254,6 +255,27 @@ export default {
   'recommend.complements': 'Complements your gaps',
   'recommend.different': 'Different archetype',
   'recommend.balanced': 'Balanced profile',
+
+  // Leaderboard
+  'leaderboard.title': 'My division leaderboard',
+  'leaderboard.season': 'Active season',
+  'leaderboard.division': 'Division',
+  'leaderboard.my_rank': 'My rank',
+  'leaderboard.of': 'of',
+  'leaderboard.total': 'Total',
+  'leaderboard.github_pts': 'GitHub points',
+  'leaderboard.dyg_pts': 'DYG points',
+  'leaderboard.ranking': 'Ranking',
+  'leaderboard.col_dev': 'Dev',
+  'leaderboard.col_gh': 'GH',
+  'leaderboard.col_dyg': 'DYG',
+  'leaderboard.col_total': 'Total',
+  'leaderboard.you': 'you',
+  'leaderboard.empty': 'No one else in your division yet. You\'re a pioneer.',
+  'leaderboard.not_enrolled': 'Complete onboarding and scan your GitHub to join the season.',
+  'leaderboard.login_required': 'Log in to see your division leaderboard.',
+  'leaderboard.days_left': 'days left',
+  'leaderboard.note': 'Only devs in your division see this leaderboard. Each division has its own.',
 
   // Training
   'training.title': 'Training',

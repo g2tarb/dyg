@@ -4,6 +4,7 @@ import { CreateProjectSchema, UpdateProjectSchema, SubmitReviewsSchema, REVIEW_P
 import { UnauthorizedError, NotFoundError, ForbiddenError } from '../utils/errors.js';
 import { recordAbandon, isUserBanned } from '../services/ban.js';
 import { checkAndAwardBadges } from '../services/badges.js';
+import { awardPoints } from '../services/seasons.js';
 
 async function getProjectWithMembers(projectId) {
   const projResult = await pool.query('SELECT * FROM projects WHERE id = $1', [projectId]);
@@ -163,6 +164,16 @@ async function projectRoutes(fastify) {
           await pool.query('UPDATE projects SET status = $1 WHERE id = $2', [current.status, id]);
           return reply.code(500).send({ error: 'Closing ritual failed, status reverted' });
         }
+
+        // Award 5 DYG pts to each member for shipping the project.
+        const memberIds = await pool.query(
+          'SELECT user_id FROM project_members WHERE project_id = $1',
+          [id]
+        );
+        for (const row of memberIds.rows) {
+          awardPoints(row.user_id, 'dyg', 'project_shipped', 5, { project_id: id })
+            .catch(err => fastify.log.warn({ err, userId: row.user_id }, 'awardPoints(project_shipped) failed'));
+        }
       }
     }
 
@@ -305,6 +316,7 @@ async function projectRoutes(fastify) {
     const memberIds = new Set(membersResult.rows.map(r => r.user_id));
 
     // Validate and insert reviews
+    let revieweesCount = 0;
     for (const review of reviews) {
       if (review.user_id === reviewerId) continue; // Can't review yourself
 
@@ -320,6 +332,15 @@ async function projectRoutes(fastify) {
           DO UPDATE SET rating = $5, created_at = NOW()
         `, [id, reviewerId, review.user_id, pillar, review[pillar]]);
       }
+      revieweesCount++;
+    }
+
+    // One DYG point per teammate reviewed (not per pillar — avoids 3x inflation).
+    if (revieweesCount > 0) {
+      awardPoints(reviewerId, 'dyg', 'peer_review_given', revieweesCount, {
+        project_id: id,
+        reviewees: revieweesCount
+      }).catch(err => request.log.warn({ err }, 'awardPoints(peer_review_given) failed'));
     }
 
     return { ok: true };

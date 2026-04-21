@@ -42,6 +42,7 @@ function createHeader() {
           </a>
           <a href="#/projects" class="header-menu__item">${t('header.projects')}</a>
           <a href="#/training" class="header-menu__item">${t('training.title')}</a>
+          <a href="#/leaderboard" class="header-menu__item">${t('header.leaderboard')}</a>
           <a href="#/search" class="header-menu__item">${t('header.explore')}</a>
           <div class="header-menu__sep"></div>
           <a href="#/u/${escapeHTML(user.github_login)}" class="header-menu__item header-menu__profile">
