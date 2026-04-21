@@ -22,6 +22,7 @@ export default {
   'header.leaderboard': 'Leaderboard',
   'header.friends': 'Friends',
   'header.notifications': 'Notifications',
+  'header.wars': 'DYG Wars',
 
   // Landing
   'landing.hero_title': 'Train. Connect. Ship together.',
@@ -327,6 +328,26 @@ export default {
   'notifications.login_required': 'Log in to see your notifications.',
   'projects.deadline_label': 'Deadline (optional)',
   'projects.deadline_hint': 'Enables D-7, D-3, D-1, D-day and overdue reminders.',
+
+  // Wars
+  'wars.sub': 'One inter-division war per month. 8 archetypes face off on a single brief. 2 days to staff, 2 weeks to build, 2 days to judge.',
+  'wars.history': 'History',
+  'wars.no_current': 'No active war right now. The next one starts on the 1st of the month.',
+  'wars.no_history': 'No past wars.',
+  'wars.back': 'Back',
+  'wars.no_teams_yet': 'No team enrolled yet. Be the first of your division.',
+  'wars.join_division': 'Join the {division} team',
+  'wars.leave': 'Leave my team',
+  'wars.staffing_ends': 'Staffing ends',
+  'wars.build_ends': 'Build ends',
+  'wars.judging_ends': 'Judging ends',
+  'wars.submit_title': 'Delivery (lead only)',
+  'wars.submit_btn': 'Update',
+  'wars.see_delivery': 'Open delivery',
+  'wars.team_empty': 'No members yet. Join!',
+  'wars.rate_comment_ph': 'Feedback (optional)',
+  'wars.rate_submit': 'Rate',
+  'wars.done': 'Done',
 
   // Training
   'training.title': 'Training',

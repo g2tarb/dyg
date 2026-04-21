@@ -22,6 +22,7 @@ export default {
   'header.leaderboard': 'Classement',
   'header.friends': 'Amis',
   'header.notifications': 'Notifications',
+  'header.wars': 'DYG Wars',
 
   // Landing
   'landing.hero_title': 'S\'entraîner. Se connecter. Livrer ensemble.',
@@ -327,6 +328,26 @@ export default {
   'notifications.login_required': 'Connecte-toi pour voir tes notifications.',
   'projects.deadline_label': 'Deadline (facultatif)',
   'projects.deadline_hint': 'Active les rappels J-7, J-3, J-1, J-0 et en cas de retard.',
+
+  // Wars
+  'wars.sub': 'Une guerre inter-divisions par mois. 8 archétypes s\'affrontent sur un même brief. 2 jours pour se composer, 2 semaines pour livrer, 2 jours pour juger.',
+  'wars.history': 'Historique',
+  'wars.no_current': 'Aucune war active pour l\'instant. La prochaine démarre au 1er du mois.',
+  'wars.no_history': 'Aucune war passée.',
+  'wars.back': 'Retour',
+  'wars.no_teams_yet': 'Aucune team inscrite encore. Sois le premier de ta division.',
+  'wars.join_division': 'Rejoindre la team {division}',
+  'wars.leave': 'Quitter ma team',
+  'wars.staffing_ends': 'Fin du recrutement',
+  'wars.build_ends': 'Fin du build',
+  'wars.judging_ends': 'Fin du jugement',
+  'wars.submit_title': 'Livraison (lead uniquement)',
+  'wars.submit_btn': 'Mettre à jour',
+  'wars.see_delivery': 'Voir la livraison',
+  'wars.team_empty': 'Aucun membre. Rejoins !',
+  'wars.rate_comment_ph': 'Feedback (optionnel)',
+  'wars.rate_submit': 'Noter',
+  'wars.done': 'Fait',
 
   // Training
   'training.title': 'Entraînement',

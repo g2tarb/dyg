@@ -20,6 +20,7 @@ import { renderTraining } from './pages/training.js';
 import { renderLeaderboard } from './pages/leaderboard.js';
 import { renderFriends } from './pages/friends.js';
 import { renderNotifications } from './pages/notifications.js';
+import { renderWars } from './pages/wars.js';
 import { renderNotFound } from './pages/notFound.js';
 import { createFooter } from './components/footer.js';
 
@@ -60,6 +61,8 @@ registerRoute('/training/:exerciseId', (c, p) => renderTraining(c, { exerciseId:
 registerRoute('/leaderboard', renderLeaderboard);
 registerRoute('/friends', renderFriends);
 registerRoute('/notifications', renderNotifications);
+registerRoute('/wars', renderWars);
+registerRoute('/wars/:id', (c, p) => renderWars(c, { id: p.id }));
 
 // 404 handler
 setNotFoundHandler(renderNotFound);
