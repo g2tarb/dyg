@@ -189,6 +189,52 @@ async function authRoutes(fastify) {
     return { ok: true, tagline: result.rows[0].tagline };
   });
 
+  // PATCH /api/auth/availability — { availability }
+  fastify.patch('/api/auth/availability', async (request, reply) => {
+    try { await request.jwtVerify(); } catch { throw new UnauthorizedError(); }
+    const { availability } = request.body || {};
+    if (!['available', 'in_project', 'unavailable'].includes(availability)) {
+      return reply.code(400).send({ error: 'VALIDATION_FAILED', message: 'Invalid availability' });
+    }
+    await pool.query(
+      'UPDATE users SET availability = $1, updated_at = NOW() WHERE id = $2',
+      [availability, request.user.id]
+    );
+    return { ok: true, availability };
+  });
+
+  // GET /api/auth/preferences
+  fastify.get('/api/auth/preferences', async (request) => {
+    try { await request.jwtVerify(); } catch { throw new UnauthorizedError(); }
+    const r = await pool.query(
+      'SELECT notification_prefs FROM users WHERE id = $1',
+      [request.user.id]
+    );
+    return r.rows[0]?.notification_prefs || {};
+  });
+
+  // PATCH /api/auth/preferences — merge body into users.notification_prefs
+  fastify.patch('/api/auth/preferences', async (request, reply) => {
+    try { await request.jwtVerify(); } catch { throw new UnauthorizedError(); }
+    const body = request.body || {};
+    const allowed = ['email_project_reminders', 'email_dms', 'in_app_friend_requests'];
+    const patch = {};
+    for (const key of allowed) {
+      if (typeof body[key] === 'boolean') patch[key] = body[key];
+    }
+    if (Object.keys(patch).length === 0) {
+      return reply.code(400).send({ error: 'VALIDATION_FAILED', message: 'No valid preference key' });
+    }
+    const r = await pool.query(
+      `UPDATE users
+         SET notification_prefs = notification_prefs || $1::jsonb
+       WHERE id = $2
+       RETURNING notification_prefs`,
+      [JSON.stringify(patch), request.user.id]
+    );
+    return r.rows[0].notification_prefs;
+  });
+
   // DELETE /api/auth/account — GDPR right to be forgotten
   fastify.delete('/api/auth/account', async (request, reply) => {
     try { await request.jwtVerify(); } catch { throw new UnauthorizedError(); }

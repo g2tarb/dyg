@@ -48,6 +48,7 @@ CREATE TABLE users (
   availability VARCHAR(20) DEFAULT 'available'
     CHECK (availability IN ('available', 'in_project', 'unavailable')),
   abandon_count SMALLINT DEFAULT 0,
+  notification_prefs JSONB NOT NULL DEFAULT '{}'::jsonb,
   banned_until TIMESTAMPTZ,
   ban_count SMALLINT DEFAULT 0,
   created_at TIMESTAMPTZ DEFAULT NOW(),
