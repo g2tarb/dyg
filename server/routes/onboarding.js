@@ -1,6 +1,6 @@
 import { fetchGitHubProfile } from '../services/github.js';
 import { determineArchetype } from '../services/scoring.js';
-import { generateBio } from '../services/gemini.js';
+import { buildBio } from '../services/bio.js';
 import { ARCHETYPES } from '../constants/archetypes.js';
 import { ScanSchema } from '../schemas/validation.js';
 
@@ -14,7 +14,7 @@ async function onboardingRoutes(fastify) {
       const profile = await fetchGitHubProfile(parsed.github_username);
       const { primary, secondary } = determineArchetype(profile.scores);
       const archetype = ARCHETYPES[primary];
-      const bio = await generateBio(profile, archetype.name);
+      const bio = buildBio(profile, archetype.name);
 
       return {
         username: profile.username,

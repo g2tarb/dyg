@@ -1,10 +1,8 @@
 import { subscribe, getState, logout } from '../store.js';
 import { escapeHTML } from '../utils/sanitize.js';
-import { showToast } from '../components/toast.js';
 import { t, getLocale, setLocale } from '../i18n/index.js';
 import { createLogoSVG, setupLogoAnimation } from './logo.js';
 
-let unreadPoll = null;
 let cleanupLogoAnim = null;
 
 function createHeader() {
@@ -19,7 +17,7 @@ function createHeader() {
       <nav class="header-nav container">
         <a href="#/" class="header-logo">${createLogoSVG('sm')}<span class="header-alpha">alpha</span></a>
         <div class="header-actions">
-          <a href="#/search" class="header-scan">${t('header.explore')}</a>
+          <a href="#/" class="header-scan">${t('landing.scan_btn')}</a>
           ${user ? `
             <button class="header-burger" id="btn-burger" aria-label="Menu">
               <span></span><span></span><span></span>
@@ -32,33 +30,14 @@ function createHeader() {
       </nav>
       ${user ? `
         <div class="header-menu" id="header-menu">
-          <a href="#/notifications" class="header-menu__item">
-            ${t('header.notifications')}
-            <span class="header-menu__badge" id="notif-badge" style="display:none;">0</span>
-          </a>
-          <a href="#/messages" class="header-menu__item">
-            ${t('header.messages')}
-            <span class="header-menu__badge" id="msg-badge" style="display:none;">0</span>
-          </a>
-          <a href="#/friends" class="header-menu__item">
-            ${t('header.friends')}
-            <span class="header-menu__badge" id="fr-badge" style="display:none;">0</span>
-          </a>
-          <a href="#/team" class="header-menu__item">
-            ${t('header.team')}
-            <span class="header-menu__badge" id="team-badge">0</span>
-          </a>
-          <a href="#/projects" class="header-menu__item">${t('header.projects')}</a>
-          <a href="#/training" class="header-menu__item">${t('training.title')}</a>
-          <a href="#/leaderboard" class="header-menu__item">${t('header.leaderboard')}</a>
-          <a href="#/wars" class="header-menu__item">${t('header.wars')}</a>
-          <a href="#/search" class="header-menu__item">${t('header.explore')}</a>
-          <div class="header-menu__sep"></div>
           <a href="#/u/${escapeHTML(user.github_login)}" class="header-menu__item header-menu__profile">
             <img class="header-menu__avatar" src="${escapeHTML(user.avatar_url)}" alt="" onerror="this.style.display='none'">
             ${escapeHTML(user.name || user.github_login)}
           </a>
-          <a href="#/settings" class="header-menu__item">${t('header.about')}</a>
+          <a href="#/" class="header-menu__item">${t('landing.scan_btn')}</a>
+          <a href="#/about" class="header-menu__item">${t('header.about')}</a>
+          <a href="#/settings" class="header-menu__item">${t('common.settings') || 'Settings'}</a>
+          <div class="header-menu__sep"></div>
           <button class="header-menu__item header-menu__logout" id="btn-logout">${t('common.logout')}</button>
         </div>
       ` : ''}
@@ -119,92 +98,13 @@ function createHeader() {
       render();
     });
 
-    // Badges
-    updateBadge(getState('team'));
-
     // Logo animation
     if (cleanupLogoAnim) cleanupLogoAnim();
     const logoSvg = header.querySelector('.dyg-logo-svg');
     cleanupLogoAnim = setupLogoAnimation(logoSvg);
-
-    // Unread poll
-    if (user) {
-      startUnreadPoll();
-      checkArchetypeChange();
-    } else {
-      stopUnreadPoll();
-    }
-  }
-
-  function updateBadge(team) {
-    const badge = header.querySelector('#team-badge');
-    if (!badge) return;
-    if (team.length > 0) {
-      badge.textContent = team.length;
-      badge.style.display = '';
-    } else {
-      badge.style.display = 'none';
-    }
-  }
-
-  function startUnreadPoll() {
-    fetchUnread();
-    if (unreadPoll) clearInterval(unreadPoll);
-    unreadPoll = setInterval(fetchUnread, 15000);
-  }
-
-  function stopUnreadPoll() {
-    if (unreadPoll) { clearInterval(unreadPoll); unreadPoll = null; }
-  }
-
-  async function fetchUnread() {
-    try {
-      const [msgRes, frRes, notifRes] = await Promise.all([
-        fetch('/api/messages/unread'),
-        fetch('/api/friends/pending'),
-        fetch('/api/notifications/unread-count')
-      ]);
-      if (msgRes.ok) {
-        const { unread } = await msgRes.json();
-        const badge = header.querySelector('#msg-badge');
-        if (badge) {
-          if (unread > 0) { badge.textContent = unread; badge.style.display = ''; }
-          else { badge.style.display = 'none'; }
-        }
-      }
-      if (frRes.ok) {
-        const pending = await frRes.json();
-        const badge = header.querySelector('#fr-badge');
-        if (badge) {
-          if (pending.length > 0) { badge.textContent = pending.length; badge.style.display = ''; }
-          else { badge.style.display = 'none'; }
-        }
-      }
-      if (notifRes.ok) {
-        const { count } = await notifRes.json();
-        const badge = header.querySelector('#notif-badge');
-        if (badge) {
-          if (count > 0) { badge.textContent = count; badge.style.display = ''; }
-          else { badge.style.display = 'none'; }
-        }
-      }
-    } catch { /* silent */ }
-  }
-
-  function checkArchetypeChange() {
-    const dev = getState('developer');
-    if (!dev || !dev.archetype) return;
-    const stored = localStorage.getItem('dyg_last_archetype');
-    if (stored && stored !== dev.archetype) {
-      const from = t(`archetype.${stored}`);
-      const to = t(`archetype.${dev.archetype}`);
-      showToast(t('archetype_change', { from, to }));
-    }
-    localStorage.setItem('dyg_last_archetype', dev.archetype);
   }
 
   render();
-  subscribe('team', updateBadge);
   subscribe('user', () => render());
 
   return header;

@@ -52,78 +52,6 @@ function renderAbout(container) {
       </div>
     </section>
 
-    <!-- Les 3 Poles -->
-    <section class="about-poles">
-      <div class="container">
-        <div class="about-section-label">
-          <span class="about-section-label__num">${t('about.poles_num')}</span>
-          <span class="about-section-label__text">${t('about.poles_label')}</span>
-        </div>
-        <div class="about-poles__header">
-          <h2 class="about-poles__title">${t('about.poles_title').replace('\n', '<br>')}</h2>
-          <p class="about-poles__sub">${t('about.poles_sub')}</p>
-        </div>
-        <div class="about-poles__list">
-
-          <div class="about-pole">
-            <div class="about-pole__header">
-              <span class="about-pole__num">01</span>
-              <div class="about-pole__icon-wrap about-pole__icon-wrap--find">
-                <span class="about-pole__icon">\u25CE</span>
-              </div>
-            </div>
-            <h3 class="about-pole__title">${t('about.pole1_title')}</h3>
-            <p class="about-pole__tagline">${t('about.pole1_tagline')}</p>
-            <p class="about-pole__desc">${t('about.pole1_desc')}</p>
-            <div class="about-pole__features">
-              <span class="about-pole__feature">${t('about.pole1_f1')}</span>
-              <span class="about-pole__feature">${t('about.pole1_f2')}</span>
-              <span class="about-pole__feature">${t('about.pole1_f3')}</span>
-              <span class="about-pole__feature">${t('about.pole1_f4')}</span>
-              <span class="about-pole__feature">${t('about.pole1_f5')}</span>
-            </div>
-          </div>
-
-          <div class="about-pole">
-            <div class="about-pole__header">
-              <span class="about-pole__num">02</span>
-              <div class="about-pole__icon-wrap about-pole__icon-wrap--connect">
-                <span class="about-pole__icon">\u26A1</span>
-              </div>
-            </div>
-            <h3 class="about-pole__title">${t('about.pole2_title')}</h3>
-            <p class="about-pole__tagline">${t('about.pole2_tagline')}</p>
-            <p class="about-pole__desc">${t('about.pole2_desc')}</p>
-            <div class="about-pole__features">
-              <span class="about-pole__feature">${t('about.pole2_f1')}</span>
-              <span class="about-pole__feature">${t('about.pole2_f2')}</span>
-              <span class="about-pole__feature">${t('about.pole2_f3')}</span>
-              <span class="about-pole__feature">${t('about.pole2_f4')}</span>
-            </div>
-          </div>
-
-          <div class="about-pole">
-            <div class="about-pole__header">
-              <span class="about-pole__num">03</span>
-              <div class="about-pole__icon-wrap about-pole__icon-wrap--build">
-                <span class="about-pole__icon">\u2726</span>
-              </div>
-            </div>
-            <h3 class="about-pole__title">${t('about.pole3_title')}</h3>
-            <p class="about-pole__tagline">${t('about.pole3_tagline')}</p>
-            <p class="about-pole__desc">${t('about.pole3_desc')}</p>
-            <div class="about-pole__features">
-              <span class="about-pole__feature">${t('about.pole3_f1')}</span>
-              <span class="about-pole__feature">${t('about.pole3_f2')}</span>
-              <span class="about-pole__feature">${t('about.pole3_f3')}</span>
-              <span class="about-pole__feature">${t('about.pole3_f4')}</span>
-            </div>
-          </div>
-
-        </div>
-      </div>
-    </section>
-
     <!-- Piliers -->
     <section class="about-pillars">
       <div class="container">
@@ -187,99 +115,6 @@ function renderAbout(container) {
       </div>
     </section>
 
-    <!-- Synergie -->
-    <section class="about-synergy container">
-      <div class="about-section-label">
-        <span class="about-section-label__num">${t('about.synergy_num')}</span>
-        <span class="about-section-label__text">${t('about.synergy_label')}</span>
-      </div>
-      <div class="about-synergy__content">
-        <h2 class="about-synergy__title">${t('about.synergy_title')}</h2>
-        <p class="about-synergy__text">${t('about.synergy_text')}</p>
-        <div class="about-synergy__axes">
-          <div class="about-synergy__axis hud-corner">
-            <div class="about-synergy__axis-header">
-              <span class="about-synergy__axis-value">${t('about.synergy_coverage_value')}</span>
-              <h3 class="about-synergy__axis-name">${t('about.synergy_coverage_name')}</h3>
-            </div>
-            <p class="about-synergy__axis-desc">${t('about.synergy_coverage_desc')}</p>
-          </div>
-          <div class="about-synergy__axis hud-corner">
-            <div class="about-synergy__axis-header">
-              <span class="about-synergy__axis-value">${t('about.synergy_diversity_value')}</span>
-              <h3 class="about-synergy__axis-name">${t('about.synergy_diversity_name')}</h3>
-            </div>
-            <p class="about-synergy__axis-desc">${t('about.synergy_diversity_desc')}</p>
-          </div>
-        </div>
-        <div class="about-synergy__formula">
-          <span class="about-synergy__formula-label">${t('about.synergy_formula_label')}</span>
-          <code class="about-synergy__formula-code">${t('about.synergy_formula_code')}</code>
-        </div>
-      </div>
-    </section>
-
-    <!-- Le Parcours -->
-    <section class="about-journey">
-      <div class="container">
-        <div class="about-section-label">
-          <span class="about-section-label__num">${t('about.journey_num')}</span>
-          <span class="about-section-label__text">${t('about.journey_label')}</span>
-        </div>
-        <div class="about-journey__header">
-          <h2 class="about-journey__title">${t('about.journey_title')}</h2>
-          <p class="about-journey__sub">${t('about.journey_sub')}</p>
-        </div>
-        <div class="about-journey__timeline">
-          <div class="about-journey__step">
-            <span class="about-journey__step-num">01</span>
-            <div class="about-journey__step-content">
-              <h3 class="about-journey__step-title">${t('about.step1_title')}</h3>
-              <p class="about-journey__step-desc">${t('about.step1_desc')}</p>
-            </div>
-          </div>
-          <div class="about-journey__step">
-            <span class="about-journey__step-num">02</span>
-            <div class="about-journey__step-content">
-              <h3 class="about-journey__step-title">${t('about.step2_title')}</h3>
-              <p class="about-journey__step-desc">${t('about.step2_desc')}</p>
-            </div>
-          </div>
-          <div class="about-journey__step">
-            <span class="about-journey__step-num">03</span>
-            <div class="about-journey__step-content">
-              <h3 class="about-journey__step-title">${t('about.step3_title')}</h3>
-              <p class="about-journey__step-desc">${t('about.step3_desc')}</p>
-            </div>
-          </div>
-          <div class="about-journey__step">
-            <span class="about-journey__step-num">04</span>
-            <div class="about-journey__step-content">
-              <h3 class="about-journey__step-title">${t('about.step4_title')}</h3>
-              <p class="about-journey__step-desc">${t('about.step4_desc')}</p>
-            </div>
-          </div>
-          <div class="about-journey__step">
-            <span class="about-journey__step-num">05</span>
-            <div class="about-journey__step-content">
-              <h3 class="about-journey__step-title">${t('about.step5_title')}</h3>
-              <p class="about-journey__step-desc">${t('about.step5_desc')}</p>
-            </div>
-          </div>
-          <div class="about-journey__step">
-            <span class="about-journey__step-num">06</span>
-            <div class="about-journey__step-content">
-              <h3 class="about-journey__step-title">${t('about.step6_title')}</h3>
-              <p class="about-journey__step-desc">${t('about.step6_desc')}</p>
-            </div>
-          </div>
-        </div>
-        <div class="about-journey__schools">
-          <p class="about-journey__schools-text">${t('about.schools_text')}</p>
-        </div>
-      </div>
-    </section>
-
     <!-- Stack technique -->
     <section class="about-tech">
       <div class="container">
@@ -301,16 +136,6 @@ function renderAbout(container) {
             <span class="about-tech-card__icon">\u2699</span>
             <h3 class="about-tech-card__name">${t('about.tech_scoring_name')}</h3>
             <p class="about-tech-card__desc">${t('about.tech_scoring_desc')}</p>
-          </div>
-          <div class="about-tech-card hud-corner">
-            <span class="about-tech-card__icon">\u25C8</span>
-            <h3 class="about-tech-card__name">${t('about.tech_gemini_name')}</h3>
-            <p class="about-tech-card__desc">${t('about.tech_gemini_desc')}</p>
-          </div>
-          <div class="about-tech-card hud-corner">
-            <span class="about-tech-card__icon">\u25C6</span>
-            <h3 class="about-tech-card__name">${t('about.tech_synergy_name')}</h3>
-            <p class="about-tech-card__desc">${t('about.tech_synergy_desc')}</p>
           </div>
           <div class="about-tech-card hud-corner">
             <span class="about-tech-card__icon">\u25BA</span>
@@ -355,8 +180,7 @@ function renderAbout(container) {
       <h2 class="about-cta__title">${t('about.cta_title')}</h2>
       <p class="about-cta__sub">${t('about.cta_sub')}</p>
       <div class="about-cta__actions">
-        <a href="#/onboarding" class="btn-primary btn-primary--lg">${t('common.scan_github')}</a>
-        <a href="#/search" class="btn-secondary">${t('common.explore_devs')}</a>
+        <a href="#/" class="btn-primary btn-primary--lg">${t('common.scan_github')}</a>
       </div>
     </section>
   `;

@@ -238,7 +238,7 @@ Sitemap: ${env.BASE_URL}/sitemap.xml`;
 // --- Sitemap ---
 fastify.get('/sitemap.xml', async (request, reply) => {
   const base = env.BASE_URL;
-  const staticPages = ['', '/about', '/search', '/projects', '/onboarding'];
+  const staticPages = ['', '/about', '/onboarding'];
   const usersResult = await pool.query(
     "SELECT u.github_login, u.updated_at FROM users u JOIN developers d ON d.user_id = u.id"
   );

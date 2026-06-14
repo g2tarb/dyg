@@ -26,12 +26,6 @@ async function renderArchetypePage(container, params = {}) {
   const color = data.color;
   setArchetypeTheme(key);
 
-  let devs = [];
-  try {
-    const res = await fetch(`/api/developers?archetype=${key}&limit=10`);
-    if (res.ok) devs = await res.json();
-  } catch { /* best effort */ }
-
   container.innerHTML = `
     <section class="archpage" style="--arch-color:${color};">
       <div class="container" style="padding-top:var(--space-2xl);">
@@ -84,31 +78,8 @@ async function renderArchetypePage(container, params = {}) {
 
         </div>
 
-        <div class="archpage__devs">
-          <h2 class="archpage__devs-title">${escapeHTML(name)}s on DYG</h2>
-          <div class="dev-grid">
-            ${devs.length > 0 ? devs.map(dev => `
-              <a href="#/profile/${dev.id}" class="dev-card" style="--card-archetype-color:${color};">
-                <div class="dev-card__color-bar" style="background:${color};"></div>
-                <div class="dev-card__top">
-                  <img class="avatar avatar--md avatar--${key}" src="${escapeHTML(dev.avatar_url)}" alt="${escapeHTML(dev.name)}" loading="lazy" onerror="this.style.display='none'">
-                  <div class="dev-card__identity">
-                    <span class="dev-card__name">${escapeHTML(dev.name)}</span>
-                    <span class="badge badge--${key}">${escapeHTML(name)}</span>
-                  </div>
-                </div>
-                <p class="dev-card__bio">${escapeHTML(dev.bio || '')}</p>
-                <div class="dev-card__footer">
-                  <span class="score-pill">${dev.avg_score || '\u2014'}/10</span>
-                </div>
-              </a>
-            `).join('') : `<p style="color:var(--color-text-dim);grid-column:1/-1;">${t('search.empty')}</p>`}
-          </div>
-        </div>
-
         <div class="archpage__cta">
-          <a href="#/onboarding" class="btn-primary btn-primary--lg">${t('common.scan_github')}</a>
-          <a href="#/search" class="btn-secondary">${t('common.explore_devs')}</a>
+          <a href="#/" class="btn-primary btn-primary--lg">${t('common.scan_github')}</a>
         </div>
       </div>
     </section>

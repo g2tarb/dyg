@@ -9,9 +9,8 @@ function createFooter() {
       <span class="footer-brand">${createLogoSVG('sm')}</span>
       <span class="footer-copy">${t('footer.copy')} &mdash; ${new Date().getFullYear()}</span>
       <div class="footer-links">
+        <a href="#/">${t('landing.scan_btn')}</a>
         <a href="#/about">${t('header.about')}</a>
-        <a href="#/projects">${t('header.projects')}</a>
-        <a href="#/search">${t('header.explore')}</a>
       </div>
     </div>
   `;

@@ -1,0 +1,118 @@
+/* ==========================================
+   ADVICE — Points faibles & conseils
+   ========================================== */
+
+.advice {
+  margin-top: var(--space-2xl);
+  padding: var(--space-xl);
+  background: var(--color-surface);
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-lg, 16px);
+  border-left: 3px solid var(--advice-color, var(--color-primary));
+}
+
+.advice__title {
+  font-size: 1.25rem;
+  color: var(--color-text);
+  margin-bottom: var(--space-xs);
+}
+
+.advice__sub {
+  color: var(--color-text-dim);
+  font-size: 0.875rem;
+  margin-bottom: var(--space-lg);
+}
+
+.advice__list {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-md);
+}
+
+.advice__item {
+  padding: var(--space-md);
+  background: var(--color-bg);
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-md, 12px);
+}
+
+.advice__head {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: var(--space-xs);
+}
+
+.advice__pillar {
+  font-weight: 600;
+  color: var(--color-text);
+}
+
+.advice__score {
+  font-family: var(--font-mono, monospace);
+  font-size: 0.8125rem;
+  color: var(--advice-color, var(--color-primary));
+  background: var(--color-active-dim, rgba(232, 98, 10, 0.15));
+  padding: 2px 8px;
+  border-radius: 999px;
+}
+
+.advice__tip {
+  color: var(--color-text-dim);
+  line-height: 1.6;
+  font-size: 0.9375rem;
+}
+
+/* ==========================================
+   Profil partagé — repris de l'ancien profile.css
+   (utilisé par portfolio + onboarding)
+   ========================================== */
+
+.profile-score-row {
+  display: flex;
+  align-items: center;
+  gap: var(--space-md);
+}
+
+.profile-score-row__label {
+  font-size: 0.8125rem;
+  color: var(--color-text-dim);
+  width: 90px;
+  text-align: right;
+}
+
+.profile-score-row__bar {
+  flex: 1;
+  height: 6px;
+  background: rgba(203, 213, 225, 0.08);
+  border-radius: 3px;
+  overflow: hidden;
+}
+
+.profile-score-row__fill {
+  height: 100%;
+  border-radius: 3px;
+  background: linear-gradient(90deg, var(--color-primary), var(--color-accent));
+  transition: width var(--duration-slow) var(--ease-out);
+}
+
+.profile-score-row__value {
+  font-size: 0.875rem;
+  font-weight: 600;
+  color: var(--color-accent);
+  width: 30px;
+}
+
+.profile-langs {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--space-sm);
+}
+
+.profile-lang {
+  font-size: 0.8125rem;
+  color: var(--color-text-dim);
+  background: var(--color-surface);
+  padding: var(--space-xs) var(--space-md);
+  border-radius: var(--radius-md);
+}

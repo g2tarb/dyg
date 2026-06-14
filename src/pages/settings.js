@@ -135,7 +135,7 @@ function archetypeSection(dev, color) {
         <h2 class="set-card__title">${t('settings.archetype_title')}</h2>
         <p class="set-card__desc">${t('settings.archetype_empty')}</p>
         <div class="set-card__actions">
-          <a href="#/onboarding" class="btn-primary">${t('common.scan_github')}</a>
+          <a href="#/" class="btn-primary">${t('common.scan_github')}</a>
         </div>
       </section>
     `;
@@ -160,7 +160,7 @@ function archetypeSection(dev, color) {
       </div>
       <p class="set-card__desc">${t('settings.archetype_rescan_desc')}</p>
       <div class="set-card__actions">
-        <a href="#/onboarding" class="btn-secondary btn-secondary--sm">${t('settings.archetype_rescan')}</a>
+        <a href="#/" class="btn-secondary btn-secondary--sm">${t('settings.archetype_rescan')}</a>
       </div>
     </section>
   `;

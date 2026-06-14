@@ -2,6 +2,7 @@ import { escapeHTML } from '../utils/sanitize.js';
 import { t } from '../i18n/index.js';
 import { PILLAR_LABELS, PILLARS_ORDER } from '../components/radarChart.js';
 import { ARCHETYPE_DATA } from '../components/archetypeCard.js';
+import { buildAdviceSection } from '../components/advice.js';
 
 const ARCHETYPES = [
   { key: 'architect', name: 'Architect', color: '#3B82F6', image: '/assets/archetypes/architect.png' },
@@ -43,8 +44,8 @@ function renderLanding(container) {
           <div class="tj-result-card" id="tj-result-card">
             <div class="tj-result-card__header" id="tj-result-header"></div>
             <div class="tj-result-card__scores" id="tj-result-scores"></div>
+            <div class="tj-result-card__advice" id="tj-result-advice"></div>
             <div class="tj-result-card__actions">
-              <a href="#/onboarding" class="btn-primary">${t('landing.scan_full')}</a>
               <button class="btn-secondary" id="tj-rescan-btn">${t('landing.scan_btn')}</button>
             </div>
           </div>
@@ -61,16 +62,16 @@ function renderLanding(container) {
           <span class="tj-stat__label">${t('landing.stat_pillars')}</span>
         </div>
         <div class="tj-stat">
-          <span class="tj-stat__number">150+</span>
-          <span class="tj-stat__label">${t('landing.stat_exercises')}</span>
-        </div>
-        <div class="tj-stat">
           <span class="tj-stat__number">8</span>
           <span class="tj-stat__label">${t('landing.stat_archetypes')}</span>
         </div>
         <div class="tj-stat">
-          <span class="tj-stat__number">11</span>
-          <span class="tj-stat__label">${t('landing.stat_projects')}</span>
+          <span class="tj-stat__number">~10s</span>
+          <span class="tj-stat__label">${t('landing.stat_speed')}</span>
+        </div>
+        <div class="tj-stat">
+          <span class="tj-stat__number">100%</span>
+          <span class="tj-stat__label">${t('landing.stat_free')}</span>
         </div>
       </div>
     </section>
@@ -111,21 +112,16 @@ function renderLanding(container) {
           <h2 class="tj-section-title">${t('landing.tagline')}</h2>
           <p class="tj-section-sub">${t('landing.pitch')}</p>
         </div>
-        <div class="tj-features__grid tj-features__grid--4">
+        <div class="tj-features__grid tj-features__grid--3">
           <div class="tj-feature-card">
             <div class="tj-feature-card__icon" style="background: rgba(59, 130, 246, 0.1); color: #3B82F6;">&#9781;</div>
             <h3 class="tj-feature-card__title">${t('landing.feature_scan_title')}</h3>
             <p class="tj-feature-card__desc">${t('landing.feature_scan')}</p>
           </div>
           <div class="tj-feature-card">
-            <div class="tj-feature-card__icon" style="background: rgba(245, 197, 66, 0.1); color: #F5C542;">&#9881;</div>
-            <h3 class="tj-feature-card__title">${t('landing.feature_train_title')}</h3>
-            <p class="tj-feature-card__desc">${t('landing.feature_train')}</p>
-          </div>
-          <div class="tj-feature-card">
-            <div class="tj-feature-card__icon" style="background: rgba(34, 197, 94, 0.1); color: #22C55E;">&#9776;</div>
-            <h3 class="tj-feature-card__title">${t('landing.feature_team_title')}</h3>
-            <p class="tj-feature-card__desc">${t('landing.feature_team')}</p>
+            <div class="tj-feature-card__icon" style="background: rgba(245, 197, 66, 0.1); color: #F5C542;">&#9888;</div>
+            <h3 class="tj-feature-card__title">${t('landing.feature_advice_title')}</h3>
+            <p class="tj-feature-card__desc">${t('landing.feature_advice')}</p>
           </div>
           <div class="tj-feature-card">
             <div class="tj-feature-card__icon" style="background: rgba(236, 72, 153, 0.1); color: #EC4899;">&#9670;</div>
@@ -178,6 +174,7 @@ function renderLanding(container) {
   const scanResult = container.querySelector('#tj-scan-result');
   const resultHeader = container.querySelector('#tj-result-header');
   const resultScores = container.querySelector('#tj-result-scores');
+  const resultAdvice = container.querySelector('#tj-result-advice');
   const rescanBtn = container.querySelector('#tj-rescan-btn');
   const ctaScrollTop = container.querySelector('#cta-scroll-top');
 
@@ -258,6 +255,9 @@ function renderLanding(container) {
       `;
       resultScores.appendChild(row);
     }
+
+    // Points faibles + conseils
+    resultAdvice.innerHTML = buildAdviceSection(data.scores, arch.color);
 
     // Transition: hide scan, show result
     await new Promise(r => setTimeout(r, 300));
