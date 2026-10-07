@@ -1,6 +1,6 @@
 import pool from '../db/connection.js';
-import { ARCHETYPES, PILLARS } from '../constants/archetypes.js';
 import { determineArchetype } from '../services/scoring.js';
+import { fetchGitHubProfile } from '../services/github.js';
 import { encrypt } from '../utils/crypto.js';
 import { SaveProfileSchema } from '../schemas/validation.js';
 import { UnauthorizedError } from '../utils/errors.js';
@@ -73,7 +73,7 @@ async function authRoutes(fastify) {
       return reply.redirect(`/#/banned?until=${encodeURIComponent(user.banned_until)}`);
     }
 
-    const jwt = fastify.jwt.sign({ id: user.id, github_login: user.github_login });
+    const jwt = fastify.jwt.sign({ id: user.id, github_login: user.github_login, tv: user.token_version });
 
     reply.setCookie('token', jwt, {
       path: '/',
@@ -164,6 +164,17 @@ async function authRoutes(fastify) {
 
   // POST /api/auth/logout
   fastify.post('/api/auth/logout', async (request, reply) => {
+    // DYG-H2 : invalider tous les tokens déjà émis pour ce compte, pas seulement
+    // effacer le cookie local. Best-effort : un token déjà invalide ne bloque pas
+    // le logout.
+    try {
+      await request.jwtVerify();
+      await pool.query(
+        'UPDATE users SET token_version = token_version + 1 WHERE id = $1',
+        [request.user.id]
+      );
+    } catch { /* pas de session valide : rien à révoquer */ }
+
     reply.clearCookie('token', { path: '/' });
     return { ok: true };
   });
@@ -266,28 +277,43 @@ async function authRoutes(fastify) {
     if (userResult.rows.length === 0) throw new UnauthorizedError('User not found');
     const githubUsername = userResult.rows[0].github_login;
 
+    // DYG-C1 : les scores ne sont JAMAIS lus depuis la requête. On rescanne le
+    // GitHub du compte authentifié côté serveur et on persiste ce résultat seul.
+    // Le body ne fournit que des champs cosmétiques (name, avatar_url, bio).
+    let profile;
+    try {
+      profile = await fetchGitHubProfile(githubUsername);
+    } catch (err) {
+      request.log.error({ err, githubUsername }, 'save-profile: GitHub scan failed');
+      return reply.code(502).send({
+        error: 'SCAN_FAILED',
+        message: 'Impossible de scanner ton GitHub pour le moment. Réessaie plus tard.'
+      });
+    }
+
+    const scores = profile.scores;
+    const languages = profile.languages;
+    const { primary, secondary, tertiary } = determineArchetype(scores);
+
     const existing = await pool.query('SELECT id FROM developers WHERE user_id = $1', [userId]);
     let devId;
-
-    // Recalculate archetype with dual/triple detection
-    const { primary, secondary, tertiary } = determineArchetype(parsed.scores);
 
     if (existing.rows.length > 0) {
       devId = existing.rows[0].id;
       await pool.query(`
         UPDATE developers SET name = $1, avatar_url = $2, bio = $3, archetype = $4,
                secondary_archetype = $5, tertiary_archetype = $6, languages = $7, github_username = $8 WHERE id = $9
-      `, [parsed.name, parsed.avatar_url, parsed.bio, primary, secondary, tertiary, JSON.stringify(parsed.languages), githubUsername, devId]);
+      `, [parsed.name, parsed.avatar_url, parsed.bio, primary, secondary, tertiary, JSON.stringify(languages), githubUsername, devId]);
       await pool.query('DELETE FROM developer_scores WHERE developer_id = $1', [devId]);
     } else {
       const devResult = await pool.query(`
         INSERT INTO developers (user_id, name, avatar_url, bio, archetype, secondary_archetype, tertiary_archetype, github_username, languages)
         VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9) RETURNING id
-      `, [userId, parsed.name, parsed.avatar_url, parsed.bio, primary, secondary, tertiary, githubUsername, JSON.stringify(parsed.languages)]);
+      `, [userId, parsed.name, parsed.avatar_url, parsed.bio, primary, secondary, tertiary, githubUsername, JSON.stringify(languages)]);
       devId = devResult.rows[0].id;
     }
 
-    for (const s of parsed.scores) {
+    for (const s of scores) {
       await pool.query(
         'INSERT INTO developer_scores (developer_id, pillar, score) VALUES ($1, $2, $3)',
         [devId, s.pillar, s.score]
@@ -298,7 +324,7 @@ async function authRoutes(fastify) {
     await pool.query(`
       INSERT INTO audit_logs (user_id, action, target_type, target_id, details)
       VALUES ($1, 'profile_save', 'developer', $2, $3)
-    `, [userId, devId, JSON.stringify({ archetype: parsed.archetype })]);
+    `, [userId, devId, JSON.stringify({ archetype: primary })]);
 
     // Award badges
     const awarded = await checkAndAwardBadges(userId, 'scan', { dev_style: primary });

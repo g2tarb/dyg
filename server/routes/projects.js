@@ -5,6 +5,7 @@ import { UnauthorizedError, NotFoundError, ForbiddenError } from '../utils/error
 import { recordAbandon, isUserBanned } from '../services/ban.js';
 import { checkAndAwardBadges } from '../services/badges.js';
 import { awardPoints } from '../services/seasons.js';
+import { teamRewardsEligible } from '../constants/shared.js';
 
 async function getProjectWithMembers(projectId) {
   const projResult = await pool.query('SELECT * FROM projects WHERE id = $1', [projectId]);
@@ -167,13 +168,16 @@ async function projectRoutes(fastify) {
         }
 
         // Award 5 DYG pts to each member for shipping the project.
+        // DYG-H1 : seulement si une vraie équipe a shippé (anti-farming solo).
         const memberIds = await pool.query(
           'SELECT user_id FROM project_members WHERE project_id = $1',
           [id]
         );
-        for (const row of memberIds.rows) {
-          awardPoints(row.user_id, 'dyg', 'project_shipped', 5, { project_id: id })
-            .catch(err => fastify.log.warn({ err, userId: row.user_id }, 'awardPoints(project_shipped) failed'));
+        if (teamRewardsEligible(memberIds.rows.length)) {
+          for (const row of memberIds.rows) {
+            awardPoints(row.user_id, 'dyg', 'project_shipped', 5, { project_id: id })
+              .catch(err => fastify.log.warn({ err, userId: row.user_id }, 'awardPoints(project_shipped) failed'));
+          }
         }
       }
     }

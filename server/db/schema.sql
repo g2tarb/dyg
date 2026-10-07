@@ -51,6 +51,7 @@ CREATE TABLE users (
   notification_prefs JSONB NOT NULL DEFAULT '{}'::jsonb,
   banned_until TIMESTAMPTZ,
   ban_count SMALLINT DEFAULT 0,
+  token_version INTEGER NOT NULL DEFAULT 0,
   created_at TIMESTAMPTZ DEFAULT NOW(),
   updated_at TIMESTAMPTZ DEFAULT NOW()
 );

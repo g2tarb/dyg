@@ -8,7 +8,7 @@ import helmet from '@fastify/helmet';
 import compress from '@fastify/compress';
 import etag from '@fastify/etag';
 import fastifyStatic from '@fastify/static';
-import { fileURLToPath } from 'url';
+import { fileURLToPath, pathToFileURL } from 'url';
 import { dirname, join } from 'path';
 import { randomUUID } from 'crypto';
 import { z } from 'zod';
@@ -35,6 +35,12 @@ import { runWarScheduler } from './services/warScheduler.js';
 
 const __dirname = dirname(fileURLToPath(import.meta.url));
 const isProd = env.NODE_ENV === 'production';
+
+// Vrai uniquement quand ce fichier est lancé directement (node server/index.js,
+// node --watch…). Faux à l'import (tests). Garde l'écoute réseau et les crons :
+// un import de test assemble l'app (pour fastify.inject) sans ouvrir de port ni
+// démarrer les timers de fond.
+const isMain = pathToFileURL(process.argv[1] || '').href === import.meta.url;
 
 // --- Fastify with structured Pino logging ---
 const fastify = Fastify({
@@ -142,7 +148,19 @@ await fastify.register(cookie);
 await fastify.register(jwt, {
   secret: env.JWT_SECRET,
   cookie: { cookieName: 'token', signed: false },
-  sign: { expiresIn: '30d' }
+  sign: { expiresIn: '30d' },
+  // DYG-H2 : révocation. Appelé à chaque vérification réussie. On rejette le
+  // token si son `tv` ne correspond plus au token_version courant du compte
+  // (logout, suppression, compromission). Un token sans `tv` (émis avant ce
+  // déploiement) est accepté tant que le compte est resté à la version 0.
+  trusted: async (request, decoded) => {
+    if (!decoded?.id) return false;
+    const r = await pool.query('SELECT token_version FROM users WHERE id = $1', [decoded.id]);
+    if (r.rows.length === 0) return false; // compte supprimé → token invalide
+    const current = r.rows[0].token_version;
+    const presented = decoded.tv ?? 0;
+    return presented === current ? decoded : false;
+  }
 });
 
 // --- GitHub OAuth ---
@@ -268,6 +286,15 @@ fastify.get('/api/health', async () => {
   }
 });
 
+// --- Graceful shutdown : ferme le pool PG quand l'app se ferme (prod + tests).
+// Sans ça, un process de test ne peut pas se terminer (connexions ouvertes). ---
+fastify.addHook('onClose', async () => {
+  await pool.end().catch(() => {});
+});
+
+// --- Background jobs & server start: only when run directly, never on import ---
+if (isMain) {
+
 // --- Token garbage collection (hourly) ---
 const gcInterval = setInterval(() => {
   // Clean expired banned IPs
@@ -304,6 +331,8 @@ const warInterval = setInterval(() => {
 warInterval.unref();
 runWarScheduler(fastify.log).catch(err => fastify.log.error(err, 'Initial war scheduler run failed'));
 
+} // fin du bloc isMain (crons)
+
 // --- Production: serve built frontend ---
 if (isProd) {
   const { existsSync, readdirSync } = await import('fs');
@@ -334,11 +363,15 @@ if (isProd) {
   });
 }
 
-// --- Start ---
-try {
-  await fastify.listen({ port: env.PORT, host: '0.0.0.0' });
-  fastify.log.info(`DYG API running on port ${env.PORT}${isProd ? ' (production)' : ''}`);
-} catch (err) {
-  fastify.log.error(err);
-  process.exit(1);
+// --- Start (only when run directly, never on import) ---
+if (isMain) {
+  try {
+    await fastify.listen({ port: env.PORT, host: '0.0.0.0' });
+    fastify.log.info(`DYG API running on port ${env.PORT}${isProd ? ' (production)' : ''}`);
+  } catch (err) {
+    fastify.log.error(err);
+    process.exit(1);
+  }
 }
+
+export { fastify };

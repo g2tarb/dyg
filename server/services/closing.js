@@ -1,5 +1,6 @@
 import pool from '../db/connection.js';
-import { ARCHETYPES, PILLARS } from '../constants/archetypes.js';
+import { PILLARS } from '../constants/archetypes.js';
+import { teamRewardsEligible } from '../constants/shared.js';
 import { determineArchetype } from './scoring.js';
 import { collectProjectContributions } from './collector.js';
 import { checkAndAwardBadges } from './badges.js';
@@ -15,13 +16,20 @@ async function closeProject(projectId) {
   const memberIds = membersResult.rows.map(r => r.user_id);
   if (memberIds.length === 0) return;
 
+  // DYG-H1 : un projet solo ne confère pas de badge de ship (anti-farming).
+  // Les mises à jour de score restent inconditionnelles — elles ne bougent que
+  // sous l'effet de peer reviews, impossibles à solo, donc déjà sûres.
+  const rewardable = teamRewardsEligible(memberIds.length);
+
   for (const userId of memberIds) {
     await updateMemberScores(projectId, userId);
     // Collect code samples for AI training (async, non-blocking)
     collectProjectContributions(projectId, userId).catch(err =>
       console.error(`[collector] Background collection failed:`, err.message)
     );
-    checkAndAwardBadges(userId, 'project_ship').catch(() => {});
+    if (rewardable) {
+      checkAndAwardBadges(userId, 'project_ship').catch(() => {});
+    }
   }
 }
 

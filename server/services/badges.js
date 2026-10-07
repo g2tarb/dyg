@@ -1,13 +1,20 @@
 import pool from '../db/connection.js';
+import { MIN_TEAM_SIZE_FOR_REWARDS } from '../constants/shared.js';
 
 const BADGE_DEFINITIONS = {
   'first-scan': { trigger: 'scan', condition: () => true },
   'first-project': { trigger: 'project_join', condition: () => true },
   'first-ship': { trigger: 'project_ship', condition: () => true },
   'five-shipped': { trigger: 'project_ship', condition: async (userId) => {
+    // DYG-H1 : ne compte que les projets ayant réuni une vraie équipe (≥2 membres),
+    // sinon le badge serait farmable avec des projets solo.
     const r = await pool.query(
-      "SELECT COUNT(*)::int AS c FROM project_members pm JOIN projects p ON p.id = pm.project_id WHERE pm.user_id = $1 AND p.status = 'shipped'",
-      [userId]
+      `SELECT COUNT(*)::int AS c
+         FROM projects p
+         JOIN project_members pm ON pm.project_id = p.id AND pm.user_id = $1
+        WHERE p.status = 'shipped'
+          AND (SELECT COUNT(*) FROM project_members pm2 WHERE pm2.project_id = p.id) >= $2`,
+      [userId, MIN_TEAM_SIZE_FOR_REWARDS]
     );
     return r.rows[0].c >= 5;
   }},

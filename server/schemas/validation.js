@@ -1,8 +1,6 @@
 import { z } from 'zod';
 import { VALID_PILLARS, VALID_ARCHETYPES, VALID_STATUSES, REVIEW_PILLARS } from '../constants/shared.js';
 
-const pillar = z.enum(VALID_PILLARS);
-const archetype = z.enum(VALID_ARCHETYPES);
 const uuid = z.string().uuid();
 
 // --- Onboarding ---
@@ -15,16 +13,14 @@ export const ScanSchema = z.object({
     .regex(/^[a-z0-9]([a-z0-9-]{0,37}[a-z0-9])?$/i, 'Pseudo GitHub invalide')
 }).strip();
 
+// DYG-C1 : le client ne fournit QUE des champs cosmétiques. Les scores,
+// l'archétype et les langages sont (re)calculés côté serveur à partir d'un scan
+// du GitHub du compte authentifié — jamais dictés par la requête. `.strip()`
+// supprime silencieusement tout `scores`/`archetype` encore envoyé par le front.
 export const SaveProfileSchema = z.object({
   name: z.string().trim().min(1).max(100),
   avatar_url: z.string().url().max(500).optional().nullable(),
-  bio: z.string().max(1000).optional().nullable(),
-  archetype: archetype,
-  languages: z.array(z.string().max(50)).max(30).default([]),
-  scores: z.array(z.object({
-    pillar: pillar,
-    score: z.number().int().min(1).max(10)
-  })).min(7).max(8)
+  bio: z.string().max(1000).optional().nullable()
 }).strip();
 
 // --- Projects ---
