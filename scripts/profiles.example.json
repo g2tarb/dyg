@@ -1,0 +1,37 @@
+{
+  "_lisez_moi": [
+    "Copiez ce fichier en scripts/profiles.json et remplissez-le.",
+    "",
+    "POINT IMPORTANT : la qualité du calibrage dépend entièrement de la",
+    "représentativité de cet échantillon. La cible de DYG, ce sont des",
+    "développeurs autodidactes en construction — pas des mainteneurs open source",
+    "célèbres. Un échantillon de superstars tire la distribution vers le haut et",
+    "fait croire à tort que les seuils sont trop laxistes.",
+    "",
+    "Viser 30 à 60 profils, répartis en gros comme la population attendue :",
+    "  - majorité de profils moyens / en apprentissage",
+    "  - quelques profils confirmés",
+    "  - quelques profils faibles (peu de repos, forks, pas de README)",
+    "  - quelques profils fortement IA (commits co-signés Claude / Copilot)",
+    "  - quelques profils sans aucune IA",
+    "",
+    "Le champ 'note' n'est pas utilisé par le script : il sert à garder la trace",
+    "de pourquoi un profil est dans l'échantillon.",
+    "",
+    "Sans GITHUB_PAT, le quota est de 60 requêtes/heure et un scan en coûte ~16,",
+    "soit 3 profils par heure. Avec un PAT : 5 000/h, soit ~300 profils/h."
+  ],
+
+  "_avertissement_echantillon": [
+    "Les deux logins ci-dessous ne servent QUE de bornes hautes vérifiées, pour",
+    "contrôler que le haut de l'échelle se comporte bien. Ils ne constituent pas",
+    "un échantillon de calibrage : deux profils exceptionnels donnent forcément",
+    "une moyenne à 7,5 et « 8+ trop fréquent ». À compléter avec des profils",
+    "représentatifs de la vraie cible avant de tirer la moindre conclusion."
+  ],
+
+  "profiles": [
+    { "login": "torvalds", "note": "borne haute — volume et ancienneté extrêmes" },
+    { "login": "sindresorhus", "note": "borne haute — très nombreux repos, outillage, docs soignées" }
+  ]
+}

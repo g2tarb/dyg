@@ -12,7 +12,16 @@
     "preview": "npm run build && npm run start",
     "db:init": "psql dyg < server/db/schema.sql",
     "db:seed": "psql dyg < server/db/seed.sql",
-    "db:reset": "psql dyg < server/db/schema.sql && psql dyg < server/db/seed.sql && psql dyg < server/db/seed-training.sql && psql dyg < server/db/seed-training-js.sql && psql dyg < server/db/seed-training-python.sql"
+    "db:reset": "psql dyg < server/db/schema.sql && psql dyg < server/db/seed.sql && psql dyg < server/db/seed-training.sql && psql dyg < server/db/seed-training-js.sql && psql dyg < server/db/seed-training-python.sql",
+    "bench:record": "node scripts/scoring-bench.js record",
+    "bench:report": "node scripts/scoring-bench.js report",
+    "bench:snapshot": "node scripts/scoring-bench.js snapshot",
+    "bench:compare": "node scripts/scoring-bench.js compare",
+    "test": "node --test --test-timeout=30000 test/*.test.js",
+    "test:watch": "node --test --watch",
+    "check": "node scripts/check-imports.mjs",
+    "test:setup": "bash scripts/setup-test-db.sh",
+    "test:int": "DATABASE_URL=postgresql://localhost:5432/dyg_test NODE_ENV=test JWT_SECRET=test-secret-at-least-32-characters-long node --test --test-timeout=30000 test/integration/*.test.js"
   },
   "keywords": [],
   "author": "Scory — 4Dayvelopment",

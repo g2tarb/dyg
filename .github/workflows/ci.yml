@@ -1,0 +1,35 @@
+name: CI
+
+on:
+  push:
+    branches: ['**']
+  pull_request:
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+          cache: npm
+
+      - run: npm ci
+
+      # Valide la résolution des imports ESM de tous les modules-feuilles.
+      # `node --check` seul ne valide pas les imports externes (cf. feedback projet).
+      - name: Vérification des imports
+        run: npm run check
+        env:
+          NODE_ENV: test
+          DATABASE_URL: postgresql://localhost:5432/dyg
+          JWT_SECRET: ci-only-secret-at-least-32-characters-long
+
+      - name: Tests
+        run: npm test
+        env:
+          NODE_ENV: test
+          DATABASE_URL: postgresql://localhost:5432/dyg
+          JWT_SECRET: ci-only-secret-at-least-32-characters-long

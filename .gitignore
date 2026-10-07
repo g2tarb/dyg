@@ -2,3 +2,9 @@ node_modules
 dist
 .env
 .DS_Store
+
+# Banc de mesure du scoring : réponses brutes de l'API GitHub.
+# Volumineux (~1 Mo par profil) et contient des données personnelles de tiers
+# (adresses e-mail des auteurs de commits). Régénérable via `npm run bench:record`.
+scripts/fixtures/
+scripts/profiles.json
