@@ -23,6 +23,7 @@ import { renderNotifications } from './pages/notifications.js';
 import { renderWars } from './pages/wars.js';
 import { renderNotFound } from './pages/notFound.js';
 import { createFooter } from './components/footer.js';
+import { createBottomNav } from './components/bottomNav.js';
 
 const app = document.getElementById('app');
 
@@ -70,6 +71,10 @@ setNotFoundHandler(renderNotFound);
 // Mount footer
 const footer = createFooter();
 app.appendChild(footer);
+
+// Mount mobile bottom navigation (hidden ≥768px and when logged out)
+const bottomNav = createBottomNav();
+app.appendChild(bottomNav);
 
 // Start theme system
 initTheme();

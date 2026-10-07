@@ -24,6 +24,13 @@ export default {
   'header.notifications': 'Notifications',
   'header.wars': 'DYG Wars',
 
+  // Bottom nav (mobile)
+  'nav.explore': 'Explore',
+  'nav.training': 'Training',
+  'nav.projects': 'Projects',
+  'nav.wars': 'Wars',
+  'nav.profile': 'Profile',
+
   // Landing
   'landing.hero_title': 'Train. Connect. Ship together.',
   'landing.hero_sub': 'Self-taught, students, seniors — the platform connecting devs who want to level up together. Scan your GitHub, train on 150+ exercises, form a team and ship real projects. Your skills become living proof. And if you\'re aiming for 42, Epitech or HETIC, show up with an edge. 100% free.',

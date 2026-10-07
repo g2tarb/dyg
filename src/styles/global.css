@@ -11,7 +11,9 @@
   --color-primary: #E8620A;
   --color-accent: #F5C542;
   --color-text: #FAFAFA;
-  --color-text-dim: #71717A;
+  /* #808089 : contraste ≥4.8:1 sur le fond et ≥4.6:1 sur les surfaces (WCAG AA
+     texte normal). L'ancien #71717A était à 4.1:1 — sous le seuil. */
+  --color-text-dim: #808089;
   --color-text-muted: #3F3F46;
   --color-success: #22C55E;
   --color-warning: #EAB308;
@@ -156,9 +158,13 @@ img {
   top: 0;
 }
 
+/* Anneau de focus clavier. !important car plusieurs composants posent
+   `outline:0/none` sur leur état de base (chargés après ce fichier) et le
+   masqueraient sinon. :focus-visible ne s'active qu'au clavier, donc sans
+   impact à la souris. */
 *:focus-visible {
-  outline: 2px solid var(--color-active);
-  outline-offset: 2px;
+  outline: 2px solid var(--color-active) !important;
+  outline-offset: 2px !important;
 }
 
 /* Reduced motion */

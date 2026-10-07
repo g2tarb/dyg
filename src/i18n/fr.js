@@ -24,6 +24,13 @@ export default {
   'header.notifications': 'Notifications',
   'header.wars': 'DYG Wars',
 
+  // Bottom nav (mobile)
+  'nav.explore': 'Explorer',
+  'nav.training': 'Entraînement',
+  'nav.projects': 'Projets',
+  'nav.wars': 'Wars',
+  'nav.profile': 'Profil',
+
   // Landing
   'landing.hero_title': 'S\'entraîner. Se connecter. Livrer ensemble.',
   'landing.hero_sub': 'Autodidactes, étudiants, confirmés — la plateforme qui connecte les devs pour progresser. Scan ton GitHub, entraîne-toi sur 150+ exercices, forme une équipe et livre de vrais projets. Tes skills deviennent une preuve vivante. Et si tu vises 42, Epitech ou HETIC, arrive avec un avantage. 100% gratuit.',
